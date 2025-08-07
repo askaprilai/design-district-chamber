@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Accountability Assessment - AskApril AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .value-prop {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .value-prop-text {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .quiz-content {
+            padding: 40px;
+        }
+
+        .quiz-start {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 48, 163, 0.1) 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .quiz-start h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .quiz-start p {
+            color: #718096;
+            margin-bottom: 25px;
+        }
+
+        .quiz-start button {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .quiz-start button:hover {
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 6px;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .question {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .question.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .question h3 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            line-height: 1.4;
+        }
+
+        .question-number {
+            background: #1e3a8a;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 0.9em;
+        }
+
+        .framework-step {
+            background: rgba(30, 58, 138, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .framework-step h4 {
+            color: #1e3a8a;
+            font-size: 1em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .framework-step p {
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer-option {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .answer-option:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+        }
+
+        .answer-option.selected {
+            border-color: #1e3a8a;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 48, 163, 0.1) 100%);
+        }
+
+        .answer-option input[type="radio"] {
+            display: none;
+        }
+
+        .answer-text {
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .answer-description {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-button.secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .results.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+        }
+
+        .score-number {
+            font-size: 4em;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .step-breakdown {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-left: 4px solid #e53e3e;
+        }
+
+        .step-breakdown.medium {
+            border-left-color: #f6ad55;
+        }
+
+        .step-breakdown.high {
+            border-left-color: #48bb78;
+        }
+
+        .step-breakdown h4 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .step-breakdown p {
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .recommendation {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 178, 172, 0.1) 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid #48bb78;
+        }
+
+        .recommendation h5 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .recommendation p {
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .cta-section h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .cta-section p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: white;
+            color: #1e3a8a;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .quiz-content {
+                padding: 30px 20px;
+            }
+
+            .score-number {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Leadership Accountability Assessment</h1>
+            <p class="subtitle">Discover Your Leadership Strengths Using the 9-Step Accountability Framework</p>
+            <div class="value-prop">
+                <div class="value-prop-text">
+                    Assess your leadership effectiveness across the 9 critical steps of accountability and get a personalized development plan.
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-content">
+            <!-- Quiz Start Button -->
+            <div class="quiz-start" id="quizStart">
+                <h3>Ready to Assess Your Leadership Accountability?</h3>
+                <p>Evaluate your effectiveness across the 9-step framework that transforms leaders from operators to owners.</p>
+                <button onclick="startQuiz()">Start Assessment →</button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar hidden" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Quiz Questions -->
+            <div id="quizQuestions" class="hidden">
+                
+                <!-- Question 1: Right Person, Right Role -->
+                <div class="question active" data-question="1">
+                    <div class="framework-step">
+                        <h4>Step 1: Right Person, Right Role</h4>
+                        <p>Ensuring you have the right people in positions that match their strengths and capabilities</p>
+                    </div>
+                    <h3><span class="question-number">1</span>How effectively do you ensure people are in roles that match their strengths and capabilities?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="1">
+                            <div class="answer-text">Rarely Consider Role-Person Fit</div>
+                            <div class="answer-description">I assign people based on availability rather than strengths or role requirements</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="2">
+                            <div class="answer-text">Sometimes Consider Fit</div>
+                            <div class="answer-description">I try to match people to roles but often make compromises due to urgency or limited options</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="3">
+                            <div class="answer-text">Usually Assess Role Fit</div>
+                            <div class="answer-description">I generally consider strengths and capabilities when assigning roles, with occasional mismatches</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="4">
+                            <div class="answer-text">Always Ensure Perfect Alignment</div>
+                            <div class="answer-description">I systematically assess and align people's strengths with role requirements before any assignment</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2: Expectations Are Clear & Confirmed -->
+                <div class="question" data-question="2">
+                    <div class="framework-step">
+                        <h4>Step 2: Expectations Are Clear & Confirmed</h4>
+                        <p>Ensuring all expectations are crystal clear, documented, and mutually understood</p>
+                    </div>
+                    <h3><span class="question-number">2</span>How clearly do you communicate and confirm expectations with your team members?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="1">
+                            <div class="answer-text">Expectations Are Vague</div>
+                            <div class="answer-description">I assume people know what's expected and rarely check for understanding</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="2">
+                            <div class="answer-text">Basic Expectations Shared</div>
+                            <div class="answer-description">I communicate general expectations but don't always confirm understanding or document details</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="3">
+                            <div class="answer-text">Clear Communication Most Times</div>
+                            <div class="answer-description">I usually provide clear expectations and check for understanding, with occasional gaps</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="4">
+                            <div class="answer-text">Crystal Clear & Confirmed</div>
+                            <div class="answer-description">I always ensure expectations are specific, documented, and confirmed with mutual understanding</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3: Agreed Consequences for Missed Expectations -->
+                <div class="question" data-question="3">
+                    <div class="framework-step">
+                        <h4>Step 3: Agreed Consequences for Missed Expectations</h4>
+                        <p>Establishing mutual agreement on what happens when expectations aren't met</p>
+                    </div>
+                    <h3><span class="question-number">3</span>How well do you establish agreed-upon consequences for missed expectations?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="1">
+                            <div class="answer-text">No Clear Consequences</div>
+                            <div class="answer-description">Consequences are never discussed upfront and I handle missed expectations reactively</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="2">
+                            <div class="answer-text">Implied Consequences</div>
+                            <div class="answer-description">People generally know there will be consequences but they're not specifically agreed upon</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="3">
+                            <div class="answer-text">Usually Discuss Consequences</div>
+                            <div class="answer-description">I typically establish consequences for important expectations but not always for everything</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="4">
+                            <div class="answer-text">Always Agree on Consequences</div>
+                            <div class="answer-description">I consistently establish and gain agreement on specific consequences before expectations are set</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4: Follow-Up Plan Locked In -->
+                <div class="question" data-question="4">
+                    <div class="framework-step">
+                        <h4>Step 4: Follow-Up Plan Locked In</h4>
+                        <p>Creating detailed plans for monitoring progress and checking in on commitments</p>
+                    </div>
+                    <h3><span class="question-number">4</span>How detailed and consistent are your follow-up plans for tracking progress?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="1">
+                            <div class="answer-text">No Formal Follow-Up</div>
+                            <div class="answer-description">I rely on people to update me and don't have scheduled check-ins</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="2">
+                            <div class="answer-text">Ad-Hoc Follow-Up</div>
+                            <div class="answer-description">I check in when I remember or when issues arise, but it's not systematic</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="3">
+                            <div class="answer-text">Regular Check-Ins</div>
+                            <div class="answer-description">I have scheduled follow-ups for most important items but sometimes miss or reschedule</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="4">
+                            <div class="answer-text">Detailed Follow-Up System</div>
+                            <div class="answer-description">I have specific, scheduled follow-up plans for every expectation and commitment</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 5: Course-Correct Quickly -->
+                <div class="question" data-question="5">
+                    <div class="framework-step">
+                        <h4>Step 5: Course-Correct Quickly</h4>
+                        <p>Making rapid adjustments when things aren't going according to plan</p>
+                    </div>
+                    <h3><span class="question-number">5</span>How quickly do you course-correct when expectations aren't being met?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="1">
+                            <div class="answer-text">Slow to React</div>
+                            <div class="answer-description">I often wait too long hoping things will improve before taking action</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="2">
+                            <div class="answer-text">Eventually Address Issues</div>
+                            <div class="answer-description">I address problems but it usually takes several instances before I act</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="3">
+                            <div class="answer-text">Timely Course Corrections</div>
+                            <div class="answer-description">I generally address issues within a reasonable timeframe with occasional delays</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="4">
+                            <div class="answer-text">Immediate Course Correction</div>
+                            <div class="answer-description">I identify and address deviations quickly, making adjustments as soon as issues are apparent</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 6: Show Up Consistently -->
+                <div class="question" data-question="6">
+                    <div class="framework-step">
+                        <h4>Step 6: Show Up Consistently</h4>
+                        <p>Being present, engaged, and reliable in your leadership role</p>
+                    </div>
+                    <h3><span class="question-number">6</span>How consistently do you show up and stay involved with your team?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="1">
+                            <div class="answer-text">Inconsistent Presence</div>
+                            <div class="answer-description">My involvement varies greatly and team members don't know when I'll be available</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="2">
+                            <div class="answer-text">Show Up When Needed</div>
+                            <div class="answer-description">I'm available for crises and important meetings but not always engaged day-to-day</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="3">
+                            <div class="answer-text">Generally Consistent</div>
+                            <div class="answer-description">I maintain regular involvement with occasional lapses due to competing priorities</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="4">
+                            <div class="answer-text">Always Present & Engaged</div>
+                            <div class="answer-description">I consistently show up with reliable presence and engagement my team can count on</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 7: Clarify Before You Assume -->
+                <div class="question" data-question="7">
+                    <div class="framework-step">
+                        <h4>Step 7: Clarify Before You Assume</h4>
+                        <p>Seeking understanding and confirmation rather than making assumptions</p>
+                    </div>
+                    <h3><span class="question-number">7</span>How often do you clarify understanding rather than make assumptions?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="1">
+                            <div class="answer-text">Often Make Assumptions</div>
+                            <div class="answer-description">I frequently assume people understand or are on track without checking</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="2">
+                            <div class="answer-text">Sometimes Clarify</div>
+                            <div class="answer-description">I ask questions when something seems obviously wrong but often assume things are fine</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="3">
+                            <div class="answer-text">Usually Seek Clarity</div>
+                            <div class="answer-description">I regularly check for understanding and clarify most situations before assuming</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="4">
+                            <div class="answer-text">Always Clarify First</div>
+                            <div class="answer-description">I consistently seek clarification and confirmation before making any assumptions</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 8: Celebrate What's Working -->
+                <div class="question" data-question="8">
+                    <div class="framework-step">
+                        <h4>Step 8: Celebrate What's Working</h4>
+                        <p>Recognizing and acknowledging good performance and positive outcomes</p>
+                    </div>
+                    <h3><span class="question-number">8</span>How well do you recognize and celebrate good performance?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="1">
+                            <div class="answer-text">Rarely Recognize Success</div>
+                            <div class="answer-description">I focus mainly on problems and rarely acknowledge when things go well</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="2">
+                            <div class="answer-text">Occasional Recognition</div>
+                            <div class="answer-description">I acknowledge major wins but often miss smaller successes and daily good performance</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="3">
+                            <div class="answer-text">Regular Recognition</div>
+                            <div class="answer-description">I generally recognize good work and celebrate successes with some consistency</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="4">
+                            <div class="answer-text">Consistent Celebration</div>
+                            <div class="answer-description">I actively look for and celebrate both big wins and daily examples of good performance</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 9: Missed the Mark? Restart at Step 1 -->
+                <div class="question" data-question="9">
+                    <div class="framework-step">
+                        <h4>Step 9: Missed the Mark? Restart at Step 1</h4>
+                        <p>When outcomes aren't successful, returning to evaluate if you have the right person in the right role</p>
+                    </div>
+                    <h3><span class="question-number">9</span>When expectations aren't met, how systematically do you restart the accountability process?</h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="1">
+                            <div class="answer-text">Keep Trying Same Approach</div>
+                            <div class="answer-description">I tend to repeat the same expectations and consequences without changing my approach</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="2">
+                            <div class="answer-text">Make Minor Adjustments</div>
+                            <div class="answer-description">I tweak expectations or consequences but don't systematically review the whole process</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="3">
+                            <div class="answer-text">Review Most Elements</div>
+                            <div class="answer-description">I generally reassess expectations and approach but don't always go back to role fit</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="4">
+                            <div class="answer-text">Complete Process Restart</div>
+                            <div class="answer-description">I systematically restart at Step 1, questioning role fit and rebuilding the entire accountability framework</div>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation hidden" id="navigation">
+                <button type="button" class="nav-button secondary" id="prevButton" onclick="previousQuestion()">← Previous</button>
+                <span id="questionCounter">Question 1 of 9</span>
+                <button type="button" class="nav-button" id="nextButton" onclick="nextQuestion()">Next →</button>
+            </div>
+
+            <!-- Results -->
+            <div class="results" id="results">
+                <h2 style="color: #4a5568; margin-bottom: 20px;">Your Leadership Accountability Assessment Results</h2>
+                
+                <div class="score-display">
+                    <div class="score-number" id="totalScore">0</div>
+                    <div class="score-label">Leadership Effectiveness Score</div>
+                    <p style="margin-top: 15px; font-size: 1em;" id="scoreDescription"></p>
+                </div>
+
+                <div id="stepBreakdown"></div>
+
+                <!-- NewZenler Form Integration -->
+                <div style="background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 20px; margin: 30px 0; border-left: 4px solid #1e3a8a;">
+                    <div class="text-center">
+                        <h3 style="color: #4a5568; margin-bottom: 15px; font-size: 1.8em;">Get Your Personalized Leadership Development Plan</h3>
+                        <p style="color: #718096; margin-bottom: 25px; font-size: 1.1em;">Enter your details to receive your detailed action plan for mastering all 9 accountability steps:</p>
+                        
+                        <div style="margin: 20px 0;">
+                            <p style="font-size: 1em; margin-bottom: 15px; color: #4a5568;"><strong>You'll receive:</strong></p>
+                            <ul style="text-align: left; max-width: 450px; margin: 0 auto 25px; color: #718096;">
+                                <li style="margin: 8px 0;">✅ Step-by-step action plan for each framework step</li>
+                                <li style="margin: 8px 0;">✅ Leadership accountability templates</li>
+                                <li style="margin: 8px 0;">✅ 30-day free trial to AskApril AI</li>
+                                <li style="margin: 8px 0;">✅ Weekly office hours with expert guidance</li>
+                                <li style="margin: 8px 0;">✅ Transform from operator to owner guide</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Simple Form -->
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <form id="leadForm" style="padding: 20px;">
+                            <div style="margin-bottom: 20px;">
+                                <input type="text" id="firstName" placeholder="First Name" required="" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;">
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <input type="email" id="email" placeholder="Email" required="" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;">
+                            </div>
+                            
+                            <button type="submit" style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: 600; width: 100%; transition: transform 0.2s ease;">
+                                Get My Leadership Development Plan Now
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <small style="color: #718096;">By submitting the form you agree to our Privacy Policy.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("SAU17WFhPmeQLrng7");
+        })();
+    </script>
+    
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 9;
+        let userAnswers = {};
+
+        const frameworkSteps = [
+            {
+                name: "Right Person, Right Role",
+                description: "Ensuring alignment between individual strengths and role requirements",
+                lowRecommendation: "Conduct skills assessments and create role-specific competency profiles before making assignments.",
+                highRecommendation: "Continue leveraging your strength in role alignment while documenting your process for consistency."
+            },
+            {
+                name: "Expectations Are Clear & Confirmed",
+                description: "Crystal clear communication and mutual understanding of all expectations",
+                lowRecommendation: "Develop written expectation templates and implement confirmation protocols for all assignments.",
+                highRecommendation: "Your clear communication is strong - consider training others on your expectation-setting process."
+            },
+            {
+                name: "Agreed Consequences for Missed Expectations",
+                description: "Mutual agreement on outcomes when expectations aren't met",
+                lowRecommendation: "Create consequence frameworks upfront and gain explicit agreement before setting expectations.",
+                highRecommendation: "Excellent consequence management - ensure consistency across all team members and situations."
+            },
+            {
+                name: "Follow-Up Plan Locked In",
+                description: "Detailed systems for monitoring progress and checking commitments",
+                lowRecommendation: "Implement systematic follow-up schedules using calendar blocks and tracking systems.",
+                highRecommendation: "Your follow-up systems are solid - consider automating reminders to maintain consistency."
+            },
+            {
+                name: "Course-Correct Quickly",
+                description: "Rapid response and adjustment when things go off track",
+                lowRecommendation: "Establish early warning indicators and decision criteria for when to course-correct.",
+                highRecommendation: "Strong course-correction skills - share your rapid response methods with other leaders."
+            },
+            {
+                name: "Show Up Consistently",
+                description: "Reliable presence and engagement that your team can count on",
+                lowRecommendation: "Create consistent touchpoint schedules and communicate your availability patterns clearly.",
+                highRecommendation: "Your consistent presence is a leadership strength - maintain this while avoiding micromanagement."
+            },
+            {
+                name: "Clarify Before You Assume",
+                description: "Seeking understanding rather than making assumptions",
+                lowRecommendation: "Develop a habit of asking clarifying questions and confirming understanding in all interactions.",
+                highRecommendation: "Excellent clarification skills - model this behavior to help others avoid assumption-based mistakes."
+            },
+            {
+                name: "Celebrate What's Working",
+                description: "Recognition and acknowledgment of good performance",
+                lowRecommendation: "Create recognition systems to consistently acknowledge both big wins and daily good performance.",
+                highRecommendation: "Strong recognition practices - ensure your celebration methods motivate different personality types."
+            },
+            {
+                name: "Missed the Mark? Restart at Step 1",
+                description: "Systematic process restart when outcomes aren't successful",
+                lowRecommendation: "Develop a systematic review process that questions role fit when expectations aren't consistently met.",
+                highRecommendation: "Excellent systematic approach - document your restart process for other leaders to follow."
+            }
+        ];
+
+        function startQuiz() {
+            document.getElementById('quizStart').classList.add('hidden');
+            document.getElementById('quizQuestions').classList.remove('hidden');
+            document.getElementById('navigation').classList.remove('hidden');
+            document.getElementById('progressBar').classList.remove('hidden');
+            updateProgress();
+        }
+
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                const questionDiv = e.target.closest('.question');
+                questionDiv.querySelectorAll('.answer-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                e.target.closest('.answer-option').classList.add('selected');
+                userAnswers[e.target.name] = parseInt(e.target.value);
+                document.getElementById('nextButton').disabled = false;
+            }
+        });
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion++;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateNavigation();
+                updateProgress();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion--;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateNavigation();
+                updateProgress();
+            }
+        }
+
+        function updateNavigation() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            const counter = document.getElementById('questionCounter');
+            
+            prevButton.disabled = currentQuestion === 1;
+            
+            if (currentQuestion === totalQuestions) {
+                nextButton.textContent = 'Get Results →';
+            } else {
+                nextButton.textContent = 'Next →';
+            }
+            
+            const currentAnswer = userAnswers[`q${currentQuestion}`];
+            nextButton.disabled = currentAnswer === undefined;
+            
+            counter.textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function showResults() {
+            const totalScore = Object.values(userAnswers).reduce((sum, value) => sum + value, 0);
+            const maxScore = 36; // 9 questions × 4 max points each
+            const percentageScore = Math.round((totalScore / maxScore) * 100);
+            
+            document.getElementById('quizQuestions').classList.add('hidden');
+            document.getElementById('navigation').classList.add('hidden');
+            document.getElementById('progressBar').classList.add('hidden');
+            document.getElementById('results').classList.add('active');
+            
+            document.getElementById('totalScore').textContent = `${percentageScore}%`;
+            
+            let scoreDescription;
+            if (percentageScore >= 85) {
+                scoreDescription = "Exceptional Leadership - You demonstrate mastery across the accountability framework.";
+            } else if (percentageScore >= 70) {
+                scoreDescription = "Strong Leadership - Good foundation with opportunities for targeted improvement.";
+            } else if (percentageScore >= 55) {
+                scoreDescription = "Developing Leadership - Several areas need attention to increase effectiveness.";
+            } else {
+                scoreDescription = "Emerging Leadership - Significant development opportunities across the framework.";
+            }
+            
+            document.getElementById('scoreDescription').textContent = scoreDescription;
+            generateStepBreakdown();
+            
+            console.log('Assessment Data:', {
+                answers: userAnswers,
+                totalScore: totalScore,
+                percentageScore: percentageScore,
+                completedAt: new Date().toISOString(),
+                source: 'accountability-assessment'
+            });
+        }
+
+        function generateStepBreakdown() {
+            const breakdownContainer = document.getElementById('stepBreakdown');
+            
+            frameworkSteps.forEach((step, index) => {
+                const stepScore = userAnswers[`q${index + 1}`];
+                const stepClass = stepScore <= 2 ? 'step-breakdown' : stepScore === 3 ? 'step-breakdown medium' : 'step-breakdown high';
+                const recommendation = stepScore <= 2 ? step.lowRecommendation : step.highRecommendation;
+                
+                const stepDiv = document.createElement('div');
+                stepDiv.className = stepClass;
+                stepDiv.innerHTML = `
+                    <h4>Step ${index + 1}: ${step.name} - ${stepScore}/4</h4>
+                    <p>${step.description}</p>
+                    <div class="recommendation">
+                        <h5>Development Focus:</h5>
+                        <p>${recommendation}</p>
+                    </div>
+                `;
+                
+                breakdownContainer.appendChild(stepDiv);
+            });
+        }
+
+        // CSV Lead Capture
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('leadForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const firstName = document.getElementById('firstName').value;
+                    const email = document.getElementById('email').value;
+                    
+                    if (!firstName || !email) {
+                        alert('Please fill in all fields.');
+                        return;
+                    }
+                    
+                    // Collect assessment data
+                    const assessmentData = {
+                        firstName: firstName,
+                        email: email,
+                        assessmentAnswers: userAnswers,
+                        totalScore: Object.values(userAnswers).reduce((sum, value) => sum + value, 0),
+                        percentageScore: Math.round((Object.values(userAnswers).reduce((sum, value) => sum + value, 0) / 36) * 100),
+                        completedAt: new Date().toISOString(),
+                        source: 'accountability-assessment'
+                    };
+                    
+                    console.log('Assessment Data:', assessmentData);
+                    
+                    // Disable button to prevent double submission
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Processing...';
+                    
+                    // Send email via EmailJS
+                    const emailParams = {
+                        firstName: firstName,
+                        name: firstName,
+                        email: email,
+                        to_email: email,
+                        totalScore: assessmentData.totalScore,
+                        percentageScore: assessmentData.percentageScore,
+                        assessmentDate: new Date().toLocaleDateString()
+                    };
+                    
+                    emailjs.send('service_vntq4ai', 'template_j1dh6rf', emailParams)
+                    .then(function(response) {
+                        console.log('Email sent successfully:', response);
+                        
+                        // Also save to CSV for your records
+                        return fetch('save-lead.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(assessmentData)
+                        });
+                    })
+                    .then(response => {
+                        if (response) return response.json();
+                        return { success: true };
+                    })
+                    .then(data => {
+                        console.log('CSV Save Response:', data);
+                        
+                        // Show success message
+                        document.querySelector('[style*="background: rgba(255, 255, 255, 0.95)"]').innerHTML = `
+                            <div style="text-align: center; padding: 40px;">
+                                <h3 style="color: #48bb78; margin-bottom: 20px; font-size: 1.8em;">🎉 Success!</h3>
+                                <p style="color: #4a5568; margin-bottom: 25px; font-size: 1.1em;">Your personalized Leadership Development Plan has been sent to your email!</p>
+                                <div style="background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 178, 172, 0.1) 100%); padding: 20px; border-radius: 15px; margin: 20px 0; border-left: 4px solid #48bb78;">
+                                    <p style="color: #4a5568; margin-bottom: 15px;"><strong>Check your email for:</strong></p>
+                                    <ul style="text-align: left; max-width: 400px; margin: 0 auto; color: #718096;">
+                                        <li style="margin: 8px 0;">✅ Your personalized leadership assessment results</li>
+                                        <li style="margin: 8px 0;">✅ Detailed action plan for each framework step</li>
+                                        <li style="margin: 8px 0;">✅ Leadership accountability templates</li>
+                                        <li style="margin: 8px 0;">✅ Free trial invitation to AskApril AI</li>
+                                    </ul>
+                                </div>
+                                <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                                    <p style="margin-bottom: 15px;"><strong>Ready to accelerate your leadership transformation?</strong></p>
+                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: white; color: #1e3a8a; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
+                                </div>
+                                <p style="color: #718096; font-size: 0.9em;">Check your email (including spam folder) for your comprehensive leadership development guide.</p>
+                            </div>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        
+                        // Show fallback success message
+                        document.querySelector('[style*="background: rgba(255, 255, 255, 0.95)"]').innerHTML = `
+                            <div style="text-align: center; padding: 40px;">
+                                <h3 style="color: #f6ad55; margin-bottom: 20px; font-size: 1.8em;">⚠️ Almost There!</h3>
+                                <p style="color: #4a5568; margin-bottom: 25px; font-size: 1.1em;">Your assessment is complete! We're processing your results.</p>
+                                <p style="color: #718096;">If you don't receive an email within a few minutes, please contact us with your assessment details.</p>
+                                <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: white; color: #1e3a8a; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Reset button
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Get My Leadership Development Plan Now';
+                    });
+                });
+            }
+        });
+
+        updateNavigation();
+    </script>
+</body>
+</html>
