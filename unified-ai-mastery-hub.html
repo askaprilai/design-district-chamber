@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mastery Hub - Your Complete AI Transformation Journey</title>
+    <meta name="description" content="Discover your AI potential, learn proven techniques, and track your progress. The complete platform for personal and organizational AI mastery.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .hub-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px 60px;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        /* User Journey Steps */
+        .journey-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .journey-step {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 15px 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .journey-step:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .journey-step.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .journey-step.completed {
+            background: rgba(72, 187, 120, 0.8);
+            border-color: rgba(72, 187, 120, 0.9);
+        }
+
+        .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        /* Welcome Screen */
+        .welcome-section {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.3rem;
+            color: #4a5568;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .journey-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .journey-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: left;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .journey-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card-step {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+
+        .card-features li {
+            color: #4a5568;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        .card-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .card-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #48bb78;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .progress-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            transition: width 1s ease;
+            border-radius: 5px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .quick-actions-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Content Sections (Initially Hidden) */
+        .content-section {
+            display: none;
+            padding: 40px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: #4a5568;
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Navigation */
+        .section-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-btn.secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        /* User State Indicators */
+        .user-state {
+            background: #f0fff4;
+            border: 2px solid #48bb78;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .state-icon {
+            font-size: 2rem;
+        }
+
+        .state-content {
+            flex: 1;
+        }
+
+        .state-title {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .state-description {
+            color: #4a5568;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hub-container {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .journey-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .journey-step {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .journey-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                margin-top: 20px;
+            }
+            
+            .welcome-section {
+                padding: 40px 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: #f7fafc;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 5px;
+        }
+
+        .tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2d3748;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="hub-container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="logo">🚀 AI Mastery Hub</h1>
+            <div class="tagline">Assess. Learn. Apply. Accelerate.</div>
+            <p class="description">
+                Your complete journey from AI beginner to AI champion. 
+                Discover your potential, master proven techniques, and track your success.
+            </p>
+            
+            <!-- User Journey Navigation -->
+            <div class="journey-nav">
+                <a href="#" class="journey-step active" onclick="showSection('welcome')" id="step-welcome">
+                    <span class="step-number">🏠</span>
+                    <span>Start Here</span>
+                </a>
+                <a href="#" class="journey-step" onclick="showSection('assess')" id="step-assess">
+                    <span class="step-number">1</span>
+                    <span>Assess</span>
+                </a>
+                <a href="#" class="journey-step" onclick="showSection('learn')" id="step-learn">
+                    <span class="step-number">2</span>
+                    <span>Learn</span>
+                </a>
+                <a href="#" class="journey-step" onclick="showSection('apply')" id="step-apply">
+                    <span class="step-number">3</span>
+                    <span>Apply</span>
+                </a>
+                <a href="#" class="journey-step" onclick="showSection('track')" id="step-track">
+                    <span class="step-number">4</span>
+                    <span>Track</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Welcome Section -->
+            <div class="content-section active fade-in" id="welcome-section">
+                <div class="welcome-section">
+                    <h2 class="welcome-title">Welcome to Your AI Transformation Journey</h2>
+                    <p class="welcome-subtitle">
+                        Follow these 4 simple steps to go from AI curious to AI champion. 
+                        Each step builds on the previous one to maximize your success.
+                    </p>
+                    
+                    <!-- Progress Indicator -->
+                    <div class="progress-indicator">
+                        <div class="progress-title">🎯 Your Journey Progress</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%" id="overall-progress"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Get started with your first assessment</span>
+                            <span id="progress-percentage">0% Complete</span>
+                        </div>
+                    </div>
+
+                    <!-- Journey Cards -->
+                    <div class="journey-cards">
+                        <div class="journey-card" onclick="showSection('assess')">
+                            <div class="card-step">1</div>
+                            <h3 class="card-title">🎯 Discover Your AI Potential</h3>
+                            <p class="card-description">
+                                Take our comprehensive assessment to understand your current AI skills and interaction patterns.
+                            </p>
+                            <ul class="card-features">
+                                <li>Personal AI readiness score</li>
+                                <li>Identify your AI persona</li>
+                                <li>Spot improvement opportunities</li>
+                                <li>Get personalized recommendations</li>
+                            </ul>
+                            <button class="card-cta">Start Assessment →</button>
+                        </div>
+
+                        <div class="journey-card" onclick="showSection('learn')">
+                            <div class="card-step">2</div>
+                            <h3 class="card-title">🧠 Master AI Techniques</h3>
+                            <p class="card-description">
+                                Learn the prompt engineering secrets that turn basic AI interactions into powerful results.
+                            </p>
+                            <ul class="card-features">
+                                <li>Interactive prompt masterclass</li>
+                                <li>Copy-paste templates</li>
+                                <li>Real business examples</li>
+                                <li>Advanced techniques</li>
+                            </ul>
+                            <button class="card-cta">Learn Techniques →</button>
+                            <div class="card-badge">Popular</div>
+                        </div>
+
+                        <div class="journey-card" onclick="showSection('apply')">
+                            <div class="card-step">3</div>
+                            <h3 class="card-title">⚡ Apply & Practice</h3>
+                            <p class="card-description">
+                                Complete real-world AI missions, earn points, and compete with colleagues in our gamified platform.
+                            </p>
+                            <ul class="card-features">
+                                <li>Practical AI missions</li>
+                                <li>Points & leaderboards</li>
+                                <li>Team competitions</li>
+                                <li>Achievement badges</li>
+                            </ul>
+                            <button class="card-cta">Start Missions →</button>
+                        </div>
+
+                        <div class="journey-card" onclick="showSection('track')">
+                            <div class="card-step">4</div>
+                            <h3 class="card-title">📊 Track Your Success</h3>
+                            <p class="card-description">
+                                Monitor your time savings, calculate ROI, and see how your AI skills improve your productivity.
+                            </p>
+                            <ul class="card-features">
+                                <li>Personal ROI calculator</li>
+                                <li>Time savings tracking</li>
+                                <li>Progress visualization</li>
+                                <li>Success celebrations</li>
+                            </ul>
+                            <button class="card-cta">Track Progress →</button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h3 class="quick-actions-title">🚀 Ready to Get Started?</h3>
+                        <div class="action-buttons">
+                            <a href="#" class="action-btn" onclick="showSection('assess')">
+                                Take Assessment (5 min)
+                            </a>
+                            <a href="#" class="action-btn" onclick="showSection('learn')">
+                                Learn Prompt Techniques
+                            </a>
+                            <a href="ai-mastery-enterprise-landing.html" class="action-btn" target="_blank">
+                                Enterprise Solutions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessment Section -->
+            <div class="content-section" id="assess-section">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showSection('welcome')">Home</a>
+                    <span>→</span>
+                    <span>Assessment</span>
+                </div>
+                
+                <div class="user-state">
+                    <div class="state-icon">🎯</div>
+                    <div class="state-content">
+                        <div class="state-title">Step 1: Discover Your AI Potential</div>
+                        <div class="state-description">Take our assessment to understand your current AI skills and get personalized recommendations.</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">AI Readiness Assessment</h2>
+                <p class="section-description">
+                    This 5-minute assessment will reveal your AI interaction patterns, identify your strengths, 
+                    and show you exactly where to focus for maximum improvement.
+                </p>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <div style="background: #f7fafc; border-radius: 12px; padding: 30px; max-width: 500px; margin: 0 auto;">
+                        <h3 style="color: #2d3748; margin-bottom: 20px;">Choose Your Assessment:</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <button class="nav-btn" onclick="window.open('individual-ai-behavior-assessment.html', '_blank')" style="width: 100%;">
+                                👤 Personal AI Assessment
+                                <span style="font-size: 0.9rem; opacity: 0.8; margin-left: 10px;">(Individual)</span>
+                            </button>
+                            
+                            <button class="nav-btn secondary" onclick="window.open('ai-readiness-assessment.html', '_blank')" style="width: 100%;">
+                                🏢 Organizational Assessment
+                                <span style="font-size: 0.9rem; opacity: 0.8; margin-left: 10px;">(For Leaders)</span>
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top: 20px; font-size: 0.9rem; color: #4a5568;">
+                            💡 <strong>Tip:</strong> Start with the Personal Assessment to understand your own AI patterns, 
+                            then use the Organizational Assessment if you're evaluating your team.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="nav-btn secondary" onclick="showSection('welcome')">
+                        ⬅️ Back to Overview
+                    </button>
+                    <div style="text-align: center;">
+                        <span class="tooltip" data-tooltip="Complete assessment to unlock next step">
+                            <button class="nav-btn" onclick="showSection('learn')">
+                                Next: Learn Techniques ➡️
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learn Section -->
+            <div class="content-section" id="learn-section">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showSection('welcome')">Home</a>
+                    <span>→</span>
+                    <a href="#" onclick="showSection('assess')">Assessment</a>
+                    <span>→</span>
+                    <span>Learning</span>
+                </div>
+                
+                <div class="user-state">
+                    <div class="state-icon">🧠</div>
+                    <div class="state-content">
+                        <div class="state-title">Step 2: Master AI Techniques</div>
+                        <div class="state-description">Learn the proven prompt engineering techniques that turn basic AI interactions into powerful results.</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Prompt Engineering Masterclass</h2>
+                <p class="section-description">
+                    Most people get stuck after asking AI one question. Learn the secrets that AI experts use 
+                    to get 10x better results through strategic prompting and iterative conversations.
+                </p>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <div style="background: #f7fafc; border-radius: 12px; padding: 30px; max-width: 600px; margin: 0 auto;">
+                        <h3 style="color: #2d3748; margin-bottom: 20px;">🎓 Interactive Masterclass</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📚</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">4 Core Lessons</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Foundation, Techniques, Advanced, Practice</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📋</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">Copy-Paste Templates</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Ready-to-use prompts for any situation</p>
+                            </div>
+                        </div>
+                        
+                        <button class="nav-btn" onclick="window.open('prompt-engineering-masterclass.html', '_blank')" style="font-size: 1.2rem; padding: 18px 36px;">
+                            🚀 Start Masterclass
+                        </button>
+                        
+                        <div style="margin-top: 20px; font-size: 0.9rem; color: #4a5568;">
+                            ⏱️ <strong>Time:</strong> 45-60 minutes • <strong>Format:</strong> Interactive lessons with practice
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="nav-btn secondary" onclick="showSection('assess')">
+                        ⬅️ Back to Assessment
+                    </button>
+                    <button class="nav-btn" onclick="showSection('apply')">
+                        Next: Apply Skills ➡️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Apply Section -->
+            <div class="content-section" id="apply-section">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showSection('welcome')">Home</a>
+                    <span>→</span>
+                    <a href="#" onclick="showSection('assess')">Assessment</a>
+                    <span>→</span>
+                    <a href="#" onclick="showSection('learn')">Learning</a>
+                    <span>→</span>
+                    <span>Application</span>
+                </div>
+                
+                <div class="user-state">
+                    <div class="state-icon">⚡</div>
+                    <div class="state-content">
+                        <div class="state-title">Step 3: Apply & Practice</div>
+                        <div class="state-description">Complete real-world AI missions, earn points, and compete with colleagues in our gamified platform.</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">AI Mastery Challenge</h2>
+                <p class="section-description">
+                    Turn learning into action with gamified missions that involve real business applications. 
+                    Earn points, unlock badges, and climb the leaderboard as you master AI skills.
+                </p>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <div style="background: #f7fafc; border-radius: 12px; padding: 30px; max-width: 600px; margin: 0 auto;">
+                        <h3 style="color: #2d3748; margin-bottom: 20px;">🎮 Gamified Learning Platform</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🎯</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">Real Missions</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Practical AI projects for your actual work</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🏆</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">Points & Badges</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Earn rewards for every completion</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">👥</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">Team Competition</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Compete with colleagues</p>
+                            </div>
+                        </div>
+                        
+                        <button class="nav-btn" onclick="window.open('ai-mastery-challenge.html', '_blank')" style="font-size: 1.2rem; padding: 18px 36px;">
+                            🚀 Enter Challenge Platform
+                        </button>
+                        
+                        <div style="margin-top: 20px; font-size: 0.9rem; color: #4a5568;">
+                            🎯 <strong>Next Mission:</strong> AI Audit Challenge • <strong>Reward:</strong> 500 points
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="nav-btn secondary" onclick="showSection('learn')">
+                        ⬅️ Back to Learning
+                    </button>
+                    <button class="nav-btn" onclick="showSection('track')">
+                        Next: Track Progress ➡️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Track Section -->
+            <div class="content-section" id="track-section">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showSection('welcome')">Home</a>
+                    <span>→</span>
+                    <a href="#" onclick="showSection('assess')">Assessment</a>
+                    <span>→</span>
+                    <a href="#" onclick="showSection('learn')">Learning</a>
+                    <span>→</span>
+                    <a href="#" onclick="showSection('apply')">Application</a>
+                    <span>→</span>
+                    <span>Tracking</span>
+                </div>
+                
+                <div class="user-state">
+                    <div class="state-icon">📊</div>
+                    <div class="state-content">
+                        <div class="state-title">Step 4: Track Your Success</div>
+                        <div class="state-description">Monitor your time savings, calculate ROI, and see how your AI skills improve your productivity.</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Personal AI ROI Tracker</h2>
+                <p class="section-description">
+                    See exactly how much time and money you're saving with AI. Track your progress, 
+                    set goals, and celebrate your wins as you become more efficient.
+                </p>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <div style="background: #f7fafc; border-radius: 12px; padding: 30px; max-width: 600px; margin: 0 auto;">
+                        <h3 style="color: #2d3748; margin-bottom: 20px;">💰 ROI Dashboard</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">⏱️</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">Time Savings</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Track hours saved with AI</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">💰</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">Money Impact</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Calculate your ROI</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📈</div>
+                                <h4 style="color: #2d3748; margin-bottom: 10px;">Progress</h4>
+                                <p style="color: #4a5568; font-size: 0.9rem;">Visualize improvement</p>
+                            </div>
+                        </div>
+                        
+                        <button class="nav-btn" onclick="window.open('personal-ai-roi-tracker.html', '_blank')" style="font-size: 1.2rem; padding: 18px 36px;">
+                            📊 Open ROI Tracker
+                        </button>
+                        
+                        <div style="margin-top: 20px; font-size: 0.9rem; color: #4a5568;">
+                            💡 <strong>Tip:</strong> Log your AI activities daily to see your improvement over time
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="nav-btn secondary" onclick="showSection('apply')">
+                        ⬅️ Back to Application
+                    </button>
+                    <button class="nav-btn" onclick="showSection('welcome')">
+                        🏠 Return to Overview
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User progress tracking
+        let userProgress = {
+            assessment: false,
+            learning: false,
+            application: false,
+            tracking: false
+        };
+
+        // Show specific section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // Update navigation
+            updateNavigation(sectionName);
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Update navigation states
+        function updateNavigation(activeSection) {
+            document.querySelectorAll('.journey-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            document.getElementById('step-' + activeSection).classList.add('active');
+        }
+
+        // Update overall progress
+        function updateProgress() {
+            const completedSteps = Object.values(userProgress).filter(Boolean).length;
+            const totalSteps = Object.keys(userProgress).length;
+            const percentage = Math.round((completedSteps / totalSteps) * 100);
+            
+            document.getElementById('overall-progress').style.width = percentage + '%';
+            document.getElementById('progress-percentage').textContent = percentage + '% Complete';
+            
+            // Mark completed steps
+            Object.keys(userProgress).forEach(step => {
+                if (userProgress[step]) {
+                    const stepElement = document.getElementById('step-' + step);
+                    if (stepElement) {
+                        stepElement.classList.add('completed');
+                    }
+                }
+            });
+        }
+
+        // Simulate progress completion (in real app, this would be tracked via backend)
+        function markStepComplete(step) {
+            userProgress[step] = true;
+            updateProgress();
+            
+            // Show celebration
+            showCelebration(`🎉 ${step.charAt(0).toUpperCase() + step.slice(1)} completed!`);
+        }
+
+        // Show celebration message
+        function showCelebration(message) {
+            const celebration = document.createElement('div');
+            celebration.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+                animation: slideInRight 0.5s ease-out;
+            `;
+            celebration.textContent = message;
+            
+            document.body.appendChild(celebration);
+            
+            setTimeout(() => {
+                celebration.style.animation = 'slideOutRight 0.5s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(celebration);
+                }, 500);
+            }, 3000);
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // Check for completion states from localStorage
+            const stored = localStorage.getItem('aiMasteryProgress');
+            if (stored) {
+                userProgress = { ...userProgress, ...JSON.parse(stored) };
+                updateProgress();
+            }
+        });
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('aiMasteryProgress', JSON.stringify(userProgress));
+        }
+
+        // Listen for window messages from opened windows to track completion
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'stepCompleted') {
+                markStepComplete(event.data.step);
+                saveProgress();
+            }
+        });
+    </script>
+</body>
+</html>

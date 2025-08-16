@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Readiness Insights Dashboard - Aggregated Organizational Analytics</title>
+    <meta name="description" content="Anonymous aggregated insights from your team's AI readiness assessments. Understand patterns, identify opportunities, and track progress without compromising individual privacy.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px 60px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .header-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .privacy-notice {
+            background: rgba(72, 187, 120, 0.2);
+            border: 2px solid rgba(72, 187, 120, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 800px;
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .privacy-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .stat-trend {
+            font-size: 0.9rem;
+            background: rgba(72, 187, 120, 0.8);
+            padding: 5px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        /* Main Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* AI Readiness Distribution */
+        .readiness-chart {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .readiness-segment {
+            text-align: center;
+            padding: 20px 15px;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .readiness-segment:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .segment-beginner {
+            background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+            color: #c53030;
+        }
+
+        .segment-learning {
+            background: linear-gradient(135deg, #fef5e7 0%, #fbd38d 100%);
+            color: #d69e2e;
+        }
+
+        .segment-comfortable {
+            background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+            color: #2f855a;
+        }
+
+        .segment-advanced {
+            background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 100%);
+            color: #2b6cb0;
+        }
+
+        .segment-percentage {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .segment-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .segment-count {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Department Insights */
+        .department-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .dept-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .dept-card:hover {
+            background: #edf2f7;
+            transform: translateY(-2px);
+        }
+
+        .dept-name {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .dept-readiness {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .dept-readiness.high { color: #2f855a; }
+        .dept-readiness.medium { color: #d69e2e; }
+        .dept-readiness.low { color: #c53030; }
+
+        .dept-participants {
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        /* Barriers Analysis */
+        .barriers-list {
+            space-y: 15px;
+        }
+
+        .barrier-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .barrier-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .barrier-text {
+            font-weight: 600;
+            color: #2d3748;
+            flex: 1;
+        }
+
+        .barrier-percentage {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Recommendations */
+        .recommendations {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .recommendation-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommendation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .rec-priority {
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .rec-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .rec-description {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .rec-impact {
+            font-size: 0.9rem;
+            background: rgba(72, 187, 120, 0.8);
+            padding: 8px 15px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* Anonymous Insights */
+        .insight-quote {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-style: italic;
+            color: #4a5568;
+        }
+
+        .quote-metadata {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 10px;
+            font-style: normal;
+        }
+
+        /* Privacy Controls */
+        .privacy-controls {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .privacy-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .privacy-setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .privacy-setting:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .setting-description {
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: #cbd5e0;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #48bb78;
+        }
+
+        .toggle-knob {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active .toggle-knob {
+            transform: translateX(24px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .dashboard-panel {
+                padding: 25px 20px;
+            }
+            
+            .readiness-chart {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏢 AI Readiness Insights Dashboard</h1>
+            <p class="header-subtitle">Anonymous aggregated insights from your team's AI assessments</p>
+            
+            <div class="privacy-notice">
+                <div class="privacy-icon">🔒</div>
+                <div>
+                    <strong>Privacy First:</strong> All data is anonymized and aggregated. Individual responses cannot be traced back to specific employees. This dashboard shows patterns and trends to help improve organizational AI readiness while maintaining complete confidentiality.
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Impact Banner -->
+        <div style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; text-align: center;">
+            <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 15px;">💰 AI Adoption ROI Impact</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-top: 25px;">
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">$127,500</div>
+                    <div style="opacity: 0.9;">Monthly Savings Achieved</div>
+                    <div style="font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 8px; margin-top: 5px; display: inline-block;">↗️ +$23,400 vs last month</div>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">2,850</div>
+                    <div style="opacity: 0.9;">Hours Saved This Month</div>
+                    <div style="font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 8px; margin-top: 5px; display: inline-block;">⚡ 18.3 hrs per employee</div>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">$1.53M</div>
+                    <div style="opacity: 0.9;">Projected Annual ROI</div>
+                    <div style="font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 8px; margin-top: 5px; display: inline-block;">🎯 Based on current trends</div>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">340%</div>
+                    <div style="opacity: 0.9;">Efficiency Multiplier</div>
+                    <div style="font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 8px; margin-top: 5px; display: inline-block;">🚀 Tasks 3.4x faster</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <span class="stat-value">156</span>
+                <div class="stat-label">Total Participants</div>
+                <div class="stat-trend">↗️ +23 this week</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">67%</span>
+                <div class="stat-label">Average AI Readiness</div>
+                <div class="stat-trend">↗️ +12% vs last month</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">8.2/10</span>
+                <div class="stat-label">Curiosity Score</div>
+                <div class="stat-trend">↗️ +0.8 improvement</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">43%</span>
+                <div class="stat-label">Ready for Training</div>
+                <div class="stat-trend">🎯 Target: 60%</div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard-grid">
+            <!-- AI Readiness Distribution -->
+            <div class="dashboard-panel">
+                <h2 class="panel-title">📊 AI Readiness Distribution</h2>
+                
+                <div class="readiness-chart">
+                    <div class="readiness-segment segment-beginner">
+                        <div class="segment-percentage">23%</div>
+                        <div class="segment-label">AI Beginners</div>
+                        <div class="segment-count">36 employees</div>
+                    </div>
+                    <div class="readiness-segment segment-learning">
+                        <div class="segment-percentage">34%</div>
+                        <div class="segment-label">Learning</div>
+                        <div class="segment-count">53 employees</div>
+                    </div>
+                    <div class="readiness-segment segment-comfortable">
+                        <div class="segment-percentage">31%</div>
+                        <div class="segment-label">Comfortable</div>
+                        <div class="segment-count">48 employees</div>
+                    </div>
+                    <div class="readiness-segment segment-advanced">
+                        <div class="segment-percentage">12%</div>
+                        <div class="segment-label">Advanced</div>
+                        <div class="segment-count">19 employees</div>
+                    </div>
+                </div>
+
+                <div style="background: #f7fafc; border-radius: 12px; padding: 20px; margin-top: 20px;">
+                    <h4 style="color: #2d3748; margin-bottom: 10px;">📈 Key Insight</h4>
+                    <p style="color: #4a5568;">34% of your team is actively learning AI skills - this is 18% higher than industry average. Focus on moving the 23% of beginners into the learning category.</p>
+                </div>
+            </div>
+
+            <!-- Top Barriers -->
+            <div class="dashboard-panel">
+                <h2 class="panel-title">🚧 Most Common Barriers</h2>
+                
+                <div class="barriers-list">
+                    <div class="barrier-item">
+                        <div class="barrier-text">Don't know where to start</div>
+                        <div class="barrier-percentage">68%</div>
+                    </div>
+                    <div class="barrier-item">
+                        <div class="barrier-text">Worried about job security</div>
+                        <div class="barrier-percentage">45%</div>
+                    </div>
+                    <div class="barrier-item">
+                        <div class="barrier-text">No time for learning</div>
+                        <div class="barrier-percentage">52%</div>
+                    </div>
+                    <div class="barrier-item">
+                        <div class="barrier-text">Lack of company support</div>
+                        <div class="barrier-percentage">38%</div>
+                    </div>
+                    <div class="barrier-item">
+                        <div class="barrier-text">Technical complexity</div>
+                        <div class="barrier-percentage">41%</div>
+                    </div>
+                </div>
+
+                <div style="background: #fff5f5; border-left: 4px solid #f56565; border-radius: 8px; padding: 15px; margin-top: 20px;">
+                    <strong style="color: #c53030;">Action Required:</strong> 
+                    <span style="color: #4a5568;">Address the "don't know where to start" barrier with structured learning paths and mentorship programs.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Correlation Analysis -->
+        <div class="dashboard-panel" style="margin-bottom: 30px;">
+            <h2 class="panel-title">📈 Readiness vs ROI Correlation</h2>
+            
+            <div style="background: #f0fff4; border: 2px solid #48bb78; border-radius: 12px; padding: 25px; margin-bottom: 25px;">
+                <h3 style="color: #2f855a; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                    🎯 Key Finding: AI Readiness Drives Measurable ROI
+                </h3>
+                <p style="color: #4a5568; margin-bottom: 15px;">
+                    Departments with higher AI readiness scores are generating significantly more ROI. Here's the data:
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="background: white; border-radius: 8px; padding: 20px;">
+                        <div style="font-weight: 700; color: #2f855a; margin-bottom: 10px;">High Readiness Departments (70%+ score)</div>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: #2d3748; margin-bottom: 5px;">$23,400</div>
+                        <div style="color: #4a5568;">Average monthly savings per employee</div>
+                    </div>
+                    <div style="background: white; border-radius: 8px; padding: 20px;">
+                        <div style="font-weight: 700; color: #d69e2e; margin-bottom: 10px;">Medium Readiness Departments (50-69%)</div>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: #2d3748; margin-bottom: 5px;">$8,200</div>
+                        <div style="color: #4a5568;">Average monthly savings per employee</div>
+                    </div>
+                    <div style="background: white; border-radius: 8px; padding: 20px;">
+                        <div style="font-weight: 700; color: #c53030; margin-bottom: 10px;">Low Readiness Departments (<50%)</div>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: #2d3748; margin-bottom: 5px;">$1,100</div>
+                        <div style="color: #4a5568;">Average monthly savings per employee</div>
+                    </div>
+                </div>
+                <div style="background: rgba(102, 126, 234, 0.1); border-radius: 8px; padding: 15px; margin-top: 15px;">
+                    <strong style="color: #667eea;">💡 ROI Opportunity:</strong> 
+                    <span style="color: #4a5568;">Moving your 23% of beginners to "learning" level could add $312,000 in annual savings.</span>
+                </div>
+            </div>
+
+            <!-- Individual Department ROI Performance -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: #f7fafc; border-radius: 12px; padding: 20px; border-left: 4px solid #48bb78;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight: 700; color: #2d3748;">Marketing (78% readiness)</span>
+                        <span style="background: #48bb78; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem;">HIGH ROI</span>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #2f855a; margin-bottom: 5px;">$26,800/employee</div>
+                    <div style="color: #4a5568; font-size: 0.9rem;">Monthly savings • 23 employees</div>
+                </div>
+                
+                <div style="background: #f7fafc; border-radius: 12px; padding: 20px; border-left: 4px solid #48bb78;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight: 700; color: #2d3748;">IT (81% readiness)</span>
+                        <span style="background: #48bb78; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem;">HIGH ROI</span>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #2f855a; margin-bottom: 5px;">$31,200/employee</div>
+                    <div style="color: #4a5568; font-size: 0.9rem;">Monthly savings • 15 employees</div>
+                </div>
+                
+                <div style="background: #f7fafc; border-radius: 12px; padding: 20px; border-left: 4px solid #d69e2e;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight: 700; color: #2d3748;">Operations (58% readiness)</span>
+                        <span style="background: #d69e2e; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem;">MEDIUM ROI</span>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #d69e2e; margin-bottom: 5px;">$7,400/employee</div>
+                    <div style="color: #4a5568; font-size: 0.9rem;">Monthly savings • 27 employees</div>
+                </div>
+                
+                <div style="background: #f7fafc; border-radius: 12px; padding: 20px; border-left: 4px solid #c53030;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight: 700; color: #2d3748;">HR (45% readiness)</span>
+                        <span style="background: #c53030; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem;">OPPORTUNITY</span>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #c53030; margin-bottom: 5px;">$900/employee</div>
+                    <div style="color: #4a5568; font-size: 0.9rem;">Monthly savings • 12 employees</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Department Breakdown -->
+        <div class="dashboard-panel" style="margin-bottom: 30px;">
+            <h2 class="panel-title">🏢 Department AI Readiness</h2>
+            
+            <div class="department-grid">
+                <div class="dept-card">
+                    <div class="dept-name">Marketing</div>
+                    <div class="dept-readiness high">High Readiness (78%)</div>
+                    <div class="dept-participants">23 participants</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-name">Sales</div>
+                    <div class="dept-readiness high">High Readiness (72%)</div>
+                    <div class="dept-participants">31 participants</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-name">Customer Success</div>
+                    <div class="dept-readiness medium">Medium Readiness (64%)</div>
+                    <div class="dept-participants">18 participants</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-name">Operations</div>
+                    <div class="dept-readiness medium">Medium Readiness (58%)</div>
+                    <div class="dept-participants">27 participants</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-name">Finance</div>
+                    <div class="dept-readiness medium">Medium Readiness (61%)</div>
+                    <div class="dept-participants">19 participants</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-name">HR</div>
+                    <div class="dept-readiness low">Needs Support (45%)</div>
+                    <div class="dept-participants">12 participants</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-name">IT</div>
+                    <div class="dept-readiness high">High Readiness (81%)</div>
+                    <div class="dept-participants">15 participants</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-name">Legal</div>
+                    <div class="dept-readiness low">Needs Support (42%)</div>
+                    <div class="dept-participants">8 participants</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="dashboard-panel" style="margin-bottom: 30px;">
+            <h2 class="panel-title">💡 Priority Recommendations</h2>
+            
+            <div class="recommendations">
+                <div class="recommendation-card">
+                    <div class="rec-priority">HIGH PRIORITY</div>
+                    <div class="rec-title">Launch Beginner AI Workshop Series</div>
+                    <div class="rec-description">68% of respondents don't know where to start. Create a 4-week "AI Basics" program focusing on practical, hands-on learning with real business scenarios.</div>
+                    <div class="rec-impact">💰 Estimated Impact: 40% improvement in beginner readiness</div>
+                </div>
+                
+                <div class="recommendation-card">
+                    <div class="rec-priority">MEDIUM PRIORITY</div>
+                    <div class="rec-title">Implement AI Learning Time Policy</div>
+                    <div class="rec-description">52% cite "no time for learning" as a barrier. Consider implementing 2 hours per week of protected AI learning time.</div>
+                    <div class="rec-impact">⏰ Estimated Impact: 30% increase in participation</div>
+                </div>
+                
+                <div class="recommendation-card">
+                    <div class="rec-priority">HIGH PRIORITY</div>
+                    <div class="rec-title">Address Job Security Concerns</div>
+                    <div class="rec-description">45% worried about job security. Host transparent "AI + Human" sessions showing how AI enhances rather than replaces human work.</div>
+                    <div class="rec-impact">🤝 Estimated Impact: Reduce anxiety, increase engagement</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anonymous Insights -->
+        <div class="dashboard-panel" style="margin-bottom: 30px;">
+            <h2 class="panel-title">💬 Anonymous Employee Insights</h2>
+            
+            <div class="insight-quote">
+                "I wish we had more hands-on practice sessions. Reading about AI is different from actually using it in my daily work."
+                <div class="quote-metadata">— Marketing Department, 3+ years experience</div>
+            </div>
+            
+            <div class="insight-quote">
+                "The biggest barrier for me is not knowing which AI tools are approved for work use. Some clarity on company AI policy would help."
+                <div class="quote-metadata">— Operations Department, 5+ years experience</div>
+            </div>
+            
+            <div class="insight-quote">
+                "I'm excited about AI but concerned it might make my role obsolete. Would love to understand how to evolve my skills rather than be replaced."
+                <div class="quote-metadata">— Finance Department, 7+ years experience</div>
+            </div>
+            
+            <div class="insight-quote">
+                "I've been experimenting with ChatGPT for writing emails and it's amazing! Would love to learn advanced techniques and share with the team."
+                <div class="quote-metadata">— Sales Department, 2+ years experience</div>
+            </div>
+        </div>
+
+        <!-- Privacy Controls -->
+        <div class="privacy-controls">
+            <h2 class="privacy-title">🔒 Privacy & Data Controls</h2>
+            
+            <div class="privacy-setting">
+                <div class="setting-info">
+                    <div class="setting-label">Anonymous Data Collection</div>
+                    <div class="setting-description">All individual responses are anonymized before aggregation. No personal identifiers are stored.</div>
+                </div>
+                <div class="toggle-switch active">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <div class="privacy-setting">
+                <div class="setting-info">
+                    <div class="setting-label">Department-Level Insights</div>
+                    <div class="setting-description">Show aggregated data by department (minimum 5 responses required).</div>
+                </div>
+                <div class="toggle-switch active">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <div class="privacy-setting">
+                <div class="setting-info">
+                    <div class="setting-label">Anonymous Quote Sharing</div>
+                    <div class="setting-description">Share anonymized employee feedback to provide context for data trends.</div>
+                </div>
+                <div class="toggle-switch active">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <div class="privacy-setting">
+                <div class="setting-info">
+                    <div class="setting-label">Data Retention</div>
+                    <div class="setting-description">Automatically delete individual response data after 12 months (aggregated insights retained).</div>
+                </div>
+                <div class="toggle-switch active">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <div style="background: #f0fff4; border: 2px solid #48bb78; border-radius: 12px; padding: 20px; margin-top: 25px;">
+                <h4 style="color: #2f855a; margin-bottom: 10px;">🛡️ Privacy Commitment</h4>
+                <p style="color: #4a5568; margin-bottom: 15px;"><strong>We prioritize psychological safety:</strong></p>
+                <ul style="color: #4a5568; padding-left: 20px; line-height: 1.8;">
+                    <li>Individual responses are never shared with managers or leadership</li>
+                    <li>Department breakdowns only show when 5+ people participate</li>
+                    <li>All quotes are anonymized and cannot be traced to individuals</li>
+                    <li>Data is used solely for improving organizational AI readiness</li>
+                    <li>Employees can request their data to be excluded at any time</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Privacy toggle functionality
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // Interactive chart elements
+        document.querySelectorAll('.readiness-segment').forEach(segment => {
+            segment.addEventListener('click', function() {
+                const label = this.querySelector('.segment-label').textContent;
+                const percentage = this.querySelector('.segment-percentage').textContent;
+                const count = this.querySelector('.segment-count').textContent;
+                
+                alert(`${label}: ${percentage} of your team (${count})\n\nClick on any segment to drill down into specific recommendations for this group.`);
+            });
+        });
+
+        // Department card interactions
+        document.querySelectorAll('.dept-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const deptName = this.querySelector('.dept-name').textContent;
+                const readiness = this.querySelector('.dept-readiness').textContent;
+                const participants = this.querySelector('.dept-participants').textContent;
+                
+                alert(`${deptName} Department\n${readiness}\n${participants}\n\nClick to see specific recommendations for this department.`);
+            });
+        });
+
+        // Barrier item interactions
+        document.querySelectorAll('.barrier-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const barrier = this.querySelector('.barrier-text').textContent;
+                const percentage = this.querySelector('.barrier-percentage').textContent;
+                
+                const recommendations = {
+                    "Don't know where to start": "Recommendation: Create structured learning paths with clear milestones and practical exercises.",
+                    "Worried about job security": "Recommendation: Host 'AI Augmentation' workshops showing how AI enhances human capabilities.",
+                    "No time for learning": "Recommendation: Implement protected learning time policy (2 hours/week).",
+                    "Lack of company support": "Recommendation: Establish AI Champions program with leadership sponsorship.",
+                    "Technical complexity": "Recommendation: Start with user-friendly AI tools and provide hands-on training."
+                };
+                
+                alert(`Barrier: ${barrier}\nAffects: ${percentage} of employees\n\n${recommendations[barrier] || 'Click for detailed recommendations on addressing this barrier.'}`);
+            });
+        });
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('AI Insights Dashboard loaded - Privacy-first aggregated analytics');
+        });
+    </script>
+</body>
+</html>

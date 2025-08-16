@@ -1,0 +1,74 @@
+# System Files
+.DS_Store
+.CFUserTextEncoding
+.zsh_history
+.zsh_sessions/
+.lesshst
+.viminfo
+.gitconfig
+.zprofile
+.npm/
+.ssh/
+.cups/
+.docker/
+.claude.json
+.claude/
+.vscode/
+Thumbs.db
+
+# Operating System
+.Trash/
+Applications/
+Creative Cloud Files/
+Desktop/
+Documents/
+Downloads/
+Library/
+Movies/
+Music/
+Pictures/
+Public/
+Sites/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+.next/
+out/
+build/
+dist/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+Untitled.txt
+*.rtf
+*.docx
+*.pptx
+*.zip
+
+# Specific exclusions
+declaration.txt
+csv.rtf
+nda-analyzer-tool.zip
+"~$ - Press Release WO.docx"
+Indochino.pptx

@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering Masterclass - Transform Your AI Results</title>
+    <meta name="description" content="Learn the proven techniques that turn basic ChatGPT interactions into powerful business solutions. Interactive lessons with real examples you can copy and paste.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .masterclass-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .header-tagline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .header-description {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .progress-overview {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .progress-step {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-step.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .progress-step.completed {
+            background: rgba(72, 187, 120, 0.8);
+        }
+
+        /* Lesson Container */
+        .lesson-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .lesson-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .lesson-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .lesson-subtitle {
+            font-size: 1.2rem;
+            color: #4a5568;
+            margin-bottom: 30px;
+        }
+
+        /* Before/After Examples */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .comparison-box {
+            padding: 30px;
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .comparison-box.before {
+            background: #fed7d7;
+            border: 2px solid #f56565;
+        }
+
+        .comparison-box.after {
+            background: #c6f6d5;
+            border: 2px solid #48bb78;
+        }
+
+        .comparison-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-box.before .comparison-label {
+            background: #f56565;
+            color: white;
+        }
+
+        .comparison-box.after .comparison-label {
+            background: #48bb78;
+            color: white;
+        }
+
+        .prompt-example {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .prompt-example.good {
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .prompt-example.bad {
+            border-color: #f56565;
+            background: #fffafa;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        /* Technique Cards */
+        .technique-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .technique-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .technique-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .technique-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .technique-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .technique-description {
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .technique-example {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 0.9rem;
+            color: #2d3748;
+        }
+
+        /* Interactive Practice */
+        .practice-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .practice-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .practice-challenge {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .challenge-scenario {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .prompt-builder {
+            background: white;
+            color: #2d3748;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .builder-section {
+            margin-bottom: 20px;
+        }
+
+        .builder-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        .builder-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 40px;
+        }
+
+        .builder-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .generated-prompt {
+            background: #f7fafc;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        /* Navigation */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .completion-badge {
+            background: #48bb78;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .masterclass-container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .lesson-container {
+                padding: 30px 20px;
+            }
+            
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-overview {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .lesson-nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* Special animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="masterclass-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 Prompt Engineering Masterclass</h1>
+            <div class="header-tagline">Transform Your AI Results</div>
+            <p class="header-description">
+                Learn the proven techniques that turn basic ChatGPT interactions into powerful business solutions. 
+                Go from frustrated "AI doesn't work" to "AI is my secret weapon."
+            </p>
+            
+            <div class="progress-overview">
+                <div class="progress-step active" onclick="goToLesson(1)">
+                    <span>1. Foundation</span>
+                </div>
+                <div class="progress-step" onclick="goToLesson(2)">
+                    <span>2. Techniques</span>
+                </div>
+                <div class="progress-step" onclick="goToLesson(3)">
+                    <span>3. Advanced</span>
+                </div>
+                <div class="progress-step" onclick="goToLesson(4)">
+                    <span>4. Practice</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lesson 1: Foundation -->
+        <div id="lesson-1" class="lesson-container fade-in">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 1</div>
+                <h2 class="lesson-title">The Foundation Problem</h2>
+                <p class="lesson-subtitle">Why 90% of people get terrible AI results (and how to fix it)</p>
+            </div>
+
+            <div class="comparison-container">
+                <div class="comparison-box before">
+                    <div class="comparison-label">❌ What Most People Do</div>
+                    <div class="prompt-example bad">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                        Write a marketing email
+                    </div>
+                    <p><strong>Result:</strong> Generic, boring email that could be for any company selling anything. Sounds like it was written by AI.</p>
+                </div>
+                
+                <div class="comparison-box after">
+                    <div class="comparison-label">✅ What AI Experts Do</div>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                        You are a direct-response copywriter with 15 years of experience in SaaS marketing. 
+
+Write a marketing email for our project management software targeting overwhelmed small business owners who are currently using spreadsheets to manage their projects.
+
+Context:
+- Our software reduces project chaos by 80%
+- Target audience: 10-50 employee companies
+- Pain point: Teams miss deadlines, lose track of tasks, clients get frustrated
+- Our unique benefit: Simplicity - setup in 5 minutes, no training needed
+
+Tone: Conversational, empathetic, solution-focused
+Length: 150-200 words
+Include: Clear subject line, specific benefit, soft call-to-action
+
+Make it feel like it's written by a human who genuinely understands their frustration.
+                    </div>
+                    <p><strong>Result:</strong> Compelling, specific email that speaks directly to the target audience's pain points and gets responses.</p>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.8rem; margin: 40px 0 20px; color: #2d3748;">🧠 The 4 Pillars of Effective Prompting</h3>
+            
+            <div class="technique-grid">
+                <div class="technique-card">
+                    <span class="technique-icon">🎭</span>
+                    <h4 class="technique-title">1. Role & Persona</h4>
+                    <p class="technique-description">Tell AI exactly who it should be. Expert consultant? Creative director? Data analyst?</p>
+                    <div class="technique-example">
+                        "You are a senior business consultant with 20 years of experience in retail operations..."
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🎯</span>
+                    <h4 class="technique-title">2. Context & Constraints</h4>
+                    <p class="technique-description">Provide specific background, limitations, and parameters for the task.</p>
+                    <div class="technique-example">
+                        "Our target audience is tech-savvy millennials. Budget: $50K. Deadline: 2 weeks. Must comply with GDPR..."
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">📝</span>
+                    <h4 class="technique-title">3. Task & Format</h4>
+                    <p class="technique-description">Be crystal clear about what you want and exactly how you want it delivered.</p>
+                    <div class="technique-example">
+                        "Create a 5-point bulleted list with specific actionable steps. Each point should be 1-2 sentences..."
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🎨</span>
+                    <h4 class="technique-title">4. Tone & Style</h4>
+                    <p class="technique-description">Specify the voice, feeling, and personality you want in the output.</p>
+                    <div class="technique-example">
+                        "Tone: Professional but warm, like a trusted advisor. Avoid jargon. Write like you're explaining to a smart friend..."
+                    </div>
+                </div>
+            </div>
+
+            <div class="practice-section">
+                <h3 class="practice-title">🛠️ Quick Practice: Transform This Bad Prompt</h3>
+                <div class="practice-challenge">
+                    <div class="challenge-scenario">
+                        Bad Prompt: "Help me with social media"
+                    </div>
+                    <p>Using the 4 pillars, how would you improve this? Think about what's missing...</p>
+                    
+                    <div style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                        <strong>Hint:</strong> What role should AI play? What's your business? What specific help do you need? What's your style?
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn" disabled>
+                    ⬅️ Previous
+                </button>
+                <div class="completion-badge">
+                    <span>✓</span>
+                    <span>Foundation Complete</span>
+                </div>
+                <button class="nav-btn" onclick="goToLesson(2)">
+                    Next: Core Techniques ➡️
+                </button>
+            </div>
+        </div>
+
+        <!-- Lesson 2: Core Techniques -->
+        <div id="lesson-2" class="lesson-container fade-in" style="display: none;">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 2</div>
+                <h2 class="lesson-title">5 Game-Changing Techniques</h2>
+                <p class="lesson-subtitle">Copy-paste templates that instantly improve your results</p>
+            </div>
+
+            <div class="technique-grid">
+                <div class="technique-card">
+                    <span class="technique-icon">🎭</span>
+                    <h4 class="technique-title">1. Role Playing</h4>
+                    <p class="technique-description">Make AI act as different experts to get specialized insights.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+You are [SPECIFIC EXPERT ROLE]. 
+
+[YOUR REQUEST]
+
+Respond as this expert would, using their knowledge, perspective, and communication style.
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🔄</span>
+                    <h4 class="technique-title">2. Chain of Thought</h4>
+                    <p class="technique-description">Ask AI to show its reasoning process for better, more accurate results.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+[YOUR QUESTION OR REQUEST]
+
+Think through this step-by-step:
+1. First, consider...
+2. Then, analyze...
+3. Finally, conclude...
+
+Show your reasoning for each step.
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">📚</span>
+                    <h4 class="technique-title">3. Few-Shot Examples</h4>
+                    <p class="technique-description">Give AI examples of what you want to get consistent, high-quality outputs.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+I need you to [TASK]. Here are examples of what I want:
+
+Example 1: [GOOD EXAMPLE]
+Example 2: [ANOTHER GOOD EXAMPLE]
+
+Now create something similar for: [YOUR SPECIFIC REQUEST]
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">😈</span>
+                    <h4 class="technique-title">4. Devil's Advocate</h4>
+                    <p class="technique-description">Get AI to challenge your ideas and find weaknesses you missed.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+I'm considering [YOUR IDEA/PLAN]. 
+
+Play devil's advocate: What could go wrong? What am I not considering? What are the potential downsides?
+
+Be brutally honest and help me strengthen this idea.
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🎯</span>
+                    <h4 class="technique-title">5. Iterative Refinement</h4>
+                    <p class="technique-description">Start broad, then narrow down with follow-up prompts for precision.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+Round 1: [BROAD REQUEST]
+
+Round 2: "That's good, now make it more [SPECIFIC ADJUSTMENT]"
+
+Round 3: "Perfect, now adapt it for [SPECIFIC CONTEXT]"
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🔍</span>
+                    <h4 class="technique-title">Bonus: The 5-Why Technique</h4>
+                    <p class="technique-description">Dig deeper into any AI response by asking "why" five times.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+[AI gives you an answer]
+
+You: "Why is that the case?"
+[AI explains]
+
+You: "Why does that happen?"
+[Keep going 5 times for deep insights]
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.8rem; margin: 40px 0 20px; color: #2d3748;">🚀 Real Business Example</h3>
+            
+            <div class="comparison-container">
+                <div class="comparison-box before">
+                    <div class="comparison-label">❌ Basic Approach</div>
+                    <div class="prompt-example bad">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+                        Help me improve our customer service
+                    </div>
+                </div>
+                
+                <div class="comparison-box after">
+                    <div class="comparison-label">✅ Expert Approach</div>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+You are a customer experience consultant who has helped 100+ SaaS companies reduce churn and increase satisfaction.
+
+Our situation:
+- B2B software company, 500 customers
+- Current response time: 4 hours average
+- Customer satisfaction: 7.2/10
+- Main complaints: slow responses, generic answers
+- Team: 3 support agents, limited budget
+
+Analyze this step-by-step:
+1. What are the top 3 root causes of our issues?
+2. What's the highest-impact improvement we could make with minimal budget?
+3. How would you prioritize improvements over the next 90 days?
+
+Give specific, actionable recommendations with expected outcomes.
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn" onclick="goToLesson(1)">
+                    ⬅️ Back to Foundation
+                </button>
+                <div class="completion-badge">
+                    <span>✓</span>
+                    <span>Techniques Mastered</span>
+                </div>
+                <button class="nav-btn" onclick="goToLesson(3)">
+                    Next: Advanced Strategies ➡️
+                </button>
+            </div>
+        </div>
+
+        <!-- Lesson 3: Advanced Strategies -->
+        <div id="lesson-3" class="lesson-container fade-in" style="display: none;">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 3</div>
+                <h2 class="lesson-title">Advanced Prompt Engineering</h2>
+                <p class="lesson-subtitle">Power-user techniques for complex business challenges</p>
+            </div>
+
+            <h3 style="font-size: 1.8rem; margin: 40px 0 20px; color: #2d3748;">🧩 Multi-Step Prompt Strategies</h3>
+            
+            <div class="technique-grid">
+                <div class="technique-card">
+                    <span class="technique-icon">🎪</span>
+                    <h4 class="technique-title">The Perspective Circus</h4>
+                    <p class="technique-description">Get multiple expert viewpoints on the same problem.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+I need to solve [PROBLEM]. Give me perspectives from:
+
+1. A conservative risk-averse executive
+2. An innovative startup founder
+3. A data-driven analyst
+4. A customer experience expert
+
+What would each say? Where do they agree/disagree?
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🏗️</span>
+                    <h4 class="technique-title">The Building Blocks Method</h4>
+                    <p class="technique-description">Break complex tasks into smaller, manageable pieces.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+I need to [COMPLEX TASK]. Let's break this down:
+
+Step 1: Help me outline the major components
+Step 2: I'll ask you to detail each component
+Step 3: We'll put it all together
+Step 4: We'll review and refine
+
+Start with Step 1: What are the major components?
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🎲</span>
+                    <h4 class="technique-title">The Scenario Planner</h4>
+                    <p class="technique-description">Explore different "what if" scenarios to prepare for uncertainty.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+I'm planning [YOUR INITIATIVE]. Help me scenario plan:
+
+Best case scenario: Everything goes perfectly
+Most likely scenario: Normal challenges occur
+Worst case scenario: Major obstacles arise
+
+For each scenario:
+1. What would happen?
+2. How should I prepare?
+3. What early warning signs should I watch for?
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">🔬</span>
+                    <h4 class="technique-title">The Research Assistant</h4>
+                    <p class="technique-description">Turn AI into your personal research and analysis team.</p>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+Act as my research assistant for [TOPIC].
+
+Phase 1: Help me identify the key questions I should be asking
+Phase 2: Suggest research approaches and sources
+Phase 3: Help me analyze and synthesize findings
+Phase 4: Draw actionable conclusions
+
+Let's start with Phase 1: What key questions should I explore?
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.8rem; margin: 40px 0 20px; color: #2d3748;">💼 Business-Specific Templates</h3>
+            
+            <div class="comparison-container">
+                <div class="comparison-box after">
+                    <div class="comparison-label">📊 Strategy & Planning</div>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+You are a strategic planning consultant. I need to [STRATEGIC GOAL].
+
+Context:
+- Industry: [YOUR INDUSTRY]
+- Company size: [SIZE]
+- Current challenge: [CHALLENGE]
+- Resources available: [RESOURCES]
+- Timeline: [TIMELINE]
+
+Create a strategic framework with:
+1. Situation analysis
+2. 3 strategic options
+3. Implementation roadmap
+4. Success metrics
+5. Risk mitigation plan
+
+Make it actionable and specific to our context.
+                    </div>
+                </div>
+                
+                <div class="comparison-box after">
+                    <div class="comparison-label">🎯 Marketing & Sales</div>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+You are a conversion optimization expert. Help me improve [SPECIFIC MARKETING GOAL].
+
+Our situation:
+- Target audience: [AUDIENCE]
+- Current conversion rate: [RATE]
+- Main objections: [OBJECTIONS]
+- Competitive advantage: [ADVANTAGE]
+
+Analyze and recommend:
+1. Message optimization
+2. Channel strategy
+3. Content improvements
+4. Testing priorities
+
+Focus on high-impact, quick-win improvements.
+                    </div>
+                </div>
+            </div>
+
+            <div class="practice-section">
+                <h3 class="practice-title">🧠 Advanced Challenge</h3>
+                <div class="practice-challenge">
+                    <div class="challenge-scenario">
+                        Scenario: Your company needs to decide whether to expand internationally. There are multiple countries to consider, various market entry strategies, and significant risks and opportunities.
+                    </div>
+                    <p>Create a multi-step prompt strategy to thoroughly analyze this decision:</p>
+                    
+                    <div style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                        <strong>Think about:</strong> What perspectives do you need? How would you break down the analysis? What scenarios should you plan for?
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn" onclick="goToLesson(2)">
+                    ⬅️ Back to Techniques
+                </button>
+                <div class="completion-badge">
+                    <span>✓</span>
+                    <span>Advanced Mastered</span>
+                </div>
+                <button class="nav-btn" onclick="goToLesson(4)">
+                    Next: Practice Lab ➡️
+                </button>
+            </div>
+        </div>
+
+        <!-- Lesson 4: Interactive Practice -->
+        <div id="lesson-4" class="lesson-container fade-in" style="display: none;">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 4</div>
+                <h2 class="lesson-title">Interactive Practice Lab</h2>
+                <p class="lesson-subtitle">Build your own high-performance prompts</p>
+            </div>
+
+            <div class="practice-section">
+                <h3 class="practice-title">🛠️ Prompt Builder Workshop</h3>
+                
+                <div class="practice-challenge">
+                    <div class="challenge-scenario">
+                        Choose your scenario:
+                        <select id="scenario-select" style="margin-left: 10px; padding: 8px; border-radius: 6px; border: 1px solid #ccc;" onchange="updateScenario()">
+                            <option value="email">Write a compelling sales email</option>
+                            <option value="strategy">Develop a business strategy</option>
+                            <option value="content">Create engaging content</option>
+                            <option value="analysis">Analyze a business problem</option>
+                            <option value="custom">Custom scenario</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="prompt-builder">
+                    <div class="builder-section">
+                        <div class="builder-label">1. 🎭 Define the AI's Role & Expertise</div>
+                        <textarea id="role-input" class="builder-input" placeholder="You are a [specific expert role] with [experience/expertise]..."></textarea>
+                    </div>
+                    
+                    <div class="builder-section">
+                        <div class="builder-label">2. 🎯 Provide Context & Background</div>
+                        <textarea id="context-input" class="builder-input" placeholder="Our situation: [company/industry/challenge/audience]..."></textarea>
+                    </div>
+                    
+                    <div class="builder-section">
+                        <div class="builder-label">3. 📝 Specify the Task & Deliverable</div>
+                        <textarea id="task-input" class="builder-input" placeholder="Create/analyze/develop [specific deliverable] that [specific outcome]..."></textarea>
+                    </div>
+                    
+                    <div class="builder-section">
+                        <div class="builder-label">4. 🎨 Define Tone, Style & Format</div>
+                        <textarea id="style-input" class="builder-input" placeholder="Tone: [professional/casual/urgent], Format: [bullets/paragraphs/structure], Style: [specific requirements]..."></textarea>
+                    </div>
+                    
+                    <div class="builder-section">
+                        <div class="builder-label">5. ⚙️ Add Constraints & Requirements</div>
+                        <textarea id="constraints-input" class="builder-input" placeholder="Requirements: [length/deadline/compliance], Constraints: [budget/resources/limitations]..."></textarea>
+                    </div>
+                    
+                    <button onclick="generatePrompt()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                        🚀 Generate My Optimized Prompt
+                    </button>
+                    
+                    <div id="generated-output" class="generated-prompt" style="display: none;"></div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.8rem; margin: 40px 0 20px; color: #2d3748;">📚 Your Prompt Library</h3>
+            <p style="color: #4a5568; margin-bottom: 30px;">Save these proven templates for instant access:</p>
+            
+            <div class="technique-grid">
+                <div class="technique-card">
+                    <span class="technique-icon">📧</span>
+                    <h4 class="technique-title">Email Master Template</h4>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+You are a direct-response copywriter with expertise in [INDUSTRY].
+
+Write a [EMAIL TYPE] for [TARGET AUDIENCE] who [CURRENT SITUATION/PAIN].
+
+Context:
+- Company: [COMPANY]
+- Product/Service: [OFFERING]
+- Key benefit: [MAIN BENEFIT]
+- Audience pain: [SPECIFIC PAIN]
+- Goal: [CONVERSION GOAL]
+
+Email requirements:
+- Subject line that gets opened
+- Hook that grabs attention in first line
+- Clear value proposition
+- Specific call-to-action
+- Length: [WORD COUNT]
+- Tone: [TONE]
+
+Make it feel personal and conversational.
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">💡</span>
+                    <h4 class="technique-title">Problem-Solving Template</h4>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+You are a business consultant specializing in [RELEVANT AREA].
+
+I'm facing this challenge: [PROBLEM DESCRIPTION]
+
+Context:
+- Industry: [INDUSTRY]
+- Company size: [SIZE]
+- Current attempts: [WHAT YOU'VE TRIED]
+- Resources: [AVAILABLE RESOURCES]
+- Timeline: [DEADLINE]
+
+Analyze this step-by-step:
+1. Root cause analysis
+2. 3 potential solutions with pros/cons
+3. Recommended approach with reasoning
+4. Implementation steps
+5. Success metrics
+
+Be specific and actionable.
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <span class="technique-icon">📊</span>
+                    <h4 class="technique-title">Content Creation Template</h4>
+                    <div class="prompt-example good">
+                        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+You are a content strategist who creates engaging [CONTENT TYPE] for [INDUSTRY].
+
+Create [SPECIFIC CONTENT] about [TOPIC] for [TARGET AUDIENCE].
+
+Context:
+- Audience: [DETAILED AUDIENCE]
+- Goal: [CONTENT OBJECTIVE]
+- Key message: [MAIN POINT]
+- Tone: [VOICE/PERSONALITY]
+- Length: [WORD/TIME LIMIT]
+- Format: [STRUCTURE REQUIREMENTS]
+
+Include:
+- Attention-grabbing opening
+- Clear value for audience
+- Actionable insights
+- Compelling conclusion
+
+Make it [SPECIFIC STYLE REQUIREMENTS].
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn" onclick="goToLesson(3)">
+                    ⬅️ Back to Advanced
+                </button>
+                <div class="completion-badge">
+                    <span>🎓</span>
+                    <span>Masterclass Complete!</span>
+                </div>
+                <button class="nav-btn" onclick="window.open('ai-mastery-challenge.html', '_blank')">
+                    Start AI Missions ➡️
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLesson = 1;
+        const completedLessons = new Set();
+
+        // Navigate between lessons
+        function goToLesson(lessonNumber) {
+            // Hide current lesson
+            document.getElementById(`lesson-${currentLesson}`).style.display = 'none';
+            
+            // Show new lesson
+            document.getElementById(`lesson-${lessonNumber}`).style.display = 'block';
+            
+            // Update progress
+            if (currentLesson !== lessonNumber) {
+                completedLessons.add(currentLesson);
+            }
+            currentLesson = lessonNumber;
+            
+            updateProgress();
+        }
+
+        // Update progress indicators
+        function updateProgress() {
+            const progressSteps = document.querySelectorAll('.progress-step');
+            progressSteps.forEach((step, index) => {
+                const lessonNum = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (lessonNum === currentLesson) {
+                    step.classList.add('active');
+                } else if (completedLessons.has(lessonNum)) {
+                    step.classList.add('completed');
+                }
+            });
+        }
+
+        // Copy prompt to clipboard
+        function copyPrompt(button) {
+            const promptText = button.parentElement.textContent.replace('Copy', '').trim();
+            
+            navigator.clipboard.writeText(promptText).then(function() {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#48bb78';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#667eea';
+                }, 2000);
+            });
+        }
+
+        // Scenario templates for prompt builder
+        const scenarioTemplates = {
+            email: {
+                role: "You are a direct-response email copywriter with 10+ years of experience in B2B sales.",
+                context: "Our company sells [PRODUCT/SERVICE] to [TARGET AUDIENCE]. Our main value proposition is [VALUE PROP].",
+                task: "Write a compelling sales email that gets prospects to [DESIRED ACTION].",
+                style: "Tone: Professional but personable, like a trusted advisor. Length: 150-200 words.",
+                constraints: "Must include clear subject line, personal hook, specific benefit, and soft call-to-action."
+            },
+            strategy: {
+                role: "You are a strategic business consultant with expertise in [INDUSTRY] and organizational development.",
+                context: "Our company is facing [CHALLENGE] and needs to [STRATEGIC GOAL] within [TIMEFRAME].",
+                task: "Develop a comprehensive strategy with specific action steps and success metrics.",
+                style: "Tone: Analytical and authoritative. Format: Structured with clear sections and bullet points.",
+                constraints: "Must be actionable with current resources and include risk mitigation strategies."
+            },
+            content: {
+                role: "You are a content strategist who creates engaging, valuable content for [TARGET AUDIENCE].",
+                context: "Our audience struggles with [PAIN POINT] and is looking for [SOLUTION]. Our expertise is in [AREA].",
+                task: "Create [CONTENT TYPE] that educates, engages, and builds trust with our audience.",
+                style: "Tone: [BRAND VOICE]. Format: Easy to scan with headers, bullets, and actionable insights.",
+                constraints: "Length: [WORD COUNT]. Must provide genuine value and include a subtle call-to-action."
+            },
+            analysis: {
+                role: "You are a business analyst with deep expertise in problem-solving and data interpretation.",
+                context: "We're experiencing [PROBLEM/SITUATION] and need to understand the root causes and solutions.",
+                task: "Analyze the situation and provide actionable recommendations with supporting reasoning.",
+                style: "Tone: Objective and analytical. Format: Structured analysis with clear conclusions.",
+                constraints: "Must include data-driven insights where possible and consider resource limitations."
+            }
+        };
+
+        // Update scenario in prompt builder
+        function updateScenario() {
+            const scenario = document.getElementById('scenario-select').value;
+            if (scenario === 'custom') return;
+            
+            const template = scenarioTemplates[scenario];
+            if (template) {
+                document.getElementById('role-input').value = template.role;
+                document.getElementById('context-input').value = template.context;
+                document.getElementById('task-input').value = template.task;
+                document.getElementById('style-input').value = template.style;
+                document.getElementById('constraints-input').value = template.constraints;
+            }
+        }
+
+        // Generate optimized prompt
+        function generatePrompt() {
+            const role = document.getElementById('role-input').value;
+            const context = document.getElementById('context-input').value;
+            const task = document.getElementById('task-input').value;
+            const style = document.getElementById('style-input').value;
+            const constraints = document.getElementById('constraints-input').value;
+
+            let prompt = '';
+            
+            if (role) prompt += role + '\n\n';
+            if (context) prompt += 'Context:\n' + context + '\n\n';
+            if (task) prompt += 'Task:\n' + task + '\n\n';
+            if (style) prompt += 'Style & Format:\n' + style + '\n\n';
+            if (constraints) prompt += 'Requirements:\n' + constraints + '\n\n';
+            
+            prompt += 'Provide a high-quality response that meets all the specified requirements.';
+
+            const output = document.getElementById('generated-output');
+            output.textContent = prompt;
+            output.style.display = 'block';
+            
+            // Add copy button to generated prompt
+            if (!output.querySelector('.copy-btn')) {
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.textContent = 'Copy';
+                copyBtn.onclick = () => copyPrompt(copyBtn);
+                output.style.position = 'relative';
+                output.appendChild(copyBtn);
+            }
+        }
+
+        // Initialize with first lesson
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // Load first scenario template
+            updateScenario();
+        });
+    </script>
+</body>
+</html>

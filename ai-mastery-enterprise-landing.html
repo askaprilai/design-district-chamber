@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mastery Challenge™ for Enterprise - Transform Your Organization with AI</title>
+    <meta name="description" content="The only AI adoption platform that combines diagnostic assessment, personalized learning paths, and gamified real-world application. Accelerate your team's AI transformation.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .cta-primary, .cta-secondary {
+            padding: 18px 36px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cta-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid white;
+        }
+
+        .cta-secondary:hover {
+            background: #f7fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .platform-preview {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .preview-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .preview-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .preview-progress {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .progress-item {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            border-radius: 4px;
+        }
+
+        .preview-missions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .mission-mini {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+        }
+
+        /* Value Proposition Section */
+        .value-prop {
+            padding: 100px 0;
+            background: #f7fafc;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: #4a5568;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            border-color: #667eea;
+        }
+
+        .value-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .value-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .value-description {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step::after {
+            content: '→';
+            position: absolute;
+            top: 50px;
+            right: -20px;
+            font-size: 2rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .step-description {
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        /* ROI Calculator Section */
+        .roi-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .roi-calculator {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 60px 40px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .calculator-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .calculator-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .input-field {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            color: #2d3748;
+        }
+
+        .roi-results {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .roi-number {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .roi-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background: #f7fafc;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .author-title {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+        }
+
+        .pricing-card.popular::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-plan {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .pricing-period {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 40px;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        .pricing-cta {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-cta.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .pricing-cta.secondary {
+            background: #f7fafc;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .pricing-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .final-cta-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .final-cta-description {
+            font-size: 1.3rem;
+            margin-bottom: 50px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .final-cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .footer-description {
+            color: #a0aec0;
+            line-height: 1.6;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #4a5568;
+            padding-top: 30px;
+            text-align: center;
+            color: #a0aec0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .value-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .steps-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .step::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-inputs {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
+            
+            .final-cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>AI Mastery Challenge™</h1>
+                    <div class="hero-tagline">Assess. Apply. Accelerate.</div>
+                    <p class="hero-description">
+                        The only AI adoption platform that combines diagnostic assessment, personalized learning paths, 
+                        and gamified real-world application. Transform your organization from AI curious to AI champion.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="#get-started" class="cta-primary">
+                            🚀 Start Free Assessment
+                        </a>
+                        <a href="#pricing" class="cta-secondary">
+                            💰 See Pricing
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Companies Transformed</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">85%</span>
+                            <span class="stat-label">Faster AI Adoption</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">3.2x</span>
+                            <span class="stat-label">ROI in 6 Months</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="platform-preview">
+                        <div class="preview-screen">
+                            <div class="preview-header">
+                                <span>AI Readiness Score</span>
+                                <span class="preview-score">78%</span>
+                            </div>
+                            <div class="preview-progress">
+                                <div class="progress-item">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-fill" style="width: 50%"></div>
+                                </div>
+                            </div>
+                            <div class="preview-missions">
+                                <div class="mission-mini">🎯 AI Strategy<br>+500 pts</div>
+                                <div class="mission-mini">💬 Prompt Master<br>+350 pts</div>
+                                <div class="mission-mini">👥 Team Training<br>+600 pts</div>
+                                <div class="mission-mini">⚙️ Automation<br>+1000 pts</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
+                            Real platform preview
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition Section -->
+    <section class="value-prop">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why AI Mastery Challenge™?</h2>
+                <p class="section-subtitle">
+                    We're the only solution that turns AI adoption into an engaging, measurable, 
+                    and practical journey for your entire organization.
+                </p>
+            </div>
+            <div class="value-grid">
+                <div class="value-card">
+                    <span class="value-icon">🎯</span>
+                    <h3 class="value-title">Diagnostic-Driven</h3>
+                    <p class="value-description">
+                        Start with our comprehensive AI readiness assessment. Get instant insights into 
+                        your organization's strengths, gaps, and personalized roadmap.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🧠</span>
+                    <h3 class="value-title">AI-Generated Learning</h3>
+                    <p class="value-description">
+                        Every learning path is automatically tailored by AI based on your assessment results. 
+                        No generic courses—just what your team needs.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🎮</span>
+                    <h3 class="value-title">Gamified Application</h3>
+                    <p class="value-description">
+                        Points, badges, leaderboards, and real-world missions make learning addictive. 
+                        Your team will compete to become AI champions.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🚀</span>
+                    <h3 class="value-title">Real-World Missions</h3>
+                    <p class="value-description">
+                        No theoretical nonsense. Every mission involves implementing AI solutions 
+                        for actual business challenges in your organization.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">📈</span>
+                    <h3 class="value-title">Progress Tracking</h3>
+                    <p class="value-description">
+                        Quarterly re-assessments show exactly how your AI maturity evolves. 
+                        See measurable progress across departments and individuals.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🏆</span>
+                    <h3 class="value-title">Cultural Transformation</h3>
+                    <p class="value-description">
+                        Build internal AI champions who drive adoption from within. 
+                        Create a culture where AI innovation thrives naturally.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">
+                    Four simple steps to transform your organization's AI capabilities
+                </p>
+            </div>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Assess</h3>
+                    <p class="step-description">
+                        Complete our 10-minute AI readiness diagnostic. Get instant scores 
+                        by department and personalized recommendations.
+                    </p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Generate</h3>
+                    <p class="step-description">
+                        AI automatically creates tailored learning paths and missions 
+                        based on your organization's specific needs and gaps.
+                    </p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Apply</h3>
+                    <p class="step-description">
+                        Team members complete gamified missions that involve real-world 
+                        AI implementation in your actual business processes.
+                    </p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Accelerate</h3>
+                    <p class="step-description">
+                        Track progress, celebrate wins, and continuously adapt the journey 
+                        as your AI maturity evolves over time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator Section -->
+    <section class="roi-section">
+        <div class="container">
+            <div class="roi-calculator">
+                <h2 class="calculator-title">Calculate Your AI ROI</h2>
+                <div class="calculator-inputs">
+                    <div class="input-group">
+                        <label class="input-label">Number of Employees</label>
+                        <input type="number" class="input-field" id="employees" placeholder="100" value="100">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Average Salary ($)</label>
+                        <input type="number" class="input-field" id="salary" placeholder="75000" value="75000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Hours Saved per Week (per employee)</label>
+                        <input type="number" class="input-field" id="hours" placeholder="5" value="5">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Program Investment ($)</label>
+                        <input type="number" class="input-field" id="investment" placeholder="50000" value="50000">
+                    </div>
+                </div>
+                <div class="roi-results">
+                    <div class="roi-number" id="roi-percentage">320%</div>
+                    <div class="roi-label">Annual ROI</div>
+                    <div style="margin-top: 20px; font-size: 1.1rem; opacity: 0.9;">
+                        Annual Savings: <span id="annual-savings">$1,950,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What Leaders Are Saying</h2>
+                <p class="section-subtitle">
+                    Companies worldwide are transforming their AI capabilities with our platform
+                </p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p class="testimonial-quote">
+                        "AI Mastery Challenge transformed our entire approach to AI adoption. The gamification 
+                        got our team excited about AI, and the real-world missions delivered immediate value. 
+                        We saw a 40% increase in AI tool usage within 3 months."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SM</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Martinez</div>
+                            <div class="author-title">CTO, TechCorp Inc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial-quote">
+                        "The diagnostic assessment was eye-opening. We thought we were AI-ready, but the platform 
+                        revealed critical gaps. The personalized learning paths helped us focus on what mattered most. 
+                        ROI was evident within the first quarter."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <div class="author-name">James Davis</div>
+                            <div class="author-title">VP Operations, InnovateCo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial-quote">
+                        "What I love most is the practical approach. Instead of theoretical training, our team 
+                        implemented actual AI solutions while learning. The leaderboard created healthy competition, 
+                        and everyone wanted to become an AI champion."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <div class="author-name">Maria Rodriguez</div>
+                            <div class="author-title">CEO, GlobalTech</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Choose Your Plan</h2>
+                <p class="section-subtitle">
+                    Flexible pricing to accelerate AI adoption for teams of any size
+                </p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 class="pricing-plan">Starter</h3>
+                    <div class="pricing-price">$49</div>
+                    <div class="pricing-period">per user/month</div>
+                    <ul class="pricing-features">
+                        <li>AI Readiness Assessment</li>
+                        <li>Personalized Learning Paths</li>
+                        <li>Basic Missions & Challenges</li>
+                        <li>Progress Tracking</li>
+                        <li>Individual Leaderboards</li>
+                        <li>Email Support</li>
+                    </ul>
+                    <button class="pricing-cta secondary">Start Free Trial</button>
+                </div>
+                <div class="pricing-card popular">
+                    <h3 class="pricing-plan">Enterprise</h3>
+                    <div class="pricing-price">$99</div>
+                    <div class="pricing-period">per user/month</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Starter</li>
+                        <li>Advanced AI Missions</li>
+                        <li>Team Collaboration Tools</li>
+                        <li>Department Analytics</li>
+                        <li>AI Champions Program</li>
+                        <li>Quarterly Progress Reviews</li>
+                        <li>Priority Support</li>
+                        <li>Custom Integrations</li>
+                    </ul>
+                    <button class="pricing-cta primary">Get Started</button>
+                </div>
+                <div class="pricing-card">
+                    <h3 class="pricing-plan">Enterprise Plus</h3>
+                    <div class="pricing-price">$199</div>
+                    <div class="pricing-period">per user/month</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Enterprise</li>
+                        <li>White-label Solution</li>
+                        <li>Custom Mission Development</li>
+                        <li>Dedicated Success Manager</li>
+                        <li>Advanced Analytics & Reporting</li>
+                        <li>API Access</li>
+                        <li>On-site Training</li>
+                        <li>24/7 Premium Support</li>
+                    </ul>
+                    <button class="pricing-cta secondary">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta" id="get-started">
+        <div class="container">
+            <h2 class="final-cta-title">Ready to Lead the AI Revolution?</h2>
+            <p class="final-cta-description">
+                Join thousands of companies who've already transformed their AI capabilities. 
+                Start with our free assessment and see where your organization stands today.
+            </p>
+            <div class="final-cta-buttons">
+                <a href="ai-readiness-assessment.html" class="cta-primary" style="font-size: 1.3rem; padding: 24px 48px;">
+                    🚀 Start Free AI Assessment
+                </a>
+                <a href="#" class="cta-secondary" onclick="openDemo()" style="font-size: 1.3rem; padding: 24px 48px;">
+                    📺 Watch Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-brand">AI Mastery Challenge™</div>
+                    <p class="footer-description">
+                        The most comprehensive AI adoption platform for enterprises. 
+                        Transform your organization from AI curious to AI champion with our 
+                        proven methodology combining assessment, learning, and application.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="#assessment">AI Assessment</a></li>
+                        <li><a href="#learning">Learning Paths</a></li>
+                        <li><a href="#missions">AI Missions</a></li>
+                        <li><a href="#analytics">Analytics</a></li>
+                        <li><a href="#champions">Champions Program</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#case-studies">Case Studies</a></li>
+                        <li><a href="#whitepapers">Whitepapers</a></li>
+                        <li><a href="#webinars">Webinars</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#support">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Mastery Challenge™. All rights reserved. | Powered by Ask April AI</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ROI Calculator
+        function calculateROI() {
+            const employees = parseInt(document.getElementById('employees').value) || 100;
+            const salary = parseInt(document.getElementById('salary').value) || 75000;
+            const hoursPerWeek = parseInt(document.getElementById('hours').value) || 5;
+            const investment = parseInt(document.getElementById('investment').value) || 50000;
+            
+            // Calculate hourly rate (assuming 2080 work hours per year)
+            const hourlyRate = salary / 2080;
+            
+            // Calculate annual savings
+            const annualHoursSaved = employees * hoursPerWeek * 52;
+            const annualSavings = annualHoursSaved * hourlyRate;
+            
+            // Calculate ROI
+            const roi = ((annualSavings - investment) / investment) * 100;
+            
+            // Update display
+            document.getElementById('roi-percentage').textContent = Math.round(roi) + '%';
+            document.getElementById('annual-savings').textContent = '$' + annualSavings.toLocaleString();
+        }
+
+        // Add event listeners to ROI calculator inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = ['employees', 'salary', 'hours', 'investment'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', calculateROI);
+            });
+            
+            // Calculate initial ROI
+            calculateROI();
+        });
+
+        // Demo modal function
+        function openDemo() {
+            alert('Demo coming soon! For now, you can start with the free AI assessment to experience our platform.');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add some interactive animations on scroll
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.value-card, .pricing-card, .testimonial');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        }
+
+        // Initialize animations when page loads
+        document.addEventListener('DOMContentLoaded', animateOnScroll);
+
+        // Track CTA clicks (for analytics)
+        function trackCTAClick(ctaName) {
+            // In a real implementation, this would send data to your analytics platform
+            console.log('CTA Clicked:', ctaName);
+            
+            // Example: Google Analytics event tracking
+            // gtag('event', 'click', {
+            //     event_category: 'CTA',
+            //     event_label: ctaName
+            // });
+        }
+
+        // Add click tracking to CTA buttons
+        document.querySelectorAll('.cta-primary, .cta-secondary, .pricing-cta').forEach(button => {
+            button.addEventListener('click', function() {
+                trackCTAClick(this.textContent.trim());
+            });
+        });
+    </script>
+</body>
+</html>

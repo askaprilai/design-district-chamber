@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interaction Assessment - Zero Friction Experience</title>
+    <meta name="description" content="Discover your AI interaction patterns with our user-friendly assessment. No character limits, smart validation, and instant progress saving.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .assessment-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .header-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        /* Progress Indicator */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .progress-step.active {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .progress-step.completed {
+            opacity: 1;
+            color: #48bb78;
+        }
+
+        .step-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .step-circle.active {
+            background: rgba(255, 255, 255, 0.8);
+            color: #667eea;
+        }
+
+        .step-circle.completed {
+            background: #48bb78;
+            color: white;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #48bb78;
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .question-category {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .question-hint {
+            color: #4a5568;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .option-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+            position: relative;
+        }
+
+        .option-card:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+        }
+
+        .option-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .option-emoji {
+            font-size: 2rem;
+        }
+
+        .option-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .option-card.selected .option-title {
+            color: white;
+        }
+
+        .option-description {
+            color: #4a5568;
+            line-height: 1.5;
+            margin-left: 60px;
+        }
+
+        .option-card.selected .option-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .option-check {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .option-card.selected .option-check {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .option-check::after {
+            content: '✓';
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option-card.selected .option-check::after {
+            opacity: 1;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-btn.secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        /* Info Form */
+        .info-form {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-input,
+        .form-select {
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input.valid {
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .form-helper {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .form-helper.success {
+            color: #48bb78;
+        }
+
+        /* Auto-save indicator */
+        .auto-save {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(72, 187, 120, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .auto-save.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Results Preview */
+        .results-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .persona-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .persona-emoji {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .persona-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .persona-subtitle {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .persona-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .assessment-container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .question-card {
+                padding: 30px 20px;
+            }
+            
+            .progress-steps {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="assessment-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🧠 AI Interaction Assessment</h1>
+            <p class="header-subtitle">Discover your AI patterns with zero friction - no character limits, instant saving, smart validation</p>
+        </div>
+
+        <!-- Progress Container -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-step active" id="step-questions">
+                    <div class="step-circle active">1</div>
+                    <span>Answer Questions</span>
+                </div>
+                <div class="progress-step" id="step-info">
+                    <div class="step-circle">2</div>
+                    <span>Your Details</span>
+                </div>
+                <div class="progress-step" id="step-results">
+                    <div class="step-circle">3</div>
+                    <span>Get Results</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="main-progress" style="width: 10%"></div>
+            </div>
+        </div>
+
+        <!-- Auto-save Indicator -->
+        <div class="auto-save" id="auto-save">✓ Progress saved automatically</div>
+
+        <!-- Question Card -->
+        <div class="question-card fade-in" id="question-container">
+            <!-- Questions will be dynamically generated -->
+        </div>
+
+        <!-- Info Form -->
+        <div class="info-form fade-in" id="info-form">
+            <div class="form-section">
+                <div class="form-section-title">
+                    👤 Tell us about yourself
+                </div>
+                <p style="color: #4a5568; margin-bottom: 25px;">We use this to personalize your results and recommendations.</p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="user-name" placeholder="Enter your name" oninput="validateForm()">
+                        <div class="form-helper">Used for personalized results</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="user-email" placeholder="your.email@company.com" oninput="validateForm()">
+                        <div class="form-helper">We'll send your detailed results here</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Department</label>
+                        <select class="form-select" id="user-department" onchange="validateForm()">
+                            <option value="">Choose your department</option>
+                            <option value="marketing">Marketing & Sales</option>
+                            <option value="operations">Operations</option>
+                            <option value="hr">Human Resources</option>
+                            <option value="finance">Finance</option>
+                            <option value="it">IT & Technology</option>
+                            <option value="executive">Executive Leadership</option>
+                            <option value="customer_service">Customer Service</option>
+                            <option value="product">Product Development</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="form-helper">Helps us give relevant recommendations</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Role Level</label>
+                        <select class="form-select" id="user-level" onchange="validateForm()">
+                            <option value="">Select your level</option>
+                            <option value="individual">Individual Contributor</option>
+                            <option value="team_lead">Team Lead/Supervisor</option>
+                            <option value="manager">Manager</option>
+                            <option value="director">Director</option>
+                            <option value="vp">VP/Executive</option>
+                            <option value="c_suite">C-Suite</option>
+                        </select>
+                        <div class="form-helper">Influences your learning path</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn secondary" onclick="goToQuestions()">
+                    ← Back to Questions
+                </button>
+                <button class="nav-btn" id="get-results-btn" onclick="showResults()" disabled>
+                    Get My Results →
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Preview -->
+        <div class="results-preview fade-in" id="results-container">
+            <!-- Results will be generated here -->
+        </div>
+    </div>
+
+    <script>
+        // Simplified questions focused on behavior patterns
+        const questions = [
+            {
+                id: 'ai_usage_frequency',
+                category: 'Current Usage',
+                text: 'How often do you currently use AI tools like ChatGPT?',
+                hint: 'Be honest - this helps us understand your starting point',
+                options: [
+                    {
+                        emoji: '🚫',
+                        title: 'Never used AI tools',
+                        description: 'I haven\'t tried AI tools yet but I\'m curious',
+                        score: { adoption: 0, curiosity: 3, interaction: 0 }
+                    },
+                    {
+                        emoji: '🤷',
+                        title: 'Tried once or twice',
+                        description: 'I\'ve experimented but don\'t use AI regularly',
+                        score: { adoption: 2, curiosity: 4, interaction: 2 }
+                    },
+                    {
+                        emoji: '📅',
+                        title: 'Weekly for specific tasks',
+                        description: 'I use AI tools regularly for certain work tasks',
+                        score: { adoption: 6, curiosity: 6, interaction: 5 }
+                    },
+                    {
+                        emoji: '⚡',
+                        title: 'Daily - it\'s part of my workflow',
+                        description: 'AI tools are integrated into my daily work routine',
+                        score: { adoption: 10, curiosity: 8, interaction: 8 }
+                    }
+                ]
+            },
+            {
+                id: 'interaction_depth',
+                category: 'Interaction Style',
+                text: 'When you use AI, what typically happens?',
+                hint: 'This reveals your natural collaboration style with AI',
+                options: [
+                    {
+                        emoji: '🎯',
+                        title: 'Ask one question, use first answer',
+                        description: 'I ask a question and use whatever AI gives me',
+                        score: { adoption: 3, curiosity: 2, interaction: 1 }
+                    },
+                    {
+                        emoji: '🔄',
+                        title: 'Ask 2-3 follow-up questions',
+                        description: 'I might rephrase or ask for clarification if needed',
+                        score: { adoption: 5, curiosity: 5, interaction: 4 }
+                    },
+                    {
+                        emoji: '💬',
+                        title: 'Have ongoing conversations',
+                        description: 'I build on responses and explore different angles',
+                        score: { adoption: 8, curiosity: 8, interaction: 9 }
+                    },
+                    {
+                        emoji: '🎭',
+                        title: 'Use advanced prompting techniques',
+                        description: 'I use role-playing, examples, and sophisticated strategies',
+                        score: { adoption: 10, curiosity: 10, interaction: 10 }
+                    }
+                ]
+            },
+            {
+                id: 'curiosity_response',
+                category: 'Problem Solving',
+                text: 'When AI gives you an unsatisfactory answer, you...',
+                hint: 'This shows your persistence and problem-solving approach',
+                options: [
+                    {
+                        emoji: '😤',
+                        title: 'Get frustrated and stop',
+                        description: 'If it doesn\'t work quickly, I assume AI isn\'t helpful',
+                        score: { adoption: 1, curiosity: 1, interaction: 1 }
+                    },
+                    {
+                        emoji: '🤷',
+                        title: 'Accept what I get and move on',
+                        description: 'I use the mediocre answer rather than trying again',
+                        score: { adoption: 3, curiosity: 2, interaction: 2 }
+                    },
+                    {
+                        emoji: '🔍',
+                        title: 'Try rephrasing or different approaches',
+                        description: 'I experiment with different ways to get better results',
+                        score: { adoption: 6, curiosity: 7, interaction: 6 }
+                    },
+                    {
+                        emoji: '🔬',
+                        title: 'Debug systematically until I succeed',
+                        description: 'I analyze what went wrong and keep improving my approach',
+                        score: { adoption: 9, curiosity: 10, interaction: 9 }
+                    }
+                ]
+            },
+            {
+                id: 'learning_style',
+                category: 'Growth Mindset',
+                text: 'How do you typically learn about new AI capabilities?',
+                hint: 'This reveals your approach to continuous learning',
+                options: [
+                    {
+                        emoji: '⏳',
+                        title: 'Wait for formal training',
+                        description: 'I prefer structured learning and official guidance',
+                        score: { adoption: 2, curiosity: 3, interaction: 2 }
+                    },
+                    {
+                        emoji: '📱',
+                        title: 'Read articles when I see them',
+                        description: 'I casually consume AI content that comes my way',
+                        score: { adoption: 4, curiosity: 5, interaction: 3 }
+                    },
+                    {
+                        emoji: '🔎',
+                        title: 'Actively research and experiment',
+                        description: 'I seek out new AI developments and try them',
+                        score: { adoption: 7, curiosity: 8, interaction: 7 }
+                    },
+                    {
+                        emoji: '🌐',
+                        title: 'Follow communities and share learnings',
+                        description: 'I\'m actively engaged in AI communities and discussions',
+                        score: { adoption: 9, curiosity: 10, interaction: 8 }
+                    }
+                ]
+            },
+            {
+                id: 'workplace_application',
+                category: 'Workplace Integration',
+                text: 'How do you currently apply AI in your work?',
+                hint: 'This shows how you translate AI capabilities into business value',
+                options: [
+                    {
+                        emoji: '🚫',
+                        title: 'I don\'t use AI for work yet',
+                        description: 'I keep personal experimentation separate from work',
+                        score: { adoption: 0, curiosity: 3, interaction: 1 }
+                    },
+                    {
+                        emoji: '📧',
+                        title: 'Simple tasks like emails or basic research',
+                        description: 'I use AI for straightforward, low-risk tasks',
+                        score: { adoption: 4, curiosity: 4, interaction: 3 }
+                    },
+                    {
+                        emoji: '⚙️',
+                        title: 'Multiple tasks - it\'s part of my workflow',
+                        description: 'AI is integrated into several work processes',
+                        score: { adoption: 7, curiosity: 6, interaction: 6 }
+                    },
+                    {
+                        emoji: '🚀',
+                        title: 'Strategic advantage - transforms how I work',
+                        description: 'I\'ve developed AI workflows that give me an edge',
+                        score: { adoption: 10, curiosity: 8, interaction: 9 }
+                    }
+                ]
+            }
+        ];
+
+        // State management
+        let currentQuestionIndex = 0;
+        let answers = {};
+        let userInfo = {};
+        let currentStep = 'questions';
+
+        // Auto-save functionality
+        function saveProgress() {
+            const progress = {
+                currentQuestionIndex,
+                answers,
+                userInfo,
+                currentStep,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('aiAssessmentProgress', JSON.stringify(progress));
+            showAutoSave();
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('aiAssessmentProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                // Only load if saved within last 7 days
+                if (Date.now() - progress.timestamp < 7 * 24 * 60 * 60 * 1000) {
+                    currentQuestionIndex = progress.currentQuestionIndex || 0;
+                    answers = progress.answers || {};
+                    userInfo = progress.userInfo || {};
+                    currentStep = progress.currentStep || 'questions';
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function showAutoSave() {
+            const indicator = document.getElementById('auto-save');
+            indicator.classList.add('show');
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+
+        // Question navigation
+        function renderQuestion() {
+            const question = questions[currentQuestionIndex];
+            const container = document.getElementById('question-container');
+            
+            container.innerHTML = `
+                <div class="question-header">
+                    <div class="question-category">${question.category}</div>
+                    <div class="question-number">Question ${currentQuestionIndex + 1} of ${questions.length}</div>
+                    <h2 class="question-text">${question.text}</h2>
+                    <div class="question-hint">${question.hint}</div>
+                </div>
+                
+                <div class="options-grid">
+                    ${question.options.map((option, index) => `
+                        <div class="option-card ${answers[question.id]?.index === index ? 'selected' : ''}" 
+                             onclick="selectOption('${question.id}', ${index})">
+                            <div class="option-check"></div>
+                            <div class="option-header">
+                                <div class="option-emoji">${option.emoji}</div>
+                                <div class="option-title">${option.title}</div>
+                            </div>
+                            <div class="option-description">${option.description}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="previousQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
+                        ← Previous
+                    </button>
+                    <button class="nav-btn" onclick="nextQuestion()" ${!answers[question.id] ? 'disabled' : ''} id="next-btn">
+                        ${currentQuestionIndex === questions.length - 1 ? 'Continue to Details →' : 'Next Question →'}
+                    </button>
+                </div>
+            `;
+            
+            updateProgress();
+        }
+
+        function selectOption(questionId, optionIndex) {
+            const question = questions.find(q => q.id === questionId);
+            answers[questionId] = {
+                index: optionIndex,
+                option: question.options[optionIndex],
+                scores: question.options[optionIndex].score
+            };
+            
+            // Update UI
+            document.querySelectorAll('.option-card').forEach((card, index) => {
+                card.classList.toggle('selected', index === optionIndex);
+            });
+            
+            // Enable next button
+            document.getElementById('next-btn').disabled = false;
+            document.getElementById('next-btn').classList.remove('disabled');
+            
+            saveProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                goToInfoForm();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const questionProgress = ((currentQuestionIndex + (answers[questions[currentQuestionIndex]?.id] ? 1 : 0)) / questions.length) * 50;
+            let totalProgress = questionProgress;
+            
+            if (currentStep === 'info') {
+                totalProgress = 50 + (Object.keys(userInfo).length > 0 ? 25 : 0);
+            } else if (currentStep === 'results') {
+                totalProgress = 100;
+            }
+            
+            document.getElementById('main-progress').style.width = totalProgress + '%';
+        }
+
+        function goToInfoForm() {
+            currentStep = 'info';
+            document.getElementById('question-container').style.display = 'none';
+            document.getElementById('info-form').style.display = 'block';
+            
+            // Update progress steps
+            document.getElementById('step-questions').classList.remove('active');
+            document.getElementById('step-questions').classList.add('completed');
+            document.getElementById('step-questions').querySelector('.step-circle').classList.remove('active');
+            document.getElementById('step-questions').querySelector('.step-circle').classList.add('completed');
+            document.getElementById('step-questions').querySelector('.step-circle').innerHTML = '✓';
+            
+            document.getElementById('step-info').classList.add('active');
+            document.getElementById('step-info').querySelector('.step-circle').classList.add('active');
+            
+            updateProgress();
+            saveProgress();
+        }
+
+        function goToQuestions() {
+            currentStep = 'questions';
+            document.getElementById('info-form').style.display = 'none';
+            document.getElementById('question-container').style.display = 'block';
+            
+            // Update progress steps
+            document.getElementById('step-info').classList.remove('active');
+            document.getElementById('step-info').querySelector('.step-circle').classList.remove('active');
+            
+            document.getElementById('step-questions').classList.add('active');
+            document.getElementById('step-questions').classList.remove('completed');
+            document.getElementById('step-questions').querySelector('.step-circle').classList.add('active');
+            document.getElementById('step-questions').querySelector('.step-circle').classList.remove('completed');
+            document.getElementById('step-questions').querySelector('.step-circle').innerHTML = '1';
+            
+            updateProgress();
+        }
+
+        function validateForm() {
+            const name = document.getElementById('user-name').value.trim();
+            const email = document.getElementById('user-email').value.trim();
+            const department = document.getElementById('user-department').value;
+            const level = document.getElementById('user-level').value;
+            
+            // Visual feedback for valid fields
+            document.getElementById('user-name').classList.toggle('valid', name.length > 0);
+            document.getElementById('user-email').classList.toggle('valid', email.includes('@'));
+            document.getElementById('user-department').classList.toggle('valid', department !== '');
+            document.getElementById('user-level').classList.toggle('valid', level !== '');
+            
+            // Update user info
+            if (name || email || department || level) {
+                userInfo = { name, email, department, level };
+                saveProgress();
+            }
+            
+            // Enable submit button if required fields are filled
+            const isValid = name && email.includes('@') && department && level;
+            document.getElementById('get-results-btn').disabled = !isValid;
+            
+            updateProgress();
+        }
+
+        function calculateResults() {
+            let totalScores = { adoption: 0, curiosity: 0, interaction: 0 };
+            let maxScores = { adoption: 0, curiosity: 0, interaction: 0 };
+            
+            questions.forEach(question => {
+                if (answers[question.id]) {
+                    const scores = answers[question.id].scores;
+                    totalScores.adoption += scores.adoption;
+                    totalScores.curiosity += scores.curiosity;
+                    totalScores.interaction += scores.interaction;
+                }
+                
+                question.options.forEach(option => {
+                    maxScores.adoption = Math.max(maxScores.adoption, option.score.adoption);
+                    maxScores.curiosity = Math.max(maxScores.curiosity, option.score.curiosity);
+                    maxScores.interaction = Math.max(maxScores.interaction, option.score.interaction);
+                });
+            });
+            
+            const maxTotals = {
+                adoption: maxScores.adoption * questions.length,
+                curiosity: maxScores.curiosity * questions.length,
+                interaction: maxScores.interaction * questions.length
+            };
+            
+            const percentages = {
+                adoption: Math.round((totalScores.adoption / maxTotals.adoption) * 100),
+                curiosity: Math.round((totalScores.curiosity / maxTotals.curiosity) * 100),
+                interaction: Math.round((totalScores.interaction / maxTotals.interaction) * 100)
+            };
+            
+            return { totalScores, percentages };
+        }
+
+        function determinePersona(percentages) {
+            const avg = (percentages.adoption + percentages.curiosity + percentages.interaction) / 3;
+            
+            if (avg >= 80) {
+                return {
+                    emoji: '🚀',
+                    title: 'AI Power User',
+                    subtitle: 'The Strategic Innovator',
+                    description: 'You maximize AI potential through sophisticated techniques and deep curiosity. You turn AI into a competitive advantage.'
+                };
+            } else if (avg >= 60) {
+                return {
+                    emoji: '⚡',
+                    title: 'AI Accelerator',
+                    subtitle: 'The Effective Adopter',
+                    description: 'You have strong AI fundamentals and use AI effectively. With some refinement, you\'ll become an AI power user.'
+                };
+            } else if (avg >= 40) {
+                return {
+                    emoji: '🌱',
+                    title: 'AI Explorer',
+                    subtitle: 'The Curious Learner',
+                    description: 'You\'re actively exploring AI with good curiosity. Focus on developing deeper interaction patterns.'
+                };
+            } else if (avg >= 20) {
+                return {
+                    emoji: '🚶',
+                    title: 'AI Beginner',
+                    subtitle: 'The Thoughtful Starter',
+                    description: 'You\'re beginning your AI journey. Build confidence through small wins and iterative practice.'
+                };
+            } else {
+                return {
+                    emoji: '😴',
+                    title: 'AI Sleeper',
+                    subtitle: 'The Untapped Potential',
+                    description: 'You haven\'t yet discovered AI\'s potential. Start with simple experiments and build confidence gradually.'
+                };
+            }
+        }
+
+        function showResults() {
+            currentStep = 'results';
+            
+            const { percentages } = calculateResults();
+            const persona = determinePersona(percentages);
+            
+            // Update progress steps
+            document.getElementById('step-info').classList.remove('active');
+            document.getElementById('step-info').classList.add('completed');
+            document.getElementById('step-info').querySelector('.step-circle').classList.remove('active');
+            document.getElementById('step-info').querySelector('.step-circle').classList.add('completed');
+            document.getElementById('step-info').querySelector('.step-circle').innerHTML = '✓';
+            
+            document.getElementById('step-results').classList.add('active');
+            document.getElementById('step-results').querySelector('.step-circle').classList.add('active');
+            
+            // Hide form, show results
+            document.getElementById('info-form').style.display = 'none';
+            document.getElementById('results-container').style.display = 'block';
+            
+            // Generate results
+            document.getElementById('results-container').innerHTML = `
+                <div class="results-header">
+                    <div class="persona-card">
+                        <div class="persona-emoji">${persona.emoji}</div>
+                        <div class="persona-title">${persona.title}</div>
+                        <div class="persona-subtitle">${persona.subtitle}</div>
+                        <div class="persona-description">${persona.description}</div>
+                    </div>
+                    
+                    <h2>Hey ${userInfo.name}, here's your AI interaction profile</h2>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-bottom: 40px;">
+                    <div style="background: #f7fafc; padding: 25px; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h3 style="color: #2d3748; margin-bottom: 10px;">AI Adoption</h3>
+                        <div style="font-size: 2.5rem; font-weight: 800; color: #667eea; margin-bottom: 5px;">${percentages.adoption}%</div>
+                        <p style="color: #4a5568; font-size: 0.9rem;">How actively you use AI tools</p>
+                    </div>
+                    
+                    <div style="background: #f7fafc; padding: 25px; border-radius: 12px; border-left: 4px solid #ed8936;">
+                        <h3 style="color: #2d3748; margin-bottom: 10px;">Curiosity Level</h3>
+                        <div style="font-size: 2.5rem; font-weight: 800; color: #ed8936; margin-bottom: 5px;">${percentages.curiosity}%</div>
+                        <p style="color: #4a5568; font-size: 0.9rem;">Your drive to explore and experiment</p>
+                    </div>
+                    
+                    <div style="background: #f7fafc; padding: 25px; border-radius: 12px; border-left: 4px solid #48bb78;">
+                        <h3 style="color: #2d3748; margin-bottom: 10px;">Interaction Depth</h3>
+                        <div style="font-size: 2.5rem; font-weight: 800; color: #48bb78; margin-bottom: 5px;">${percentages.interaction}%</div>
+                        <p style="color: #4a5568; font-size: 0.9rem;">How effectively you collaborate with AI</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; padding: 30px; text-align: center; margin-top: 40px;">
+                    <h3 style="margin-bottom: 20px;">🚀 Ready to Level Up Your AI Skills?</h3>
+                    <p style="margin-bottom: 25px; opacity: 0.9;">Based on your assessment, we've created a personalized learning path just for you.</p>
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="window.open('prompt-engineering-masterclass.html', '_blank')" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            📚 Learn Prompt Techniques
+                        </button>
+                        <button onclick="window.open('ai-mastery-challenge.html', '_blank')" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            🎮 Start AI Missions
+                        </button>
+                        <button onclick="window.open('unified-ai-mastery-hub.html', '_blank')" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            🏠 Explore Full Platform
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            updateProgress();
+            saveProgress();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to load saved progress
+            const hasProgress = loadProgress();
+            
+            if (hasProgress && currentStep === 'questions') {
+                renderQuestion();
+            } else if (hasProgress && currentStep === 'info') {
+                goToInfoForm();
+                // Pre-fill form if we have data
+                if (userInfo.name) document.getElementById('user-name').value = userInfo.name;
+                if (userInfo.email) document.getElementById('user-email').value = userInfo.email;
+                if (userInfo.department) document.getElementById('user-department').value = userInfo.department;
+                if (userInfo.level) document.getElementById('user-level').value = userInfo.level;
+                validateForm();
+            } else if (hasProgress && currentStep === 'results') {
+                showResults();
+            } else {
+                renderQuestion();
+            }
+        });
+    </script>
+</body>
+</html>

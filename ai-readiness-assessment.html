@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Readiness Assessment - Discover Your Organization's AI Adoption Score</title>
+    <meta name="description" content="Measure your organization's AI readiness across all departments. Get personalized AI bootcamp recommendations and accelerate your AI adoption journey.">
+    <style>
+        /* AI Readiness Assessment Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .assessment-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-header h2 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .assessment-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+        }
+
+        .start-assessment-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .start-assessment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+            width: 0%;
+        }
+
+        /* Questions Screen */
+        .questions-screen {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .questions-screen h2 {
+            font-size: 2.2rem;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .questions-subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .question-block {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .question-block:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.1);
+        }
+
+        .question-header {
+            margin-bottom: 20px;
+        }
+
+        .question-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .question-block h3 {
+            color: #2d3748;
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            cursor: pointer;
+            display: block;
+        }
+
+        .option-label input[type="radio"] {
+            display: none;
+        }
+
+        .option-button {
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f7fafc;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .option-label input[type="radio"]:checked + .option-button {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(8px);
+        }
+
+        .option-button:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+        }
+
+        .option-label input[type="radio"]:checked + .option-button:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Continue Button */
+        .continue-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .continue-btn.enabled {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+        }
+
+        .continue-btn.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(72, 187, 120, 0.4);
+        }
+
+        .continue-btn.disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        /* Capture Screen */
+        .capture-screen {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .capture-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .capture-header h2 {
+            font-size: 2.2rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .capture-header p {
+            font-size: 1.1rem;
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        .capture-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .privacy-note {
+            text-align: center;
+            margin: 20px 0;
+            color: #718096;
+        }
+
+        .get-results-btn {
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .get-results-btn.enabled {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .get-results-btn.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .get-results-btn.disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        /* Results Screen */
+        .results-screen {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            display: inline-block;
+            min-width: 300px;
+        }
+
+        .score-number {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .score-category {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .score-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .results-header h2 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .results-description {
+            font-size: 1.2rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Department Breakdown */
+        .department-breakdown {
+            margin-bottom: 40px;
+        }
+
+        .department-breakdown h3 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .department-card {
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: #f7fafc;
+        }
+
+        .department-card.high {
+            border-color: #f56565;
+            background: #fed7d7;
+        }
+
+        .department-card.medium {
+            border-color: #ed8936;
+            background: #feebc8;
+        }
+
+        .department-card.low {
+            border-color: #48bb78;
+            background: #c6f6d5;
+        }
+
+        .dept-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .dept-header h4 {
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .status {
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status.high {
+            background: #f56565;
+            color: white;
+        }
+
+        .status.medium {
+            background: #ed8936;
+            color: white;
+        }
+
+        .status.low {
+            background: #48bb78;
+            color: white;
+        }
+
+        .dept-score {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-bar {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .dept-percentage {
+            font-weight: 600;
+            color: #2d3748;
+            min-width: 40px;
+        }
+
+        /* Recommendations */
+        .recommendations-section {
+            margin-bottom: 40px;
+        }
+
+        .recommendations-section h3 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .recommendations-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .recommendation {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .rec-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        /* Bootcamp Section */
+        .bootcamp-section {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .bootcamp-section h3 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .bootcamp-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .bootcamp-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .bootcamp-card p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cta-section h3 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .primary-cta,
+        .secondary-cta {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .primary-cta {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+        }
+
+        .primary-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(72, 187, 120, 0.4);
+        }
+
+        .secondary-cta {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .secondary-cta:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Personalized Message */
+        .personalized-message {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 30px;
+        }
+
+        .personalized-message h4 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .personalized-message p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Restart Section */
+        .restart-section {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .restart-btn {
+            background: transparent;
+            color: #718096;
+            border: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .assessment-container {
+                padding: 15px;
+            }
+            
+            .welcome-screen,
+            .questions-screen,
+            .capture-screen,
+            .results-screen {
+                padding: 30px 20px;
+            }
+            
+            .welcome-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .welcome-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .departments-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .primary-cta,
+            .secondary-cta {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .score-number {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="assessment-container">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="welcome-screen">
+            <div class="welcome-header">
+                <h1>🤖 AI Readiness Assessment</h1>
+                <h2>Discover Your Organization's AI Adoption Score</h2>
+            </div>
+            
+            <div class="welcome-content">
+                <p class="intro-text">
+                    Measure your organization's current AI readiness across all departments and receive a 
+                    personalized development roadmap with automated training recommendations.
+                </p>
+                
+                <div class="assessment-benefits">
+                    <div class="benefit">
+                        <span class="benefit-icon">📊</span>
+                        <span>Get your AI Adoption Score (0-100)</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">🏢</span>
+                        <span>Department-by-department breakdown</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">🎯</span>
+                        <span>Personalized AI learning path</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">🚀</span>
+                        <span>Instant access to AI bootcamps</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="start-assessment-btn" onclick="startAssessment()">
+                Start Assessment →
+            </button>
+        </div>
+
+        <!-- Questions Screen -->
+        <div id="questions-screen" class="questions-screen">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            
+            <h2>AI Readiness Diagnostic</h2>
+            <p class="questions-subtitle">Answer honestly for the most accurate assessment</p>
+            
+            <div id="questions-container" class="questions-list">
+                <!-- Questions will be dynamically generated here -->
+            </div>
+            
+            <button id="continue-btn" class="continue-btn disabled" disabled onclick="goToCapture()">
+                Get My AI Readiness Score →
+            </button>
+        </div>
+
+        <!-- Lead Capture Screen -->
+        <div id="capture-screen" class="capture-screen">
+            <div class="capture-header">
+                <h2>🎯 Get Your Personalized AI Readiness Report</h2>
+                <p>Enter your details to receive your complete score breakdown and customized AI adoption roadmap.</p>
+            </div>
+            
+            <form class="capture-form" onsubmit="handleSubmit(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="company">Company Name *</label>
+                        <input type="text" id="company" name="company" placeholder="Your company name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role">Your Role *</label>
+                        <input type="text" id="role" name="role" placeholder="e.g. CEO, VP Operations, etc." required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="industry">Industry</label>
+                        <select id="industry" name="industry">
+                            <option value="">Select Industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="retail">Retail</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="education">Education</option>
+                            <option value="professional_services">Professional Services</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="companySize">Company Size</label>
+                        <select id="companySize" name="companySize">
+                            <option value="">Select Size</option>
+                            <option value="1-10">1-10 employees</option>
+                            <option value="11-50">11-50 employees</option>
+                            <option value="51-200">51-200 employees</option>
+                            <option value="201-1000">201-1000 employees</option>
+                            <option value="1000+">1000+ employees</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="privacy-note">
+                    <small>🔒 Your information is secure. You'll receive your AI readiness report immediately plus access to personalized bootcamps.</small>
+                </div>
+                
+                <button type="submit" id="get-results-btn" class="get-results-btn disabled" disabled>
+                    Get My AI Readiness Score & Bootcamp Access →
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="results-screen">
+            <!-- Results will be dynamically generated here -->
+        </div>
+    </div>
+
+    <script>
+        // Assessment Data
+        const questions = [
+            {
+                id: 'tools_current',
+                category: 'Current AI Usage',
+                text: "How many AI tools does your organization currently use regularly?",
+                options: [
+                    { value: 1, text: "None", weight: 0 },
+                    { value: 2, text: "1-2 basic tools (ChatGPT, etc.)", weight: 2 },
+                    { value: 3, text: "3-5 tools across departments", weight: 4 },
+                    { value: 4, text: "6-10 integrated tools", weight: 6 },
+                    { value: 5, text: "10+ tools with enterprise integration", weight: 8 }
+                ]
+            },
+            {
+                id: 'comfort_employees',
+                category: 'Employee Readiness',
+                text: "What percentage of your employees are comfortable using AI tools?",
+                options: [
+                    { value: 1, text: "Less than 10%", weight: 0 },
+                    { value: 2, text: "10-25%", weight: 2 },
+                    { value: 3, text: "26-50%", weight: 4 },
+                    { value: 4, text: "51-75%", weight: 6 },
+                    { value: 5, text: "More than 75%", weight: 8 }
+                ]
+            },
+            {
+                id: 'marketing_ai',
+                category: 'Marketing & Sales',
+                text: "How advanced is your marketing team's AI knowledge?",
+                options: [
+                    { value: 1, text: "No AI experience", weight: 0 },
+                    { value: 2, text: "Basic awareness", weight: 1 },
+                    { value: 3, text: "Some experimentation", weight: 2 },
+                    { value: 4, text: "Regular usage", weight: 3 },
+                    { value: 5, text: "Advanced implementation", weight: 4 }
+                ]
+            },
+            {
+                id: 'operations_ai',
+                category: 'Operations',
+                text: "Does your operations team use AI for automation or optimization?",
+                options: [
+                    { value: 1, text: "Not at all", weight: 0 },
+                    { value: 2, text: "Minimal use", weight: 1 },
+                    { value: 3, text: "Some processes", weight: 2 },
+                    { value: 4, text: "Many processes", weight: 3 },
+                    { value: 5, text: "Fully integrated", weight: 4 }
+                ]
+            },
+            {
+                id: 'hr_ai',
+                category: 'Human Resources',
+                text: "How does your HR team leverage AI tools?",
+                options: [
+                    { value: 1, text: "No AI usage", weight: 0 },
+                    { value: 2, text: "Basic recruitment tools", weight: 1 },
+                    { value: 3, text: "Multiple HR AI tools", weight: 2 },
+                    { value: 4, text: "Integrated AI systems", weight: 3 },
+                    { value: 5, text: "AI-driven HR strategy", weight: 4 }
+                ]
+            },
+            {
+                id: 'governance_policies',
+                category: 'Governance & Policies',
+                text: "What AI governance policies does your organization have?",
+                options: [
+                    { value: 1, text: "No formal policies", weight: 0 },
+                    { value: 2, text: "Basic usage guidelines", weight: 2 },
+                    { value: 3, text: "Department-specific policies", weight: 4 },
+                    { value: 4, text: "Comprehensive AI governance", weight: 6 },
+                    { value: 5, text: "Enterprise AI strategy with compliance", weight: 8 }
+                ]
+            },
+            {
+                id: 'barriers_cost',
+                category: 'Implementation Barriers',
+                text: "What are your biggest barriers to AI adoption? (Cost perspective)",
+                options: [
+                    { value: 1, text: "Major budget constraints", weight: 0 },
+                    { value: 2, text: "Limited budget", weight: 1 },
+                    { value: 3, text: "Moderate budget available", weight: 2 },
+                    { value: 4, text: "Good budget allocation", weight: 3 },
+                    { value: 5, text: "Ample AI investment budget", weight: 4 }
+                ]
+            },
+            {
+                id: 'barriers_skills',
+                category: 'Skills & Training',
+                text: "How would you rate your organization's AI skills gap?",
+                options: [
+                    { value: 1, text: "Severe skills shortage", weight: 0 },
+                    { value: 2, text: "Significant gap", weight: 1 },
+                    { value: 3, text: "Moderate gap", weight: 2 },
+                    { value: 4, text: "Minor gap", weight: 3 },
+                    { value: 5, text: "Well-equipped team", weight: 4 }
+                ]
+            },
+            {
+                id: 'compliance_concerns',
+                category: 'Compliance & Security',
+                text: "How concerned is your organization about AI compliance and security?",
+                options: [
+                    { value: 1, text: "Extremely concerned/blocked", weight: 0 },
+                    { value: 2, text: "Very cautious", weight: 1 },
+                    { value: 3, text: "Moderately concerned", weight: 2 },
+                    { value: 4, text: "Manageable concerns", weight: 3 },
+                    { value: 5, text: "Confident in security", weight: 4 }
+                ]
+            },
+            {
+                id: 'leadership_support',
+                category: 'Leadership & Culture',
+                text: "How supportive is your leadership team of AI initiatives?",
+                options: [
+                    { value: 1, text: "Resistant to AI", weight: 0 },
+                    { value: 2, text: "Skeptical but open", weight: 1 },
+                    { value: 3, text: "Neutral/waiting", weight: 2 },
+                    { value: 4, text: "Supportive", weight: 3 },
+                    { value: 5, text: "Championing AI adoption", weight: 4 }
+                ]
+            }
+        ];
+
+        // State management
+        let currentStep = 'welcome';
+        let answers = {};
+        let userInfo = {};
+
+        // Initialize the assessment
+        function startAssessment() {
+            currentStep = 'questions';
+            showScreen('questions-screen');
+            generateQuestions();
+        }
+
+        function showScreen(screenId) {
+            // Hide all screens
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('questions-screen').style.display = 'none';
+            document.getElementById('capture-screen').style.display = 'none';
+            document.getElementById('results-screen').style.display = 'none';
+            
+            // Show target screen
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        function generateQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-block';
+                questionDiv.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-category">${question.category}</span>
+                        <h3>
+                            <span class="question-number">${index + 1}</span>
+                            ${question.text}
+                        </h3>
+                    </div>
+                    <div class="options-container">
+                        ${question.options.map(option => `
+                            <label class="option-label">
+                                <input type="radio" name="q${question.id}" value="${option.value}" data-weight="${option.weight}" onchange="handleAnswerChange('${question.id}', ${option.value}, ${option.weight})">
+                                <div class="option-button">
+                                    <span class="option-text">${option.text}</span>
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function handleAnswerChange(questionId, value, weight) {
+            answers[questionId] = { value, weight };
+            updateProgress();
+            checkAllAnswered();
+        }
+
+        function updateProgress() {
+            const progress = (Object.keys(answers).length / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        function checkAllAnswered() {
+            const allAnswered = questions.every(q => answers[q.id]);
+            const continueBtn = document.getElementById('continue-btn');
+            
+            if (allAnswered) {
+                continueBtn.classList.remove('disabled');
+                continueBtn.classList.add('enabled');
+                continueBtn.disabled = false;
+            } else {
+                continueBtn.classList.add('disabled');
+                continueBtn.classList.remove('enabled');
+                continueBtn.disabled = true;
+            }
+        }
+
+        function goToCapture() {
+            currentStep = 'capture';
+            showScreen('capture-screen');
+            setupFormValidation();
+        }
+
+        function setupFormValidation() {
+            const form = document.querySelector('.capture-form');
+            const submitBtn = document.getElementById('get-results-btn');
+            
+            form.addEventListener('input', function() {
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const company = document.getElementById('company').value.trim();
+                const role = document.getElementById('role').value.trim();
+                
+                if (name && email && company && role) {
+                    submitBtn.classList.remove('disabled');
+                    submitBtn.classList.add('enabled');
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.classList.add('disabled');
+                    submitBtn.classList.remove('enabled');
+                    submitBtn.disabled = true;
+                }
+            });
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Collect user info
+            userInfo = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                role: document.getElementById('role').value,
+                industry: document.getElementById('industry').value,
+                companySize: document.getElementById('companySize').value
+            };
+
+            // Calculate results and show results screen
+            calculateAndShowResults();
+        }
+
+        function calculateScore() {
+            let totalScore = 0;
+            let maxScore = 0;
+            const categoryScores = {};
+
+            questions.forEach(question => {
+                if (answers[question.id]) {
+                    totalScore += answers[question.id].weight;
+                    
+                    if (!categoryScores[question.category]) {
+                        categoryScores[question.category] = { score: 0, max: 0 };
+                    }
+                    categoryScores[question.category].score += answers[question.id].weight;
+                }
+                
+                maxScore += Math.max(...question.options.map(opt => opt.weight));
+                if (!categoryScores[question.category]) {
+                    categoryScores[question.category] = { score: 0, max: 0 };
+                }
+                categoryScores[question.category].max += Math.max(...question.options.map(opt => opt.weight));
+            });
+
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            return { totalScore, maxScore, percentage, categoryScores };
+        }
+
+        function getResultCategory(percentage) {
+            if (percentage >= 80) {
+                return {
+                    category: "AI Advanced",
+                    description: "Congratulations! Your organization is leading in AI adoption with strong foundations across all areas.",
+                    bootcampPath: "ai_mastery",
+                    recommendations: {
+                        immediate: [
+                            "Focus on AI innovation and competitive advantage",
+                            "Become an AI Center of Excellence",
+                            "Mentor other organizations in AI adoption",
+                            "Explore cutting-edge AI technologies"
+                        ],
+                        bootcamp: "Advanced AI Leadership & Innovation Track",
+                        timeline: "Continuous innovation cycle"
+                    }
+                };
+            } else if (percentage >= 60) {
+                return {
+                    category: "AI Ready",
+                    description: "You're well-positioned for AI success! Your organization has good foundations with some areas for strategic improvement.",
+                    bootcampPath: "ai_acceleration",
+                    recommendations: {
+                        immediate: [
+                            "Scale successful AI implementations",
+                            "Address remaining skill gaps through targeted training",
+                            "Expand AI governance and policies",
+                            "Increase cross-department collaboration"
+                        ],
+                        bootcamp: "AI Acceleration & Scaling Track",
+                        timeline: "6-9 months to full optimization"
+                    }
+                };
+            } else if (percentage >= 40) {
+                return {
+                    category: "AI Developing",
+                    description: "Your organization is making progress but needs strategic focus to accelerate AI adoption and maximize ROI.",
+                    bootcampPath: "ai_fundamentals",
+                    recommendations: {
+                        immediate: [
+                            "Establish AI governance framework",
+                            "Invest in comprehensive team training",
+                            "Start with high-impact, low-risk AI pilots",
+                            "Build internal AI advocacy champions"
+                        ],
+                        bootcamp: "AI Fundamentals & Implementation Track",
+                        timeline: "9-12 months to readiness"
+                    }
+                };
+            } else {
+                return {
+                    category: "AI Beginner",
+                    description: "You're at the perfect starting point! Every AI leader began here. With the right strategy, you can rapidly advance.",
+                    bootcampPath: "ai_foundation",
+                    recommendations: {
+                        immediate: [
+                            "Start with basic AI literacy training company-wide",
+                            "Identify AI champions in each department",
+                            "Begin with simple, proven AI tools",
+                            "Create AI experimentation safe spaces"
+                        ],
+                        bootcamp: "AI Foundation & Readiness Track",
+                        timeline: "12-18 months to full readiness"
+                    }
+                };
+            }
+        }
+
+        function generateDepartmentBreakdown(categoryScores) {
+            const breakdown = {};
+            
+            Object.keys(categoryScores).forEach(category => {
+                const score = categoryScores[category];
+                const percentage = Math.round((score.score / score.max) * 100);
+                
+                let status, priority;
+                if (percentage >= 75) {
+                    status = "Strong";
+                    priority = "low";
+                } else if (percentage >= 50) {
+                    status = "Developing";
+                    priority = "medium";
+                } else {
+                    status = "Needs Focus";
+                    priority = "high";
+                }
+                
+                breakdown[category] = {
+                    percentage,
+                    status,
+                    priority,
+                    score: score.score,
+                    max: score.max
+                };
+            });
+            
+            return breakdown;
+        }
+
+        function calculateAndShowResults() {
+            const scoreData = calculateScore();
+            const resultCategory = getResultCategory(scoreData.percentage);
+            const departmentBreakdown = generateDepartmentBreakdown(scoreData.categoryScores);
+            
+            // Log lead capture data
+            console.log('AI Readiness Lead Captured:', {
+                ...userInfo,
+                score: scoreData.totalScore,
+                percentage: scoreData.percentage,
+                category: resultCategory.category,
+                departmentBreakdown,
+                answers,
+                timestamp: new Date().toISOString()
+            });
+
+            // Generate results HTML
+            generateResultsHTML(scoreData, resultCategory, departmentBreakdown);
+            
+            currentStep = 'results';
+            showScreen('results-screen');
+        }
+
+        function generateResultsHTML(scoreData, resultCategory, departmentBreakdown) {
+            const resultsContainer = document.getElementById('results-screen');
+            resultsContainer.innerHTML = `
+                <div class="results-header">
+                    <div class="score-display">
+                        <div class="score-number">${scoreData.percentage}%</div>
+                        <div class="score-category">${resultCategory.category}</div>
+                        <div class="score-subtitle">AI Readiness Score</div>
+                    </div>
+                    
+                    <h2>${userInfo.name}, here's your AI adoption roadmap</h2>
+                    <p class="results-description">${resultCategory.description}</p>
+                </div>
+
+                <div class="department-breakdown">
+                    <h3>Department-by-Department Analysis</h3>
+                    <div class="departments-grid">
+                        ${Object.entries(departmentBreakdown).map(([dept, data]) => `
+                            <div class="department-card ${data.priority}">
+                                <div class="dept-header">
+                                    <h4>${dept}</h4>
+                                    <span class="status ${data.priority}">${data.status}</span>
+                                </div>
+                                <div class="dept-score">
+                                    <div class="score-bar">
+                                        <div class="score-fill" style="width: ${data.percentage}%"></div>
+                                    </div>
+                                    <span class="dept-percentage">${data.percentage}%</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="recommendations-section">
+                    <h3>Your Immediate Action Plan</h3>
+                    <ul class="recommendations-list">
+                        ${resultCategory.recommendations.immediate.map(rec => `
+                            <li class="recommendation">
+                                <span class="rec-icon">🎯</span>
+                                ${rec}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <div class="bootcamp-section">
+                    <h3>🚀 Your Personalized AI Bootcamp is Ready!</h3>
+                    <div class="bootcamp-card">
+                        <h4>${resultCategory.recommendations.bootcamp}</h4>
+                        <p>Estimated completion: ${resultCategory.recommendations.timeline}</p>
+                        <p>100% AI-generated learning path based on your assessment results</p>
+                    </div>
+                </div>
+                
+                <div class="cta-section">
+                    <h3>Ready to Transform Your Organization with AI?</h3>
+                    <p>Join thousands of companies using Ask April AI's proven methodology to accelerate AI adoption.</p>
+                    
+                    <div class="cta-buttons">
+                        <button class="primary-cta" onclick="window.open('https://askaprilai.newzenler.com/bootcamp/${resultCategory.bootcampPath}', '_blank')">
+                            Start My AI Bootcamp Now
+                        </button>
+                        
+                        <button class="secondary-cta" onclick="window.open('https://calendly.com/aprilcoaching/ai-strategy-session', '_blank')">
+                            Book AI Strategy Session
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="personalized-message">
+                    <h4>Personal Message for ${userInfo.name}:</h4>
+                    <p>
+                        Based on your ${scoreData.percentage}% AI readiness score, ${userInfo.company} is positioned in the <strong>${resultCategory.category}</strong> category. 
+                        Your detailed AI adoption roadmap and access to your personalized bootcamp will be sent to ${userInfo.email} within the next few minutes.
+                    </p>
+                </div>
+                
+                <div class="restart-section">
+                    <button class="restart-btn" onclick="restartAssessment()">
+                        Take Assessment Again
+                    </button>
+                </div>
+            `;
+        }
+
+        function restartAssessment() {
+            currentStep = 'welcome';
+            answers = {};
+            userInfo = {};
+            showScreen('welcome-screen');
+            document.getElementById('progress-fill').style.width = '0%';
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            showScreen('welcome-screen');
+        });
+    </script>
+</body>
+</html>
