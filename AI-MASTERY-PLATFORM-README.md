@@ -27,6 +27,11 @@ The AI Mastery Challenge™ is positioned in the top-right quadrant (high person
 - **Organizational Insights Dashboard** - Anonymous aggregated analytics
 - **AI Tools Adoption Tracker** - Real usage feedback and optimization
 
+### 💳 **Subscription Tiers**
+- **Starter ($49/month)** - Basic assessments, learning paths, and progress tracking
+- **Enterprise ($99/month)** - Advanced missions, team collaboration, and department analytics
+- **Enterprise Plus ($199/month)** - White-label solution, custom development, and dedicated support
+
 ## 🚀 **Live Demo Files**
 
 | Component | File | Description |
@@ -73,6 +78,7 @@ The AI Mastery Challenge™ is positioned in the top-right quadrant (high person
 - **Styling**: Custom CSS with responsive design, gradients, and animations
 - **Data Storage**: LocalStorage for client-side persistence
 - **Charts**: Custom CSS-based data visualizations
+- **Payment Processing**: PayPal Subscriptions API integration
 - **Privacy**: Client-side only processing, no external tracking
 - **Deployment Ready**: Static files, works on any web server
 
@@ -86,10 +92,11 @@ The AI Mastery Challenge™ is positioned in the top-right quadrant (high person
 
 ### **Organizational Deployment**
 1. **Assessment Phase**: Deploy individual and organizational assessments
-2. **Onboarding**: Use the unified hub as the main entry point
-3. **Learning**: Roll out gamified missions and prompt engineering training
-4. **Tracking**: Implement ROI tracking and organizational dashboard
-5. **Optimization**: Use tools adoption tracker for continuous improvement
+2. **Payment Setup**: Configure PayPal subscriptions (see `PAYPAL-SETUP-GUIDE.md`)
+3. **Onboarding**: Use the unified hub as the main entry point
+4. **Learning**: Roll out gamified missions and prompt engineering training
+5. **Tracking**: Implement ROI tracking and organizational dashboard
+6. **Optimization**: Use tools adoption tracker for continuous improvement
 
 ### **Customization Options**
 - Update company branding in CSS variables
