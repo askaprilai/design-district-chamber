@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design District Chamber of Commerce</title>
+    <meta http-equiv="refresh" content="0; url=HOMEDD.html">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0b;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .loading {
+            text-align: center;
+        }
+        .loading h1 {
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <h1>Design District Chamber of Commerce</h1>
+        <p>Redirecting to homepage...</p>
+        <p><a href="HOMEDD.html" style="color: #d4af37;">Click here if not redirected automatically</a></p>
+    </div>
+    
+    <script>
+        // Fallback redirect
+        setTimeout(() => {
+            window.location.href = 'HOMEDD.html';
+        }, 1000);
+    </script>
+</body>
+</html>
