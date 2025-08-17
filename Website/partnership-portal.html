@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partnership Portal - Design District Chamber of Commerce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #e8eaed;
+            background: #0a0a0b;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text .district {
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            color: #ccc;
+            font-size: 0.9em;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            color: #000;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Main Layout */
+        .portal-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            margin-top: 100px;
+            padding: 2rem 0;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar h3 {
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: #ccc;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            transform: translateX(5px);
+        }
+
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            transition: height 0.3s ease;
+        }
+
+        .nav-menu a:hover::before,
+        .nav-menu a.active::before {
+            height: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.2em;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            color: #ccc;
+            font-size: 1.1em;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #d4af37;
+            font-weight: 300;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dashboard-card:hover .card-icon::before {
+            opacity: 1;
+        }
+
+        .dashboard-card:hover .card-icon {
+            border-color: rgba(212, 175, 55, 0.6);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-content {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #d4af37;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Events Section */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .event-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .event-type.virtual {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .event-type.live {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .event-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-date {
+            color: #d4af37;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .event-description {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Directory Section */
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+            font-weight: bold;
+        }
+
+        .member-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .member-role {
+            color: #d4af37;
+            margin-bottom: 0.8rem;
+            font-size: 0.9em;
+        }
+
+        .member-company {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .member-contact {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .contact-btn {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+        }
+
+        /* News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .news-articles {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .news-article {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .news-article:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .news-date {
+            color: #d4af37;
+            font-size: 0.9em;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .news-excerpt {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .newsletter-signup {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+
+        .newsletter-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .newsletter-form input::placeholder {
+            color: #999;
+        }
+
+        /* Community Feed */
+        .community-feed {
+            margin-top: 2rem;
+        }
+
+        .post-composer {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .composer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .composer-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: white;
+            font-weight: bold;
+        }
+
+        .composer-input {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 8px;
+            outline: none;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .composer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .post-options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .post-option {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+
+        .post-option:hover {
+            color: #d4af37;
+        }
+
+        .feed-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .feed-post {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            color: white;
+            font-weight: bold;
+        }
+
+        .post-author {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+
+        .post-time {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .post-content {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-action {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-action:hover {
+            color: #d4af37;
+        }
+
+        /* Share Quote Modal */
+        .share-quote-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .share-quote-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0f0f0f 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .share-quote-header {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .share-quote-title {
+            color: #d4af37;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .close-quote {
+            color: #ccc;
+            font-size: 2em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-quote:hover {
+            color: #d4af37;
+        }
+
+        .quote-display {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: 1.4em;
+            color: #fff;
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .quote-author {
+            color: #d4af37;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .share-btn.copy {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .share-btn.linkedin {
+            background: #0077b5;
+            color: #fff;
+        }
+
+        .share-btn.twitter {
+            background: #1da1f2;
+            color: #fff;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .copy-success {
+            display: none;
+            color: #4caf50;
+            font-size: 0.9em;
+            margin-top: 1rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .portal-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0.5rem 0;
+            }
+
+            .portal-layout {
+                padding: 1rem 0;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .dashboard-grid,
+            .events-grid,
+            .directory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="design-district-chamber.html" class="logo">
+                    <div class="logo-fallback" style="width: 60px; height: 45px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9em; border-radius: 8px;">DCC</div>
+                    <div class="logo-text">
+                        Design <span class="district">District</span><br>
+                        <small style="font-size: 0.6em; font-weight: 400; color: #fff; margin-top: -8px; display: block;">Connect Portal</small>
+                    </div>
+                </a>
+                <div class="user-menu">
+                    <div class="user-info">Welcome, Connect Member</div>
+                    <a href="design-district-chamber.html" class="logout-btn">← Back to Main Site</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="portal-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <h3>Design District Connect</h3>
+                <ul class="nav-menu">
+                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard">⟡ Dashboard</a></li>
+                    <li><a href="#events" class="nav-link" data-section="events">◆ Events</a></li>
+                    <li><a href="#directory" class="nav-link" data-section="directory">◇ Member Directory</a></li>
+                    <li><a href="#news" class="nav-link" data-section="news">◎ News & Newsletter</a></li>
+                    <li><a href="#community" class="nav-link" data-section="community">◈ Community Feed</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="section-header">
+                        <h1 class="section-title">Design District Connect Dashboard</h1>
+                        <p class="section-subtitle">Your exclusive hub for Design District Connect activities and premium member benefits</p>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-icon">E</div>
+                                <div class="card-title">Upcoming Events</div>
+                            </div>
+                            <div class="card-content">
+                                <p>Next networking mixer in 5 days. Don't miss our monthly design showcase.</p>
+                            </div>
+                            <div class="card-stats">
+                                <div class="stat">
+                                    <div class="stat-number">3</div>
+                                    <div class="stat-label">This Month</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-label">Registered</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-icon">M</div>
+                                <div class="card-title">Member Network</div>
+                            </div>
+                            <div class="card-content">
+                                <p>Connect with 47 active Design District Connect members across luxury industries.</p>
+                            </div>
+                            <div class="card-stats">
+                                <div class="stat">
+                                    <div class="stat-number">47</div>
+                                    <div class="stat-label">Members</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">8</div>
+                                    <div class="stat-label">New This Month</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-icon">C</div>
+                                <div class="card-title">Community Activity</div>
+                            </div>
+                            <div class="card-content">
+                                <p>Latest discussions on market trends and collaboration opportunities.</p>
+                            </div>
+                            <div class="card-stats">
+                                <div class="stat">
+                                    <div class="stat-number">23</div>
+                                    <div class="stat-label">New Posts</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">156</div>
+                                    <div class="stat-label">Interactions</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shareable Quote Card -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-icon">S</div>
+                                <div class="card-title">Share & Inspire</div>
+                            </div>
+                            <div class="card-content">
+                                <p>Spread the word about Design District Connect with our exclusive member quote.</p>
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                <button id="shareQuoteBtn" style="background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); color: #000; padding: 0.8rem 1.5rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.9em;">Generate Share Quote</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Events Section -->
+                <section id="events" class="content-section">
+                    <div class="section-header">
+                        <h1 class="section-title">Events</h1>
+                        <p class="section-subtitle">Virtual and live networking opportunities</p>
+                    </div>
+
+                    <div class="events-grid">
+                        <div class="event-card">
+                            <div class="event-type virtual">Virtual</div>
+                            <h3 class="event-title">Design Trends 2024 Webinar</h3>
+                            <div class="event-date">March 15, 2024 • 2:00 PM EST</div>
+                            <p class="event-description">Join industry leaders as we explore the latest design trends shaping luxury retail and residential spaces.</p>
+                            <div class="event-actions">
+                                <a href="#" class="btn btn-primary">Join Event</a>
+                                <a href="#" class="btn btn-secondary">Add to Calendar</a>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-type live">Live Event</div>
+                            <h3 class="event-title">Monthly Networking Mixer</h3>
+                            <div class="event-date">March 22, 2024 • 6:00 PM</div>
+                            <p class="event-description">Connect with fellow members at our signature monthly mixer. Location: Design District Flagship Store.</p>
+                            <div class="event-actions">
+                                <a href="#" class="btn btn-primary">RSVP</a>
+                                <a href="#" class="btn btn-secondary">View Details</a>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-type live">Live Event</div>
+                            <h3 class="event-title">Luxury Retail Workshop</h3>
+                            <div class="event-date">April 5, 2024 • 10:00 AM</div>
+                            <p class="event-description">Deep dive into luxury retail strategies with guest speakers from leading design houses.</p>
+                            <div class="event-actions">
+                                <a href="#" class="btn btn-primary">Register</a>
+                                <a href="#" class="btn btn-secondary">Learn More</a>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-type virtual">Virtual</div>
+                            <h3 class="event-title">Sustainability in Design</h3>
+                            <div class="event-date">April 12, 2024 • 3:00 PM EST</div>
+                            <p class="event-description">Exploring sustainable practices in luxury design and retail with environmental impact experts.</p>
+                            <div class="event-actions">
+                                <a href="#" class="btn btn-primary">Register</a>
+                                <a href="#" class="btn btn-secondary">Share Event</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Directory Section -->
+                <section id="directory" class="content-section">
+                    <div class="section-header">
+                        <h1 class="section-title">Design District Connect Directory</h1>
+                        <p class="section-subtitle">Connect with fellow Design District Connect premium members</p>
+                    </div>
+
+                    <div class="directory-grid">
+                        <div class="member-card">
+                            <div class="member-avatar">SA</div>
+                            <div class="member-name">Sarah Anderson</div>
+                            <div class="member-role">Creative Director</div>
+                            <div class="member-company">AskApril AI</div>
+                            <div class="member-contact">
+                                <a href="#" class="contact-btn">📧</a>
+                                <a href="#" class="contact-btn">💼</a>
+                                <a href="#" class="contact-btn">🔗</a>
+                            </div>
+                        </div>
+
+                        <div class="member-card">
+                            <div class="member-avatar">MR</div>
+                            <div class="member-name">Marco Rodriguez</div>
+                            <div class="member-role">Founder & CEO</div>
+                            <div class="member-company">Ilmoda</div>
+                            <div class="member-contact">
+                                <a href="#" class="contact-btn">📧</a>
+                                <a href="#" class="contact-btn">💼</a>
+                                <a href="#" class="contact-btn">🔗</a>
+                            </div>
+                        </div>
+
+                        <div class="member-card">
+                            <div class="member-avatar">EL</div>
+                            <div class="member-name">Elena Liu</div>
+                            <div class="member-role">Interior Designer</div>
+                            <div class="member-company">Luxury Studio</div>
+                            <div class="member-contact">
+                                <a href="#" class="contact-btn">📧</a>
+                                <a href="#" class="contact-btn">💼</a>
+                                <a href="#" class="contact-btn">🔗</a>
+                            </div>
+                        </div>
+
+                        <div class="member-card">
+                            <div class="member-avatar">DJ</div>
+                            <div class="member-name">David Johnson</div>
+                            <div class="member-role">Gallery Owner</div>
+                            <div class="member-company">Artisan Gallery</div>
+                            <div class="member-contact">
+                                <a href="#" class="contact-btn">📧</a>
+                                <a href="#" class="contact-btn">💼</a>
+                                <a href="#" class="contact-btn">🔗</a>
+                            </div>
+                        </div>
+
+                        <div class="member-card">
+                            <div class="member-avatar">AT</div>
+                            <div class="member-name">Anna Thompson</div>
+                            <div class="member-role">Retail Manager</div>
+                            <div class="member-company">Boutique Retail</div>
+                            <div class="member-contact">
+                                <a href="#" class="contact-btn">📧</a>
+                                <a href="#" class="contact-btn">💼</a>
+                                <a href="#" class="contact-btn">🔗</a>
+                            </div>
+                        </div>
+
+                        <div class="member-card">
+                            <div class="member-avatar">RC</div>
+                            <div class="member-name">Robert Chen</div>
+                            <div class="member-role">Principal Architect</div>
+                            <div class="member-company">Architecture Firm</div>
+                            <div class="member-contact">
+                                <a href="#" class="contact-btn">📧</a>
+                                <a href="#" class="contact-btn">💼</a>
+                                <a href="#" class="contact-btn">🔗</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- News & Newsletter Section -->
+                <section id="news" class="content-section">
+                    <div class="section-header">
+                        <h1 class="section-title">Design District Connect News</h1>
+                        <p class="section-subtitle">Stay informed with the latest Design District Connect member news and exclusive premium insights</p>
+                    </div>
+
+                    <div class="news-grid">
+                        <div class="news-articles">
+                            <article class="news-article">
+                                <div class="news-date">March 10, 2024</div>
+                                <h3 class="news-title">Design District Welcomes New Luxury Brands</h3>
+                                <p class="news-excerpt">Three new luxury fashion houses announce flagship stores in the Design District, expanding our world-class retail destination...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </article>
+
+                            <article class="news-article">
+                                <div class="news-date">March 8, 2024</div>
+                                <h3 class="news-title">Design District Connect Member Spotlight: Innovative Sustainable Design</h3>
+                                <p class="news-excerpt">Featuring Elena Liu's groundbreaking work in eco-luxury interior design that's reshaping industry standards for Connect members...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </article>
+
+                            <article class="news-article">
+                                <div class="news-date">March 5, 2024</div>
+                                <h3 class="news-title">Q1 Market Report: Design District Growth Trends</h3>
+                                <p class="news-excerpt">Exclusive insights into foot traffic, retail performance, and emerging opportunities in Miami's premier design destination...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </article>
+                        </div>
+
+                        <div class="newsletter-signup">
+                            <h3 class="newsletter-title">Newsletter Subscription</h3>
+                            <p style="color: #ccc; margin-bottom: 1.5rem; font-size: 0.9em;">Get weekly updates delivered to your inbox</p>
+                            <form class="newsletter-form">
+                                <input type="email" placeholder="Your email address" required>
+                                <select style="padding: 0.8rem; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; border-radius: 6px; outline: none;">
+                                    <option value="weekly">Weekly Digest</option>
+                                    <option value="events">Events Only</option>
+                                    <option value="news">News Only</option>
+                                    <option value="all">All Updates</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Community Feed Section -->
+                <section id="community" class="content-section">
+                    <div class="section-header">
+                        <h1 class="section-title">Design District Connect Community</h1>
+                        <p class="section-subtitle">Connect and share with fellow Design District Connect premium members</p>
+                    </div>
+
+                    <div class="community-feed">
+                        <!-- Post Composer -->
+                        <div class="post-composer">
+                            <div class="composer-header">
+                                <div class="composer-avatar">YU</div>
+                                <textarea class="composer-input" placeholder="Share an update, ask a question, or start a discussion..."></textarea>
+                            </div>
+                            <div class="composer-actions">
+                                <div class="post-options">
+                                    <a href="#" class="post-option">📷 Photo</a>
+                                    <a href="#" class="post-option">📁 Document</a>
+                                    <a href="#" class="post-option">🏷️ Tag Members</a>
+                                </div>
+                                <button class="btn btn-primary">Post</button>
+                            </div>
+                        </div>
+
+                        <!-- Feed Posts -->
+                        <div class="feed-posts">
+                            <div class="feed-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">SA</div>
+                                    <div class="post-author">
+                                        <div class="author-name">Sarah Anderson</div>
+                                        <div class="post-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Just wrapped up an amazing collaboration with three chamber members on a new AI-driven design project. The power of our network continues to amaze me! Looking forward to sharing more details at next week's mixer. 🎨✨</p>
+                                </div>
+                                <div class="post-actions">
+                                    <a href="#" class="post-action">👍 12 Likes</a>
+                                    <a href="#" class="post-action">💬 5 Comments</a>
+                                    <a href="#" class="post-action">📤 Share</a>
+                                </div>
+                            </div>
+
+                            <div class="feed-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">MR</div>
+                                    <div class="post-author">
+                                        <div class="author-name">Marco Rodriguez</div>
+                                        <div class="post-time">5 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Exciting news! Ilmoda is launching our spring collection next month with a special showcase for chamber members. Stay tuned for exclusive preview invitations. Would love to collaborate with local designers on future projects! 🌟</p>
+                                </div>
+                                <div class="post-actions">
+                                    <a href="#" class="post-action">👍 18 Likes</a>
+                                    <a href="#" class="post-action">💬 8 Comments</a>
+                                    <a href="#" class="post-action">📤 Share</a>
+                                </div>
+                            </div>
+
+                            <div class="feed-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">EL</div>
+                                    <div class="post-author">
+                                        <div class="author-name">Elena Liu</div>
+                                        <div class="post-time">1 day ago</div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Looking for sustainable material suppliers for an upcoming luxury residential project. Any recommendations from fellow members? Particularly interested in eco-friendly alternatives to traditional luxury finishes. Thanks in advance! 🌱</p>
+                                </div>
+                                <div class="post-actions">
+                                    <a href="#" class="post-action">👍 7 Likes</a>
+                                    <a href="#" class="post-action">💬 12 Comments</a>
+                                    <a href="#" class="post-action">📤 Share</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Share Quote Modal -->
+    <div id="shareQuoteModal" class="share-quote-modal">
+        <div class="share-quote-content">
+            <div class="share-quote-header">
+                <div class="share-quote-title">Share Design District Connect</div>
+                <button class="close-quote" onclick="closeShareQuote()">&times;</button>
+            </div>
+            <div class="quote-display">
+                <div class="quote-text" id="quoteText">
+                    "Being part of Design District Connect has transformed how I do business. The exclusive access to luxury industry leaders and strategic partnerships has accelerated my growth beyond what I thought possible."
+                </div>
+                <div class="quote-author">— Design District Connect Member</div>
+                <div class="share-buttons">
+                    <button class="share-btn copy" onclick="copyQuote()">📋 Copy Quote</button>
+                    <a href="#" class="share-btn linkedin" id="linkedinShare" target="_blank">💼 Share on LinkedIn</a>
+                    <a href="#" class="share-btn twitter" id="twitterShare" target="_blank">🐦 Share on Twitter</a>
+                </div>
+                <div class="copy-success" id="copySuccess">✓ Quote copied to clipboard!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all nav links and sections
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    contentSections.forEach(cs => cs.classList.remove('active'));
+                    
+                    // Add active class to clicked nav link
+                    this.classList.add('active');
+                    
+                    // Show corresponding content section
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+
+            // Newsletter form
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for subscribing to our newsletter!');
+                });
+            }
+
+            // Post composer
+            const postComposer = document.querySelector('.post-composer button');
+            if (postComposer) {
+                postComposer.addEventListener('click', function() {
+                    const textarea = document.querySelector('.composer-input');
+                    if (textarea.value.trim()) {
+                        alert('Post shared with the community!');
+                        textarea.value = '';
+                    }
+                });
+            }
+
+            // Post interactions
+            document.querySelectorAll('.post-action').forEach(action => {
+                action.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Add interaction feedback
+                    this.style.color = '#d4af37';
+                    setTimeout(() => {
+                        this.style.color = '';
+                    }, 300);
+                });
+            });
+
+            // Share Quote functionality
+            const shareQuoteBtn = document.getElementById('shareQuoteBtn');
+            if (shareQuoteBtn) {
+                shareQuoteBtn.addEventListener('click', function() {
+                    generateNewQuote();
+                    document.getElementById('shareQuoteModal').style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    updateShareLinks();
+                });
+            }
+        });
+
+        // Array of inspiring quotes about Design District Connect
+        const quotes = [
+            "Being part of Design District Connect has transformed how I do business. The exclusive access to luxury industry leaders and strategic partnerships has accelerated my growth beyond what I thought possible.",
+            
+            "Design District Connect opened doors I never knew existed. The networking opportunities and business insights have been invaluable to scaling my creative practice.",
+            
+            "The mentorship and collaboration opportunities through Design District Connect have elevated my brand to new heights. It's more than membership – it's a competitive advantage.",
+            
+            "Joining Design District Connect was the best investment I made for my business. The premium access and strategic connections have generated incredible opportunities.",
+            
+            "Through Design District Connect, I've built meaningful partnerships that have transformed my business model. The value goes far beyond traditional networking.",
+            
+            "Design District Connect provides unparalleled access to Miami's luxury market. The insights and connections have been instrumental in my company's expansion."
+        ];
+
+        function generateNewQuote() {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quoteText').textContent = `"${randomQuote}"`;
+        }
+
+        function updateShareLinks() {
+            const quoteText = document.getElementById('quoteText').textContent;
+            const shareText = `${quoteText} — Design District Connect Member\n\nLearn more about exclusive membership: designdistrictchamber.org`;
+            
+            // Update LinkedIn share link
+            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=designdistrictchamber.org&summary=${encodeURIComponent(shareText)}`;
+            document.getElementById('linkedinShare').href = linkedinUrl;
+            
+            // Update Twitter share link
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+            document.getElementById('twitterShare').href = twitterUrl;
+        }
+
+        function copyQuote() {
+            const quoteText = document.getElementById('quoteText').textContent;
+            const fullText = `${quoteText} — Design District Connect Member\n\nLearn more about exclusive membership: designdistrictchamber.org`;
+            
+            navigator.clipboard.writeText(fullText).then(function() {
+                document.getElementById('copySuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copySuccess').style.display = 'none';
+                }, 3000);
+            }).catch(function() {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = fullText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                document.getElementById('copySuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copySuccess').style.display = 'none';
+                }, 3000);
+            });
+        }
+
+        function closeShareQuote() {
+            document.getElementById('shareQuoteModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('shareQuoteModal')) {
+                closeShareQuote();
+            }
+        });
+
+        // Close modal with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('shareQuoteModal').style.display === 'block') {
+                closeShareQuote();
+            }
+        });
+    </script>
+</body>
+</html>

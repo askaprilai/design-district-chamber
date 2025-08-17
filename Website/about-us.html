@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Design District Chamber of Commerce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #e8eaed;
+            background: #0a0a0b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-image {
+            height: 60px;
+            width: auto;
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            object-fit: contain;
+        }
+
+        .logo:hover .logo-image {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        .logo-text {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text .district {
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ccc;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 100px;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Hero Section */
+        .page-hero {
+            padding: 6rem 0 4rem;
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0f0f0f 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+            animation: luxuryShimmer 6s ease-in-out infinite;
+        }
+
+        @keyframes luxuryShimmer {
+            0%, 100% { opacity: 0.4; }
+            33% { opacity: 0.2; }
+            66% { opacity: 0.6; }
+        }
+
+        .page-hero h1 {
+            font-size: 4em;
+            font-weight: 200;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-hero p {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Executive Director Section */
+        .executive-director {
+            padding: 6rem 0;
+            background: #0a0a0b;
+        }
+
+        .executive-profile {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 100%;
+            max-width: 350px;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .profile-image:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(212, 175, 55, 0.4);
+        }
+
+        .profile-content h2 {
+            font-size: 2.5em;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-title {
+            font-size: 1.2em;
+            color: #d4af37;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-bio {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        .profile-achievements {
+            list-style: none;
+        }
+
+        .profile-achievements li {
+            padding: 0.5rem 0;
+            color: #e8eaed;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .profile-achievements li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Board Section */
+        .board-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0f0f0f 100%);
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .board-member {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .board-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .board-member:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .board-member:hover::before {
+            transform: scaleX(1);
+        }
+
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .member-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .member-title {
+            color: #d4af37;
+            font-size: 1em;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .member-bio {
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Bio Popup Styles */
+        .bio-popup {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .board-member:hover .bio-popup {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .popup-content h4 {
+            color: #d4af37;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .popup-content p {
+            color: #e8eaed;
+            line-height: 1.6;
+            font-size: 0.9em;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .popup-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Ensure board-member cards have relative positioning for popup */
+        .board-member {
+            position: relative;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            line-height: 1.6;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .page-hero h1 {
+                font-size: 2.5em;
+            }
+
+            .executive-profile {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .board-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="design-district-chamber.html" class="logo">
+                    <img src="logo.png" alt="Design District Chamber Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="logo-fallback" style="width: 80px; height: 60px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1em; border-radius: 8px;">DDCC</div>
+                    <div class="logo-text">
+                        Design <span class="district">District</span><br>
+                        <small style="font-size: 0.6em; font-weight: 400; color: #fff; margin-top: -8px; display: block;">Chamber of Commerce</small>
+                    </div>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="design-district-chamber.html#home">Home</a></li>
+                        <li><a href="#about" style="color: #d4af37;">About Us</a></li>
+                        <li><a href="design-district-chamber.html#membership">Membership</a></li>
+                        <li><a href="design-district-chamber.html#events">Events</a></li>
+                        <li><a href="design-district-chamber.html#resources">Resources</a></li>
+                        <li><a href="design-district-chamber.html#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="container">
+                <h1>About Us</h1>
+                <p>Meet the visionary leaders driving innovation and excellence in Miami's Design District</p>
+            </div>
+        </section>
+
+        <!-- Executive Director Section -->
+        <section class="executive-director">
+            <div class="container">
+                <div class="executive-profile">
+                    <div class="profile-image">
+                        <img src="Images/April.jpg" alt="April Sabral" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                    </div>
+                    <div class="profile-content">
+                        <h2>April Sabral</h2>
+                        <div class="profile-title">Executive Director</div>
+                        <div class="profile-bio">
+                            <p>April Sabral is a seasoned retail and hospitality leader with over three decades of global executive experience, having held leadership roles with Apple, Starbucks, Gap, and DAVIDsTEA. Starting as a part-time sales associate at 17, she rose to Senior Vice President overseeing 300 stores, building her career on developing teams, cultivating culture, and driving performance.</p>
+                            
+                            <p>April lived in the Design District from 2003-2006 before leaving to follow her international retail career. She is so excited to be back and support the chamber as Executive Director. April's retail and hospitality background reflects the very spirit of the Design District—entrepreneurial, creative, and service-driven. Her mission is to champion local businesses, foster meaningful connections, and position the Design District as a thriving hub where commerce, culture, and innovation meet.</p>
+                        </div>
+                        <ul class="profile-achievements">
+                            <li>30+ years global executive experience</li>
+                            <li>Founder of April Sabral Leadership, RetailU, and AskApril.Ai</li>
+                            <li>Pioneer in AI-powered training and leadership development</li>
+                            <li>Expert in people-first strategies and community building</li>
+                            <li><a href="https://www.linkedin.com/in/aprilsabral/" target="_blank" style="color: #d4af37; text-decoration: none;">Learn more about April here</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Board of Directors Section -->
+        <section class="board-section">
+            <div class="container">
+                <h2 class="section-title">Board of Directors</h2>
+                <p style="text-align: center; font-size: 1.2em; color: #ccc; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Our distinguished board represents the diverse talents and expertise that make the Design District a world-class destination for creativity and commerce.
+                </p>
+
+                <div class="board-grid">
+                    <div class="board-member">
+                        <div class="member-photo">
+                            <img src="Images/Lubna.jpg" alt="Lubna Nejjar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <h3 class="member-name">Lubna Nejjar</h3>
+                        <div class="member-title">Chair</div>
+                        <p class="member-bio">Award-winning CEO, Designer, Author & Retail Developer. Founder of IL Moda Brand with over a decade building 150+ fashion brands. Former Board President of Columbus Fashion Council.</p>
+                        
+                        <!-- Hover Bio Popup -->
+                        <div class="bio-popup">
+                            <div class="popup-content">
+                                <h4>Lubna Nejjar - Chair</h4>
+                                <p>Lubna Najjar is an accomplished entrepreneur, brand developer, and fashion designer, with over a decade of experience in the fashion and brand development industries. As the founder of IL Moda Brand, LLC (2012-present) and Her Denim, LLC, she has played a pivotal role in building and launching over 150 fashion brands, focusing on contemporary and influencer-led labels. Lubna was the curator and developer of the official Fashion District in downtown Columbus, Ohio, showcasing her ability to shape and drive industry initiatives on a large scale. Lubna now serves on the Board of Directors for the Design District Chamber of Commerce in Miami, FL, and BBB of South East Florida serving 240,000 businesses.</p>
+                                
+                                <p>Beyond her work in brand development, Lubna has made significant contributions to fashion education as the co-author of the academic textbook *The Power of Branding in Fashion 2000 & Beyond*. Her leadership extends into industry governance, having served as the former Board President of the Columbus Fashion Council and as Chair of the Entrepreneurship Committee on the Better Business Bureau's Board of Directors. She is also a member of the Guild for the Council of Fashion Designers of America (CFDA).</p>
+                                
+                                <p>Lubna's work has garnered widespread media attention, with features on *Good Morning America*, in *The Huffington Post*, *Forbes*, *USA Today*, and more, underscoring her influence and impact within the fashion industry.</p>
+                                
+                                <p style="margin-top: 1.5rem; text-align: center;">
+                                    <a href="https://www.linkedin.com/in/lubnanajjar/" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">Connect with Lubna on LinkedIn</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-member">
+                        <div class="member-photo">
+                            <img src="Images/Martu.jpg" alt="Martu E. Freeman-Parker" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <h3 class="member-name">Martu E. Freeman-Parker</h3>
+                        <div class="member-title">Vice Chair</div>
+                        <p class="member-bio">CEO/Founder of M.E.F. Productions, LLC. Fashion industry veteran with experience at Polo Ralph Lauren, J.Crew, and Calvin Klein. Currently Managing Director of Mana Fashion Services and board member of Miami Downtown Development Authority.</p>
+                        
+                        <!-- Hover Bio Popup -->
+                        <div class="bio-popup">
+                            <div class="popup-content">
+                                <h4>Martu E. Freeman-Parker - Vice Chair</h4>
+                                <p>Martu E. Freeman-Parker earned a BA in Fashion Merchandising/Consumer Services from Norfolk State University. She gained extensive experience in New York's apparel industry with nationally recognized companies including Polo Ralph Lauren, Calvin Klein Jeans, Gap Inc., Victoria Secret, and American Eagle Outfitters, holding positions from Assistant Production Manager to Design Coordinator.</p>
+                                
+                                <p>Currently based in Miami, she operates M.E.F. Productions LLC, offering design coaching, line development, brand management, and fashion business workshops. Martu is the Founder & Host of Fashion TALKS Miami, a monthly networking event for Miami's local fashion community. In 2018, she published her first book "Get the Hell Out."</p>
+                                
+                                <p>In October 2021, Martu became Managing Director of Mana Fashion Services, a subdivision of Mana Common in Miami. She serves on multiple boards including Miami Downtown Development Authority, Fashion Group International, and St Thomas University Fashion Merchandising Program.</p>
+                                
+                                <p style="margin-top: 1.5rem; text-align: center;">
+                                    <a href="https://www.linkedin.com/in/mefproductions/" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">Connect with Martu on LinkedIn</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-member">
+                        <div class="member-photo">
+                            <img src="Images/Atiba.jpg" alt="Atiba Madyun" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <h3 class="member-name">Atiba Madyun</h3>
+                        <div class="member-title">Treasurer</div>
+                        <p class="member-bio">Over 25 years building coalitions between corporations, nonprofits, and government bodies. Former Deputy Executive Director of NBCSL and policy consultant.</p>
+                        
+                        <!-- Hover Bio Popup -->
+                        <div class="bio-popup">
+                            <div class="popup-content">
+                                <h4>Atiba Madyun - Treasurer</h4>
+                                <p>Atiba has over 25 years of experience building coalitions between corporations, nonprofits, government bodies, labor unions, advocacy groups, and the private sector, with a specialty in legislative strategy, communication, community organizing, outreach, and education. He has been on numerous boards including CommonHealth Action and served as treasurer, then chaired the Office of the District of Columbia's Mayor's Commission on National and Community Service, now ServeDC.</p>
+                                
+                                <p>From 2002-2009, Atiba was the Deputy Executive Director overseeing the policy staff for the National Black Caucus of State Legislators (NBCSL). In this role, he opened relations with the Bush White House, created an annual meeting between NBCSL and the Congressional Black Caucus (CBC), wrote two award-winning grant proposals and worked on what is now an ongoing partnership with the National Hispanic Caucus of State Legislators (NHCSL). This partnership grew to include the Native American Caucus of State Legislators and the National Caucus of Asian Pacific Islanders in what is now referred to as the Quad Caucus.</p>
+                                
+                                <p>His work as a consultant and an intermediary with numerous policymaking organizations includes the National Conference of State Legislators, Council of State Governments, National Governors Association, Congressional Black Caucus among others. He worked more recently with Concepts Communications on the State Exchange on Employment and Disability (S.E.E.D.) through the Department of Labor's Office of Disability Employment Policy on strategic outreach to policymakers and policy organizations.</p>
+                                
+                                <p style="margin-top: 1.5rem; text-align: center;">
+                                    <a href="https://linkedin.com/in/atibamadyun" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">Connect with Atiba on LinkedIn</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-member">
+                        <div class="member-photo">
+                            <img src="Images/Olga.jpg" alt="Olga Largen" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <h3 class="member-name">Olga Largen</h3>
+                        <div class="member-title">Board Member</div>
+                        <p class="member-bio">Nonprofit sector leader with a decade of experience in fundraising, donor relations, and social impact. Passionate advocate for diversity, inclusion, and social justice with certifications in child advocacy and housing equity.</p>
+                        
+                        <!-- Hover Bio Popup -->
+                        <div class="bio-popup">
+                            <div class="popup-content">
+                                <h4>Olga Largen - Board Member</h4>
+                                <p>With a decade of work experience in the nonprofit sector, Olga is passionate about creating positive social change and empowering vulnerable populations. She manages and cultivates relationships with individual and corporate donors, coordinates fundraising campaigns and events, and communicates the impact of programs and services.</p>
+                                
+                                <p>Olga serves as a member of the board of advisors for the Interfaith Advisory Board, where she collaborates with leaders from different faith communities to foster dialogue, understanding, and cooperation. She holds multiple certifications, including child advocate, notary public, and housing equity, advocacy, and leadership.</p>
+                                
+                                <p>She has strong skills in project management, communication, and training, which she uses to support the mission and vision of the organizations she works with. Olga is fluent in English, Spanish, and Italian, and enjoys learning about different cultures and perspectives. Her areas of focus include diversity, inclusion, and social justice.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-member">
+                        <div class="member-photo">
+                            <img src="Images/Tommy.jpeg" alt="Thomas McClure" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <h3 class="member-name">Thomas McClure</h3>
+                        <div class="member-title">Secretary</div>
+                        <p class="member-bio">Founder of Columbus Fashion Council and Fashion Week Columbus. Cultural strategist with 14+ years building platforms for creative economies and supporting emerging designers in fashion industry development.</p>
+                        
+                        <!-- Hover Bio Popup -->
+                        <div class="bio-popup">
+                            <div class="popup-content">
+                                <h4>Thomas McClure - Secretary</h4>
+                                <p>Thomas McClure is the founder of the Columbus Fashion Council, a non-profit organization dedicated to supporting and developing the fashion industry and community in Columbus, Ohio. The organization also oversees Fashion Week Columbus, which McClure founded in 2010.</p>
+                                
+                                <p>As a founder and cultural strategist, McClure has built platforms to foster creative economies. He spearheaded the development of nationally recognized fashion programming and nonprofit infrastructure, supporting emerging designers and contributing to economic growth and community value in the Columbus fashion industry.</p>
+                                
+                                <p>He also served as the Executive Director of the Greater Columbus Film Commission for a period. In May 2023, after 14 years, he stepped down as Executive Director of the Columbus Fashion Council. As of January 2025, he has taken on the role of Interim Executive Director for the Columbus Fashion Council.</p>
+                                
+                                <p style="margin-top: 1.5rem; text-align: center;">
+                                    <a href="https://www.linkedin.com/in/johnthomasmcclure/" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">Connect with Thomas on LinkedIn</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="board-member">
+                        <div class="member-photo">
+                            <img src="Images/Yolanda.jpg" alt="Yolanda Vega" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <h3 class="member-name">Yolanda Vega</h3>
+                        <div class="member-title">Board Member</div>
+                        <p class="member-bio">Director of Stores at Zadig & Voltaire with 20+ years in luxury retail. Strategic leader specializing in operational excellence, talent development, and customer experience innovation.</p>
+                        
+                        <!-- Hover Bio Popup -->
+                        <div class="bio-popup">
+                            <div class="popup-content">
+                                <h4>Yolanda Vega - Board Member</h4>
+                                <p>Yolanda Vega is a dynamic retail executive and strategic leader with over 20 years of experience driving business growth in the luxury and contemporary fashion sectors. As Director of Stores at Zadig & Voltaire, she oversees high-volume, high-visibility markets, developing top-performing teams that deliver exceptional results.</p>
+                                
+                                <p>Her expertise spans strategic leadership, operational excellence, talent development, and customer experience innovation, making her a valuable asset in shaping the future of retail organizations. Yolanda's passion for coaching and mentorship has helped transform store teams into high-impact leaders, fueling long-term business success.</p>
+                                
+                                <p>Committed to building strong leadership pipelines and fostering diverse, customer-centric cultures, Yolanda is dedicated to influencing the industry and her community at a broader level.</p>
+                                
+                                <p style="margin-top: 1.5rem; text-align: center;">
+                                    <a href="https://www.linkedin.com/in/yolandaivega/" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">Connect with Yolanda on LinkedIn</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="text-align: center; margin-top: 4rem;">
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 3rem; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); max-width: 600px; margin: 0 auto;">
+                        <h3 style="color: #d4af37; font-size: 1.5em; margin-bottom: 1rem;">Join Our Mission</h3>
+                        <p style="color: #ccc; line-height: 1.7; margin-bottom: 2rem;">
+                            We are actively seeking passionate individuals to join our team and support our growth. If you share our vision for elevating the Design District's creative and commercial excellence, we invite you to connect with us for partnership and collaboration inquiries.
+                        </p>
+                        <a href="design-district-chamber.html#contact" style="background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); color: #000; padding: 1rem 2rem; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; display: inline-block;">Talk to Our Team Today</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Design District Chamber</h4>
+                    <p>Building a stronger creative community through collaboration, innovation, and business excellence.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@designdistrictchamber.org</p>
+                    <p>Phone: Coming Soon</p>
+                    <p>Address: Design District Location TBD</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Get Involved</h4>
+                    <p><a href="design-district-chamber.html#membership">Become a Member</a></p>
+                    <p><a href="#">Volunteer</a></p>
+                    <p><a href="#">Partner with Us</a></p>
+                    <p><a href="#">Sponsor Events</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Design District Chamber of Commerce. All rights reserved. | Domestic Non-Profit Organization</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

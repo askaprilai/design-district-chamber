@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design District Chamber of Commerce - Coming Soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #e8eaed;
+            background: #0a0a0b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-image {
+            height: 60px;
+            width: auto;
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            object-fit: contain;
+        }
+
+        .logo:hover .logo-image {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        .logo-text {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text .district {
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ccc;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)),
+                url('designdistrict.png') center/cover;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                linear-gradient(45deg, rgba(0,0,0,0.2) 25%, transparent 50%, rgba(0,0,0,0.1) 75%);
+            animation: luxuryShimmer 6s ease-in-out infinite;
+        }
+
+        @keyframes luxuryShimmer {
+            0%, 100% { opacity: 0.4; }
+            33% { opacity: 0.2; }
+            66% { opacity: 0.6; }
+        }
+
+        .hero-content {
+            max-width: 700px;
+            position: relative;
+            z-index: 2;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 5.5em;
+            font-weight: 100;
+            margin-bottom: 2rem;
+            margin-top: 3rem;
+            padding-top: 1rem;
+            color: #fff;
+            letter-spacing: -4px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            line-height: 1.2;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .hero h1 .design-district {
+            display: block;
+            font-weight: 300;
+            font-size: 1.0em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5em;
+            margin-left: 0;
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            white-space: nowrap;
+        }
+
+        .hero h1 .chamber {
+            display: block;
+            font-weight: 200;
+            font-size: 0.35em;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 1em;
+            opacity: 0.8;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            line-height: 1.7;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.5px;
+        }
+
+        .coming-soon {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            padding: 1.2rem 3rem;
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .coming-soon:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Email Capture */
+        .email-capture {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            max-width: 450px;
+            margin: 0 auto;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .email-capture h3 {
+            font-size: 1.4em;
+            margin-bottom: 1rem;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .email-form input {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .email-form input:focus {
+            border-color: #000;
+        }
+
+        .email-form button {
+            background: #000;
+            color: #fff;
+            padding: 1rem;
+            border: none;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.3s ease;
+        }
+
+        .email-form button:hover {
+            background: #333;
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 0;
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0f0f0f 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.03) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-text h2 {
+            font-size: 2.5em;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .about-text p {
+            font-size: 1.1em;
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(80px) scale(0.8);
+            animation: flyInUp 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .feature:nth-child(1) { animation-delay: 0.3s; }
+        .feature:nth-child(2) { animation-delay: 0.5s; }
+        .feature:nth-child(3) { animation-delay: 0.7s; }
+
+        @keyframes flyInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(80px) scale(0.8) rotateX(45deg);
+            }
+            50% {
+                opacity: 0.7;
+                transform: translateY(-10px) scale(1.05) rotateX(0deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotateX(0deg);
+            }
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .feature:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .feature:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature h4 {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .feature p {
+            color: #ccc;
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        /* Membership Section */
+        .membership {
+            padding: 5rem 0;
+            background: #f8f9fa;
+        }
+
+        .membership h2 {
+            font-size: 2.5em;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #000;
+        }
+
+        .membership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .membership-card {
+            background: #fff;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.06);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .membership-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .membership-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+        }
+
+        .membership-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .membership-card h3 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #000;
+        }
+
+        .membership-card .price {
+            font-size: 2em;
+            font-weight: 300;
+            color: #000;
+            margin-bottom: 1rem;
+        }
+
+        .membership-card ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .membership-card li {
+            padding: 0.5rem 0;
+            color: #666;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .membership-card li:last-child {
+            border-bottom: none;
+        }
+
+        .membership-btn {
+            background: #000;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.3s ease;
+        }
+
+        .membership-btn:hover {
+            background: #333;
+        }
+
+        /* Team Section */
+        .team {
+            padding: 5rem 0;
+            background: #fff;
+        }
+
+        .team h2 {
+            font-size: 2.5em;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #000;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: #ccc;
+        }
+
+        .team-member h4 {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+
+        .team-member .title {
+            color: #666;
+            font-size: 1em;
+            margin-bottom: 1rem;
+        }
+
+        .team-member p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            line-height: 1.6;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1.1em;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .email-form {
+                flex-direction: column;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #000;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            display: none;
+            margin-top: 1rem;
+        }
+
+        /* Moving Logo Banner */
+        .logo-banner {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f8f6f0 0%, #fafafa 50%, #f8f6f0 100%);
+            overflow: hidden;
+            position: relative;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .logo-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .logo-banner h2 {
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-slider {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            mask: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(0, 0, 0, 1) 10%,
+                rgba(0, 0, 0, 1) 90%,
+                transparent 100%
+            );
+            -webkit-mask: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(0, 0, 0, 1) 10%,
+                rgba(0, 0, 0, 1) 90%,
+                transparent 100%
+            );
+        }
+
+        .logo-track {
+            display: flex;
+            align-items: center;
+            animation: scroll 30s linear infinite;
+            width: fit-content;
+            gap: 4rem;
+        }
+
+        .logo-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .business-logo {
+            flex-shrink: 0;
+            width: 200px;
+            height: 80px;
+            background: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+            text-align: center;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .business-logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.1) 50%,
+                transparent 100%
+            );
+            transition: left 0.5s ease;
+        }
+
+        .business-logo:hover::before {
+            left: 100%;
+        }
+
+        .business-logo:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .business-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: grayscale(20%);
+            transition: filter 0.3s ease;
+        }
+
+        .business-logo:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Duplicate logos for seamless loop */
+        .logo-track-duplicate {
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            gap: 4rem;
+        }
+
+        /* Portal Preview Modal */
+        .portal-preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .portal-preview-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1200px;
+            height: 80%;
+            background: #0a0a0b;
+            border-radius: 20px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .portal-preview-header {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .portal-preview-title {
+            color: #d4af37;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .close-preview {
+            color: #ccc;
+            font-size: 2em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-preview:hover {
+            color: #d4af37;
+        }
+
+        .portal-preview-body {
+            height: calc(100% - 80px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #0a0a0b;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .portal-preview-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .preview-message {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 500px;
+            margin: 2rem;
+        }
+
+        .preview-message h3 {
+            color: #000;
+            font-size: 1.5em;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .preview-message p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .join-now-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            color: #000;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .join-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        }
+    </style>
+    <!-- EmailJS Script -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("SAU17WFhPmeQLrng7"); // Your EmailJS public key
+        })();
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <img src="logo.png" alt="Design District Chamber Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="logo-fallback" style="width: 80px; height: 60px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1em; border-radius: 8px;">DDCC</div>
+                    <div class="logo-text">
+                        Design <span class="district">District</span><br>
+                        <small style="font-size: 0.6em; font-weight: 400; color: #fff; margin-top: -8px; display: block;">Chamber of Commerce</small>
+                    </div>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="#membership">Membership</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>
+                <span class="design-district">Design District</span>
+                <span class="chamber">Chamber of Commerce</span>
+            </h1>
+            <p>Connecting creative businesses, fostering innovation, and building a stronger design community.</p>
+            
+            <div class="coming-soon">Coming Soon</div>
+            
+            <div class="email-capture">
+                <h3>Be the first to know</h3>
+                <div style="margin: 1.5rem 0;"></div>
+                <form class="email-form" id="emailForm">
+                    <input type="text" id="nameInput" placeholder="Your Name" required>
+                    <input type="email" id="emailInput" placeholder="Your Email" required>
+                    <button type="submit">Get Notified</button>
+                </form>
+                <div class="success-message" id="successMessage">
+                    Thank you! We'll keep you updated on our launch.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content" style="display: block;">
+                <div class="tagline" style="text-align: center; margin-bottom: 3rem;">
+                    <h1 style="font-size: 2.8em; font-weight: 200; color: #fff; letter-spacing: 2px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); line-height: 1.3;">
+                        Your Chamber. <span style="color: #d4af37;">Our District.</span> <span style="background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">One Vision.</span>
+                    </h1>
+                </div>
+                <div class="about-text" style="text-align: center;">
+                    <div class="vision-mission" style="margin: 2rem 0;">
+                        <div class="vision" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(212, 175, 55, 0.1); border-radius: 12px; border-left: 3px solid #d4af37; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: pointer;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.boxShadow='0 20px 40px rgba(212, 175, 55, 0.2)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
+                            <h3 style="background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.2em; margin-bottom: 0.8rem; font-weight: 600; text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);">Our Vision</h3>
+                            <p style="color: #e8eaed; line-height: 1.6;">To establish the Miami Design District as a globally recognized hub of innovation, collaboration, and ethical business excellence, where vibrant partnerships and community engagement create a thriving, sustainable economic landscape for generations to come.</p>
+                        </div>
+                        <div class="mission" style="padding: 1.5rem; background: rgba(244, 241, 232, 0.1); border-radius: 12px; border-left: 3px solid #f4f1e8; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: pointer;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.boxShadow='0 20px 40px rgba(244, 241, 232, 0.2)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
+                            <h3 style="background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.2em; margin-bottom: 0.8rem; font-weight: 600; text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);">Our Mission</h3>
+                            <p style="color: #e8eaed; line-height: 1.6;">The mission of the Miami Design District Chamber of Commerce is to empower businesses to thrive by serving as a vital resource for strategic growth, and by advancing the district as a global luxury and cultural destination through marketing, advocacy, partnerships, and education.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-features" style="max-width: 1000px; margin: 0 auto;">
+                    <div class="feature">
+                        <h4>Professional Networking</h4>
+                        <p>Connect with like-minded professionals and expand your creative network through exclusive events and workshops in Miami's premier design destination.</p>
+                    </div>
+                    <div class="feature">
+                        <h4>Business Growth</h4>
+                        <p>Access resources, mentorship, and strategic opportunities to grow your design business and reach new markets throughout South Florida.</p>
+                    </div>
+                    <div class="feature">
+                        <h4>Community Impact</h4>
+                        <p>Collaborate on initiatives that enhance our district's reputation as a global destination for design excellence and innovation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="events" style="padding: 6rem 0; background: linear-gradient(135deg, #f4f1e8 0%, #f8f6f0 50%, #f4f1e8 100%);"
+        <div class="container">
+            <h2 style="font-size: 2.5em; font-weight: 300; text-align: center; margin-bottom: 3rem; background: linear-gradient(135deg, #0a0a0b 0%, #333 30%, #d4af37 70%, #0a0a0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);">Upcoming Events</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                <div style="background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); padding: 2rem; border-radius: 16px; border: 2px solid #d4af37; backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer; box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);" onmouseover="this.style.transform='translateY(-20px) scale(1.05)'; this.style.boxShadow='0 30px 60px rgba(212, 175, 55, 0.5)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 15px 40px rgba(212, 175, 55, 0.3)'">
+                    <div style="color: #000; font-weight: 700; font-size: 1em; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; text-shadow: 0 2px 4px rgba(255,255,255,0.3);">REGISTER NOW</div>
+                    <h3 style="color: #000; font-size: 1.6em; margin-bottom: 1rem; font-weight: 700;">Holiday Kick-off Breakfast</h3>
+                    <p style="color: #000; line-height: 1.6; margin-bottom: 1.5rem; font-weight: 500;">Join us for our exclusive Holiday Kick-off Breakfast! Network with chamber members and celebrate the season with Miami's design and business leaders.</p>
+                    <div style="color: #000; font-size: 1em; font-weight: 600; margin-bottom: 1rem;">October 21st • Location TBD</div>
+                    <a href="#contact" style="display: inline-block; background: #000; color: #fff; padding: 0.8rem 2rem; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 0.9em;">Register for More Information</a>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.8); padding: 2rem; border-radius: 16px; border: 1px solid rgba(244, 241, 232, 0.3); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer; box-shadow: 0 8px 30px rgba(0,0,0,0.1);" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(244, 241, 232, 0.4)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)'">
+                    <div style="color: #d4af37; font-weight: 600; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Planning</div>
+                    <h3 style="color: #0a0a0b; font-size: 1.4em; margin-bottom: 1rem;">Quarterly Mixer</h3>
+                    <p style="color: #333; line-height: 1.6; margin-bottom: 1.5rem;">Connect with fellow design professionals, architects, and luxury retail leaders in an exclusive networking environment.</p>
+                    <div style="color: #666; font-size: 0.9em;">Quarterly • Premium Venues</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="resources" style="padding: 6rem 0; background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0f0f0f 100%);">
+        <div class="container">
+            <h2 style="font-size: 2.5em; font-weight: 300; text-align: center; margin-bottom: 3rem; background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);">Business Resources</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.03); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2em; font-weight: bold;">DIR</div>
+                    <h3 style="color: #fff; margin-bottom: 1rem;">Business Directory</h3>
+                    <p style="color: #ccc; line-height: 1.6;">Connect with vetted design professionals, luxury retailers, and service providers in the district.</p>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.03); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2em; font-weight: bold;">MKT</div>
+                    <h3 style="color: #fff; margin-bottom: 1rem;">Market Insights</h3>
+                    <p style="color: #ccc; line-height: 1.6;">Access exclusive market reports, trends, and data specific to Miami's luxury design market.</p>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.03); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2em; font-weight: bold;">PPP</div>
+                    <h3 style="color: #fff; margin-bottom: 1rem;">Partnership Portal</h3>
+                    <p style="color: #ccc; line-height: 1.6;">Discover collaboration opportunities with established brands and emerging designers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Section -->
+    <section id="membership" class="membership" style="padding: 6rem 0; background: #0a0a0b;">
+        <div class="container">
+            <h2 style="font-size: 2.5em; font-weight: 300; text-align: center; margin-bottom: 1rem; background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);">Design District Connect</h2>
+            <p style="text-align: center; color: #ccc; font-size: 1.2em; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">Unlock exclusive opportunities and elevate your business through our premium membership tiers</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <div class="membership-card-animated" style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
+                    <div style="color: #d4af37; font-weight: 600; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Individual</div>
+                    <h3 style="color: #fff; font-size: 1.8em; margin-bottom: 1rem; font-weight: 300;">Creative Professional</h3>
+                    <div style="color: #fff; font-size: 2.2em; font-weight: 200; margin-bottom: 2rem;">$99<span style="font-size: 0.4em; color: #999;">/year</span></div>
+                    <ul style="list-style: none; margin-bottom: 2rem;">
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Monthly luxury networking mixers & events</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Premium member directory access</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Exclusive market insights & trends reports</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>20% discount on all workshops & courses</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Portfolio showcase opportunities</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Community forum access</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Monthly newsletter & updates</li>
+                    </ul>
+                    <a href="#" style="background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); color: #000; padding: 1rem 2rem; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; display: inline-block;">Join Now</a>
+                </div>
+                
+                <div class="membership-card-animated" style="background: rgba(255, 255, 255, 0.08); padding: 2.5rem 2rem; border-radius: 16px; border: 2px solid rgba(212, 175, 55, 0.3); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; transform: scale(1.05); cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.07)'; this.style.boxShadow='0 30px 60px rgba(212, 175, 55, 0.4)'" onmouseout="this.style.transform='translateY(0) scale(1.05)'; this.style.boxShadow='0 8px 25px rgba(212, 175, 55, 0.3)'">
+                    <div style="position: absolute; top: -1px; left: -1px; right: -1px; height: 3px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);"></div>
+                    <div style="color: #d4af37; font-weight: 600; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Most Popular</div>
+                    <div style="color: #f4f1e8; font-weight: 600; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Studio</div>
+                    <h3 style="color: #fff; font-size: 1.8em; margin-bottom: 1rem; font-weight: 300;">Design Studio</h3>
+                    <div style="color: #fff; font-size: 2.2em; font-weight: 200; margin-bottom: 2rem;">$299<span style="font-size: 0.4em; color: #999;">/year</span></div>
+                    <ul style="list-style: none; margin-bottom: 2rem;">
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Everything in Creative Professional</li>
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Featured business profile & directory listing</li>
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Event hosting & sponsorship opportunities</li>
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Mentorship program & expert consultations</li>
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Quarterly business strategy sessions</li>
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Priority booking for exclusive events</li>
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Collaboration & partnership facilitation</li>
+                        <li style="padding: 0.8rem 0; color: #f4f1e8; position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Co-marketing opportunities & PR support</li>
+                    </ul>
+                    <a href="#" style="background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); color: #000; padding: 1rem 2rem; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; display: inline-block; box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);">Join Now</a>
+                </div>
+                
+                <div class="membership-card-animated" style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
+                    <div style="color: #d4af37; font-weight: 600; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Corporate</div>
+                    <h3 style="color: #fff; font-size: 1.8em; margin-bottom: 1rem; font-weight: 300;">Enterprise Partner</h3>
+                    <div style="color: #fff; font-size: 2.2em; font-weight: 200; margin-bottom: 2rem;">$599<span style="font-size: 0.4em; color: #999;">/year</span></div>
+                    <ul style="list-style: none; margin-bottom: 2rem;">
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Everything in Design Studio</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Board representation eligibility</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Premium sponsor recognition & branding</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Custom partnership development & concierge</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Priority event booking & exclusive hosting rights</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Dedicated account management</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>Strategic advisory council access</li>
+                        <li style="padding: 0.8rem 0; color: #e8eaed; position: relative; padding-left: 1.5rem;"><span style="position: absolute; left: 0; color: #d4af37;">✓</span>VIP event access & private functions</li>
+                    </ul>
+                    <a href="#" style="background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); color: #000; padding: 1rem 2rem; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; display: inline-block;">Join Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design District Connect Benefits -->
+    <section class="connect-benefits" style="padding: 6rem 0; background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0f0f0f 100%); position: relative; overflow: hidden;">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin-bottom: 4rem;">
+                <h2 style="font-size: 2.8em; font-weight: 300; margin-bottom: 1rem; background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);">Why Become a Member?</h2>
+                <p style="color: #ccc; font-size: 1.2em; max-width: 700px; margin: 0 auto; line-height: 1.6;">Join the Design District Chamber of Commerce and get exclusive access to <span style="color: #d4af37; font-weight: 600;">Design District Connect</span> – our premium membership platform with unparalleled benefits</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+                <!-- Networking Benefits -->
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">N</div>
+                    <h3 style="color: #fff; font-size: 1.4em; margin-bottom: 1rem; font-weight: 600;">Elite Networking</h3>
+                    <p style="color: #ccc; line-height: 1.6; margin-bottom: 1.5rem;">Connect with luxury industry leaders, designers, and innovators at exclusive monthly mixers and VIP events.</p>
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Monthly luxury networking events</li>
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>VIP access to industry gatherings</li>
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Direct access to decision makers</li>
+                    </ul>
+                </div>
+
+                <!-- Business Growth -->
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">G</div>
+                    <h3 style="color: #fff; font-size: 1.4em; margin-bottom: 1rem; font-weight: 600;">Business Growth</h3>
+                    <p style="color: #ccc; line-height: 1.6; margin-bottom: 1.5rem;">Accelerate your business with strategic partnerships, mentorship programs, and exclusive market insights.</p>
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Expert mentorship & consultations</li>
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Strategic partnership facilitation</li>
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Quarterly business strategy sessions</li>
+                    </ul>
+                </div>
+
+                <!-- Market Insights -->
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">I</div>
+                    <h3 style="color: #fff; font-size: 1.4em; margin-bottom: 1rem; font-weight: 600;">Exclusive Insights</h3>
+                    <p style="color: #ccc; line-height: 1.6; margin-bottom: 1.5rem;">Stay ahead with exclusive market reports, trend analysis, and insider knowledge of the luxury design sector.</p>
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Exclusive market insights & reports</li>
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Industry trend forecasting</li>
+                        <li style="color: #e8eaed; padding: 0.3rem 0; position: relative; padding-left: 1.2rem;"><span style="position: absolute; left: 0; color: #d4af37; font-size: 0.8em;">✓</span>Luxury market data & analytics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div style="text-align: center; background: rgba(255, 255, 255, 0.05); padding: 3rem; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); max-width: 800px; margin: 0 auto;">
+                <h3 style="color: #d4af37; font-size: 1.8em; margin-bottom: 1rem; font-weight: 600;">Ready to Elevate Your Business?</h3>
+                <p style="color: #ccc; font-size: 1.1em; line-height: 1.6; margin-bottom: 2rem;">Join the Design District Chamber of Commerce and gain exclusive access to <span style="color: #d4af37; font-weight: 600;">Design District Connect</span>. Choose from three membership tiers designed to accelerate your success in Miami's premier luxury destination.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="#membership" style="background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); color: #000; padding: 1rem 2rem; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; display: inline-block;">View Membership Plans</a>
+                    <a href="#" id="previewPortalBtn" style="background: rgba(255, 255, 255, 0.1); color: #fff; padding: 1rem 2rem; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; display: inline-block; border: 1px solid rgba(255, 255, 255, 0.2);">Preview Member Portal</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Member Business Logo Banner -->
+    <section class="logo-banner">
+        <div class="container">
+            <h2>Our Member Businesses</h2>
+        </div>
+        <div class="logo-slider">
+            <div class="logo-track">
+                <!-- First set of logos -->
+                <div class="business-logo">
+                    <span>AskApril AI</span>
+                </div>
+                <div class="business-logo">
+                    <span>Ilmoda</span>
+                </div>
+                <div class="business-logo">
+                    <span>M.E.F. Productions LLC</span>
+                </div>
+                <div class="business-logo">
+                    <span>ARTISAN GALLERY</span>
+                </div>
+                <div class="business-logo">
+                    <span>BOUTIQUE RETAIL</span>
+                </div>
+                <div class="business-logo">
+                    <span>CREATIVE AGENCY</span>
+                </div>
+                <div class="business-logo">
+                    <span>FURNITURE CO.</span>
+                </div>
+                <div class="business-logo">
+                    <span>ARCHITECTURE FIRM</span>
+                </div>
+                <div class="business-logo">
+                    <span>TEXTILE STUDIO</span>
+                </div>
+                <div class="business-logo">
+                    <span>LIGHTING DESIGN</span>
+                </div>
+                <div class="business-logo">
+                    <span>CUSTOM INTERIORS</span>
+                </div>
+                
+                <!-- Duplicate set for seamless loop -->
+                <div class="business-logo">
+                    <span>AskApril AI</span>
+                </div>
+                <div class="business-logo">
+                    <span>Ilmoda</span>
+                </div>
+                <div class="business-logo">
+                    <span>M.E.F. Productions LLC</span>
+                </div>
+                <div class="business-logo">
+                    <span>ARTISAN GALLERY</span>
+                </div>
+                <div class="business-logo">
+                    <span>BOUTIQUE RETAIL</span>
+                </div>
+                <div class="business-logo">
+                    <span>CREATIVE AGENCY</span>
+                </div>
+                <div class="business-logo">
+                    <span>FURNITURE CO.</span>
+                </div>
+                <div class="business-logo">
+                    <span>ARCHITECTURE FIRM</span>
+                </div>
+                <div class="business-logo">
+                    <span>TEXTILE STUDIO</span>
+                </div>
+                <div class="business-logo">
+                    <span>LIGHTING DESIGN</span>
+                </div>
+                <div class="business-logo">
+                    <span>CUSTOM INTERIORS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portal Preview Modal -->
+    <div id="portalPreviewModal" class="portal-preview-modal">
+        <div class="portal-preview-content">
+            <div class="portal-preview-header">
+                <div class="portal-preview-title">Design District Connect Portal Preview</div>
+                <button class="close-preview" onclick="closePortalPreview()">&times;</button>
+            </div>
+            <div class="portal-preview-body">
+                <iframe src="partnership-portal.html" class="portal-preview-iframe"></iframe>
+                <div class="portal-preview-overlay">
+                    <div class="preview-message">
+                        <h3>🔒 Members-Only Access</h3>
+                        <p>This is a preview of the exclusive Design District Connect portal. Join as a member to unlock full access to networking, events, directory, and premium benefits.</p>
+                        <a href="#membership" class="join-now-btn" onclick="closePortalPreview()">Join Now to Access</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Design District Chamber</h4>
+                    <p>Building a stronger creative community through collaboration, innovation, and business excellence.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@designdistrictchamber.org</p>
+                    <p>Phone: Coming Soon</p>
+                    <p>Address: Design District Location TBD</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Get Involved</h4>
+                    <p><a href="#">Become a Member</a></p>
+                    <p><a href="#">Volunteer</a></p>
+                    <p><a href="#">Partner with Us</a></p>
+                    <p><a href="#">Sponsor Events</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Design District Chamber of Commerce. All rights reserved. | Domestic Non-Profit Organization</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <script>
+        // Initialize EmailJS
+        (function(){
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+        })();
+
+        // Email capture functionality
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+            
+            const name = document.getElementById('nameInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            
+            // Basic validation
+            if (!name || !email) {
+                alert('Please fill in all fields.');
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+                return;
+            }
+            
+            // Prepare template parameters
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                to_name: 'Design District Chamber',
+                message: `New member signup from ${name} (${email}) for Design District Chamber of Commerce updates.`,
+                reply_to: email
+            };
+            
+            // Send email via EmailJS
+            emailjs.send('service_vntq4ai', 'template_m5wg27w', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Show success message
+                    document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch.';
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('successMessage').style.background = '#28a745';
+                    
+                    // Clear form
+                    document.getElementById('nameInput').value = '';
+                    document.getElementById('emailInput').value = '';
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                    
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    
+                    // Show error message
+                    document.getElementById('successMessage').innerHTML = '✗ Sorry, there was an error. Please try again.';
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('successMessage').style.background = '#dc3545';
+                    
+                    // Hide error message after 5 seconds
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                })
+                .finally(function() {
+                    // Reset button state
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+                });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Portal Preview Modal functionality
+        document.getElementById('previewPortalBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('portalPreviewModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+
+        function closePortalPreview() {
+            document.getElementById('portalPreviewModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside the content
+        document.getElementById('portalPreviewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePortalPreview();
+            }
+        });
+
+        // Close modal with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePortalPreview();
+            }
+        });
+
+        // Mobile menu toggle (if needed)
+        // Add mobile hamburger menu functionality here if desired
+    </script>
+</body>
+</html>
