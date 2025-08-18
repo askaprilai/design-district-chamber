@@ -1346,6 +1346,9 @@
             const email = document.getElementById('emailInput').value.trim();
             const company = document.getElementById('companyInput').value.trim();
             
+            // Debug logging
+            console.log('Form submission attempt:', { name, email, company });
+            
             // Basic validation
             if (!name || !email || !company) {
                 alert('Please fill in all fields.');
@@ -1363,20 +1366,44 @@
             submitButton.textContent = 'Sending...';
             submitButton.disabled = true;
             
-            // Submit form to Zoho
+            // Create form data for debugging
+            const formData = new FormData(document.getElementById('emailForm'));
+            console.log('FormData being sent to Zoho:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
+            
+            // Submit directly to Zoho without iframe (for testing)
             const form = document.getElementById('emailForm');
             
-            // Create a hidden iframe to handle the form submission
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.name = 'zoho_form_iframe';
-            document.body.appendChild(iframe);
-            
-            // Set form target to iframe
-            form.target = 'zoho_form_iframe';
-            
-            // Submit the form
-            form.submit();
+            // Try direct submission first
+            try {
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors' // Required for cross-origin requests to Zoho
+                }).then(() => {
+                    console.log('Form submitted to Zoho successfully');
+                }).catch((error) => {
+                    console.log('Fetch error (expected with no-cors):', error);
+                    // This is expected with no-cors mode
+                });
+            } catch (error) {
+                console.log('Submit error:', error);
+                // Fallback to iframe method
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'zoho_form_iframe';
+                document.body.appendChild(iframe);
+                form.target = 'zoho_form_iframe';
+                form.submit();
+                
+                setTimeout(() => {
+                    if (document.body.contains(iframe)) {
+                        document.body.removeChild(iframe);
+                    }
+                }, 3000);
+            }
             
             // Show success message
             document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and membership opportunities.';
@@ -1396,9 +1423,6 @@
                 // Reset button
                 submitButton.textContent = originalButtonText;
                 submitButton.disabled = false;
-                
-                // Remove iframe
-                document.body.removeChild(iframe);
             }, 1000);
             
             // Hide success message after 8 seconds
