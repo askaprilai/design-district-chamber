@@ -1352,27 +1352,40 @@
                 return;
             }
             
-            // Prepare form data for Google Sheets
+            // Prepare form data for Zoho CRM
             const formData = new FormData();
-            formData.append('name', name);
-            formData.append('email', email);
-            formData.append('timestamp', new Date().toISOString());
-            formData.append('source', 'Design District Chamber Website');
             
-            // Send to Google Sheets (replace with your Google Apps Script URL)
-            // TODO: Replace this URL with your actual Google Apps Script deployment URL
-            const googleAppsScriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+            // Split name into first and last name
+            const nameParts = name.trim().split(' ');
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || nameParts[0] || 'Member';
             
-            fetch(googleAppsScriptURL, {
+            // Required Zoho fields
+            formData.append('First Name', firstName);
+            formData.append('Last Name', lastName);
+            formData.append('Email', email);
+            formData.append('Company', 'Design District Chamber Member');
+            
+            // Required Zoho hidden fields (from your form)
+            formData.append('xnQsjsdp', '70afa6ff1b5a8e08867dc4d869ae714b411b09cb8ca6a8c2c90c86686bb61abd');
+            formData.append('xmIwtLD', '8dfa2166419e1352039072930edfe8ff91df13671b6da294b21d7d2022be27626105ea9e4451e795b42fc78be81eaa16');
+            formData.append('actionType', 'TGVhZHM=');
+            formData.append('returnURL', 'null');
+            formData.append('zc_gad', '');
+            formData.append('aG9uZXlwb3Q', '');
+            
+            // Send to Zoho CRM
+            fetch('https://crm.zoho.com/crm/WebToLeadForm', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                mode: 'cors'
             })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(data => {
                 console.log('SUCCESS!', data);
                 
                 // Show success message
-                document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch.';
+                document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and send you chamber information.';
                 document.getElementById('successMessage').style.display = 'block';
                 document.getElementById('successMessage').style.background = '#28a745';
                 
