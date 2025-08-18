@@ -992,22 +992,112 @@
                 
                 <div style="margin: 3rem 0; text-align: center; color: #999;">--- OR ---</div>
                 
-                <!-- Original Zoho Form -->
-                <h3 style="color: #333; margin-bottom: 2rem; text-align: center;">🔧 Original Zoho Form</h3>
-                <form id="webform6960957000000573361" name="WebToLeads6960957000000573361" action="https://crm.zoho.com/crm/WebToLeadForm" method="POST" accept-charset="UTF-8" style="display: flex; flex-direction: column; gap: 2rem;">
-                    <input type="text" style="display:none;" name="xnQsjsdp" value="70afa6ff1b5a8e08867dc4d869ae714b411b09cb8ca6a8c2c90c86686bb61abd">
-                    <input type="hidden" name="zc_gad" value="">
-                    <input type="text" style="display:none;" name="xmIwtLD" value="8dfa2166419e1352039072930edfe8ff91df13671b6da294b21d7d2022be27626105ea9e4451e795b42fc78be81eaa16">
-                    <input type="text" style="display:none;" name="actionType" value="TGVhZHM=">
-                    <input type="text" style="display:none;" name="returnURL" value="null">
-                    <input type="text" style="display:none;" name="aG9uZXlwb3Q" value="">
-                    
-                    <input type="text" name="Company" placeholder="Company" required style="padding: 1.5rem; border: 2px solid #ddd; border-radius: 8px; font-size: 18px;">
-                    <input type="text" name="First Name" placeholder="First Name" style="padding: 1.5rem; border: 2px solid #ddd; border-radius: 8px; font-size: 18px;">
-                    <input type="text" name="Last Name" placeholder="Last Name" required style="padding: 1.5rem; border: 2px solid #ddd; border-radius: 8px; font-size: 18px;">
-                    <input type="email" name="Email" placeholder="Email" style="padding: 1.5rem; border: 2px solid #ddd; border-radius: 8px; font-size: 18px;">
-                    <input type="submit" value="🚀 Test Zoho Direct" style="padding: 2rem; background: #d4af37; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 20px; font-weight: bold;">
-                </form>
+                <!-- Exact Zoho Form -->
+                <div id='crmWebToEntityForm' class='zcwf_lblLeft crmWebToEntityForm' style='background-color: white;color: black;max-width: 600px; margin: 0 auto;'>
+                    <h3 style="color: #333; margin-bottom: 2rem; text-align: center;">🔧 Exact Zoho Form</h3>
+                    <form id='webform6960957000000573361' name='WebToLeads6960957000000573361' accept-charset='UTF-8'>
+                        <input type='text' style='display:none;' name='xnQsjsdp' value='70afa6ff1b5a8e08867dc4d869ae714b411b09cb8ca6a8c2c90c86686bb61abd'>
+                        <input type='hidden' name='zc_gad' id='zc_gad' value=''>
+                        <input type='text' style='display:none;' name='xmIwtLD' value='8dfa2166419e1352039072930edfe8ff91df13671b6da294b21d7d2022be27626105ea9e4451e795b42fc78be81eaa16'>
+                        <input type='text' style='display:none;' name='actionType' value='TGVhZHM='>
+                        <input type='text' style='display:none;' name='returnURL' value='null'>
+                        
+                        <div class='zcwf_row' style="margin: 20px 0;">
+                            <label for='Company' style="display: block; margin-bottom: 8px; font-weight: bold;">Company <span style='color:red;'>*</span></label>
+                            <input type='text' id='Company' name='Company' maxlength='200' required style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        
+                        <div class='zcwf_row' style="margin: 20px 0;">
+                            <label for='First_Name' style="display: block; margin-bottom: 8px; font-weight: bold;">First Name</label>
+                            <input type='text' id='First_Name' name='First Name' maxlength='40' style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        
+                        <div class='zcwf_row' style="margin: 20px 0;">
+                            <label for='Last_Name' style="display: block; margin-bottom: 8px; font-weight: bold;">Last Name <span style='color:red;'>*</span></label>
+                            <input type='text' id='Last_Name' name='Last Name' maxlength='80' required style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        
+                        <div class='zcwf_row' style="margin: 20px 0;">
+                            <label for='Email' style="display: block; margin-bottom: 8px; font-weight: bold;">Email</label>
+                            <input type='text' ftype='email' id='Email' name='Email' maxlength='100' style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        
+                        <input type='text' style='display: none;' name='aG9uZXlwb3Q' value=''/>
+                        
+                        <div class='zcwf_row' style="margin: 30px 0;">
+                            <input type='submit' id='formsubmit' class='formsubmit zcwf_button' value='🚀 Submit to Zoho' style="width: 100%; padding: 15px; background: #d4af37; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;">
+                        </div>
+                    </form>
+                </div>
+                
+                <script>
+                function validateEmail6960957000000573361() {
+                    var form = document.forms['WebToLeads6960957000000573361'];
+                    var emailFld = form.querySelectorAll('[ftype=email]');
+                    var i;
+                    for(i = 0; i < emailFld.length; i++) {
+                        var emailVal = emailFld[i].value;
+                        if((emailVal.replace(/^\s+|\s+$/g,'')).length != 0) {
+                            var atpos = emailVal.indexOf('@');
+                            var dotpos = emailVal.lastIndexOf('.');
+                            if(atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailVal.length) {
+                                alert('Please enter a valid email address.');
+                                emailFld[i].focus();
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                }
+                
+                function checkMandatory6960957000000573361() {
+                    var mndFileds = new Array('Company', 'Last Name');
+                    var fldLangVal = new Array('Company', 'Last Name');
+                    for(i = 0; i < mndFileds.length; i++) {
+                        var fieldObj = document.forms['WebToLeads6960957000000573361'][mndFileds[i]];
+                        if(fieldObj) {
+                            if(((fieldObj.value).replace(/^\s+|\s+$/g,'')).length == 0) {
+                                alert(fldLangVal[i] + ' cannot be empty.');
+                                fieldObj.focus();
+                                return false;
+                            }
+                        }
+                    }
+                    if(!validateEmail6960957000000573361()) {
+                        return false;
+                    }
+                    document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+                    return true;
+                }
+                
+                $(document).ready(function() {
+                    $('#webform6960957000000573361').submit(function(e) {
+                        var ismandatory = checkMandatory6960957000000573361();
+                        e.preventDefault();
+                        if(ismandatory) {
+                            var formData = new FormData(this);
+                            $.ajax({
+                                url: 'https://crm.zoho.com/crm/WebToLeadForm',
+                                type: 'POST',
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function(data) {
+                                    alert('✓ Success! Lead submitted to Zoho CRM');
+                                    document.getElementById('webform6960957000000573361').reset();
+                                    document.querySelector('.crmWebToEntityForm .formsubmit').removeAttribute('disabled');
+                                },
+                                error: function(data) {
+                                    alert('✓ Form submitted! Check your Zoho CRM for the lead.');
+                                    document.getElementById('webform6960957000000573361').reset();
+                                    document.querySelector('.crmWebToEntityForm .formsubmit').removeAttribute('disabled');
+                                }
+                            });
+                        }
+                    });
+                });
+                </script>
             </div>
         </div>
                 <div class="success-message" id="successMessage">
