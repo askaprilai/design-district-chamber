@@ -1108,7 +1108,7 @@
                 
                 <h3>Be the first to know</h3>
                 <div style="margin: 1.5rem 0;"></div>
-                <form class="email-form" id="emailForm" action="https://crm.zoho.com/crm/WebToLeadForm" method="POST" accept-charset="UTF-8">
+                <form class="email-form" id="emailForm" action="https://crm.zoho.com/crm/WebToLeadForm" method="POST" accept-charset="UTF-8" target="_blank">
                     <!-- Zoho Hidden Fields -->
                     <input type="text" style="display:none;" name="xnQsjsdp" value="60145fe024e715d15c17e592a63251db614cf0b264f145f3daceeb16b2960914">
                     <input type="hidden" name="zc_gad" id="zc_gad" value="">
@@ -1469,106 +1469,31 @@
             emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
         })();
 
-        // Zoho Email capture functionality
+        // Minimal form validation only
         document.getElementById('emailForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitButton = e.target.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.textContent;
-            
             const name = document.getElementById('nameInput').value.trim();
             const email = document.getElementById('emailInput').value.trim();
             const company = document.getElementById('companyInput').value.trim();
             
-            // Debug logging
-            console.log('Form submission attempt:', { name, email, company });
-            console.log('Form action URL:', form.action);
-            console.log('Current domain:', window.location.origin);
-            
-            // Basic validation
+            // Basic validation only
             if (!name || !email || !company) {
+                e.preventDefault();
                 alert('Please fill in all fields.');
-                return;
+                return false;
             }
             
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
+                e.preventDefault();
                 alert('Please enter a valid email address.');
-                return;
+                return false;
             }
             
-            // Show loading state
-            submitButton.textContent = 'Sending...';
-            submitButton.disabled = true;
+            console.log('Form submitting to Zoho with:', { name, email, company });
             
-            // Create form data for debugging
-            const formData = new FormData(document.getElementById('emailForm'));
-            console.log('FormData being sent to Zoho:');
-            for (let [key, value] of formData.entries()) {
-                console.log(key + ': ' + value);
-            }
-            
-            // Use iframe method for reliable Zoho submission
-            const form = document.getElementById('emailForm');
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.name = 'zoho_form_iframe';
-            document.body.appendChild(iframe);
-            
-            // Add load event listener to iframe
-            iframe.onload = function() {
-                console.log('Zoho form submission completed');
-                try {
-                    // Try to access iframe content to see if there's an error
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    console.log('Iframe loaded successfully');
-                } catch (e) {
-                    console.log('Form submitted to Zoho (cross-origin response)');
-                }
-            };
-            
-            // Set form target to iframe
-            form.target = 'zoho_form_iframe';
-            
-            console.log('Submitting form to Zoho...');
-            
-            // Submit form to Zoho via iframe
-            form.submit();
-            
-            // Clean up iframe after submission
-            setTimeout(() => {
-                if (document.body.contains(iframe)) {
-                    document.body.removeChild(iframe);
-                }
-                // Reset form target
-                form.target = '';
-            }, 8000);
-            
-            // Show success message
-            document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and membership opportunities.';
-            document.getElementById('successMessage').style.display = 'block';
-            document.getElementById('successMessage').style.background = '#28a745';
-            document.getElementById('successMessage').style.color = 'white';
-            document.getElementById('successMessage').style.padding = '1rem';
-            document.getElementById('successMessage').style.borderRadius = '8px';
-            document.getElementById('successMessage').style.marginTop = '1rem';
-            
-            // Clear form
-            setTimeout(() => {
-                document.getElementById('nameInput').value = '';
-                document.getElementById('emailInput').value = '';
-                document.getElementById('companyInput').value = '';
-                
-                // Reset button
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
-            }, 1000);
-            
-            // Hide success message after 8 seconds
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 8000);
+            // Let form submit naturally - no interference
+            return true;
         });
 
         // Smooth scrolling for navigation links
