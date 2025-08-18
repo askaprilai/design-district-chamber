@@ -26,13 +26,20 @@
 
         /* Header */
         header {
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .header-content {
@@ -109,8 +116,83 @@
             transition: width 0.3s ease;
         }
 
-        nav a:hover::after {
+        nav a:hover::after,
+        nav a.active::after {
             width: 100%;
+        }
+
+        nav a.active {
+            color: #d4af37;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.98);
+                backdrop-filter: blur(20px);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            nav.mobile-open {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 2rem 0;
+                gap: 0;
+            }
+
+            nav li {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            nav a {
+                display: block;
+                padding: 1rem 2rem;
+                font-size: 1.1em;
+            }
         }
 
         /* Hero Section */
@@ -912,6 +994,51 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
         }
+
+        /* Floating CTA Button for Mobile */
+        .floating-cta {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            color: #000;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+            transform: translateY(100px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .floating-cta.visible {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .floating-cta:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .floating-cta {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .floating-cta {
+                display: none;
+            }
+        }
     </style>
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -937,14 +1064,19 @@
                         <small style="font-size: 0.6em; font-weight: 400; color: #fff; margin-top: -8px; display: block;">Chamber of Commerce</small>
                     </div>
                 </a>
-                <nav>
+                <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <nav id="mainNav">
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="about-us.html">About Us</a></li>
-                        <li><a href="#membership">Membership</a></li>
-                        <li><a href="#events">Events</a></li>
-                        <li><a href="#resources">Resources</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#home" class="nav-link">Home</a></li>
+                        <li><a href="about-us.html" class="nav-link">About Us</a></li>
+                        <li><a href="#membership" class="nav-link">Membership</a></li>
+                        <li><a href="#events" class="nav-link">Events</a></li>
+                        <li><a href="#resources" class="nav-link">Resources</a></li>
+                        <li><a href="#contact" class="nav-link">Contact</a></li>
                     </ul>
                 </nav>
             </div>
@@ -964,7 +1096,8 @@
             
             <div class="email-capture" id="email-signup">
                 <h3>Be the first to know</h3>
-                <div style="margin: 1.5rem 0;"></div>
+                <p style="color: #d4af37; font-weight: 600; font-size: 0.9em; margin: 0.5rem 0; text-transform: uppercase; letter-spacing: 1px;">⚡ Limited Founding Memberships Available</p>
+                <div style="margin: 1rem 0;"></div>
                 <form class="email-form" id="emailForm" action="https://crm.zoho.com/crm/WebToLeadForm" method="POST" accept-charset="UTF-8">
                     <!-- Zoho Hidden Fields -->
                     <input type="text" style="display:none;" name="xnQsjsdp" value="60145fe024e715d15c17e592a63251db614cf0b264f145f3daceeb16b2960914">
@@ -1086,6 +1219,7 @@
                 <!-- Image Section -->
                 <div style="text-align: center;">
                     <img src="Images/connect.png" alt="Design District Connect" style="width: 100%; max-width: 2080px; height: auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <p style="color: #ccc; font-size: 0.9em; margin-top: 1rem; font-style: italic;">Preview of the exclusive member portal featuring networking tools, business directory, and premium resources</p>
                 </div>
                 
                 <!-- Content Section -->
@@ -1133,7 +1267,7 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
                 <!-- Networking Benefits -->
                 <div style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
-                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">N</div>
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">🤝</div>
                     <h3 style="color: #fff; font-size: 1.4em; margin-bottom: 1rem; font-weight: 600;">Elite Networking</h3>
                     <p style="color: #ccc; line-height: 1.6; margin-bottom: 1.5rem;">Connect with luxury industry leaders, designers, and innovators at exclusive monthly mixers and VIP events.</p>
                     <ul style="list-style: none; margin: 0; padding: 0;">
@@ -1145,7 +1279,7 @@
 
                 <!-- Business Growth -->
                 <div style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
-                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">G</div>
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">📈</div>
                     <h3 style="color: #fff; font-size: 1.4em; margin-bottom: 1rem; font-weight: 600;">Business Growth</h3>
                     <p style="color: #ccc; line-height: 1.6; margin-bottom: 1.5rem;">Accelerate your business with strategic partnerships, mentorship programs, and exclusive market insights.</p>
                     <ul style="list-style: none; margin: 0; padding: 0;">
@@ -1157,7 +1291,7 @@
 
                 <!-- Market Insights -->
                 <div style="background: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; cursor: pointer;" onmouseover="this.style.transform='translateY(-15px) scale(1.02)'; this.style.boxShadow='0 25px 50px rgba(212, 175, 55, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='none'">
-                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">I</div>
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #d4af37; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">💡</div>
                     <h3 style="color: #fff; font-size: 1.4em; margin-bottom: 1rem; font-weight: 600;">Exclusive Insights</h3>
                     <p style="color: #ccc; line-height: 1.6; margin-bottom: 1.5rem;">Stay ahead with exclusive market reports, trend analysis, and insider knowledge of the luxury design sector.</p>
                     <ul style="list-style: none; margin: 0; padding: 0;">
@@ -1279,6 +1413,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Floating CTA Button for Mobile -->
+    <a href="#email-signup" class="floating-cta" id="floatingCta">Join Waitlist</a>
 
     <!-- Footer -->
     <footer id="contact">
@@ -1488,8 +1625,94 @@ Best regards,
             window.location.href = mailtoLink;
         });
 
-        // Mobile menu toggle (if needed)
-        // Add mobile hamburger menu functionality here if desired
+        // Enhanced Navigation Features
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            nav.classList.toggle('mobile-open');
+            toggle.classList.toggle('active');
+        }
+
+        // Header scroll effect and active section highlighting
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Header background on scroll
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Active section highlighting
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('mainNav');
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                nav.classList.remove('mobile-open');
+                toggle.classList.remove('active');
+            });
+        });
+
+        // Enhanced form submission with loading state
+        const originalFormHandler = document.getElementById('emailForm').onsubmit;
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            
+            // Add loading animation
+            submitButton.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite;">⚡</span> Joining Waitlist...';
+            submitButton.style.background = '#d4af37';
+            
+            // Add spin animation
+            if (!document.getElementById('spinAnimation')) {
+                const style = document.createElement('style');
+                style.id = 'spinAnimation';
+                style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+                document.head.appendChild(style);
+            }
+        });
+
+        // Floating CTA Button Control
+        window.addEventListener('scroll', function() {
+            const floatingCta = document.getElementById('floatingCta');
+            const emailCapture = document.getElementById('email-signup');
+            const footer = document.querySelector('footer');
+            
+            if (emailCapture && footer) {
+                const emailCaptureRect = emailCapture.getBoundingClientRect();
+                const footerRect = footer.getBoundingClientRect();
+                
+                // Show button when past email capture, hide when reaching footer
+                if (emailCaptureRect.bottom < 0 && footerRect.top > window.innerHeight) {
+                    floatingCta.classList.add('visible');
+                } else {
+                    floatingCta.classList.remove('visible');
+                }
+            }
+        });
     </script>
 </body>
 </html>
