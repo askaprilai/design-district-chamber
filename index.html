@@ -1516,8 +1516,22 @@
             iframe.name = 'zoho_form_iframe';
             document.body.appendChild(iframe);
             
+            // Add load event listener to iframe
+            iframe.onload = function() {
+                console.log('Zoho form submission completed');
+                try {
+                    // Try to access iframe content to see if there's an error
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    console.log('Iframe loaded successfully');
+                } catch (e) {
+                    console.log('Form submitted to Zoho (cross-origin response)');
+                }
+            };
+            
             // Set form target to iframe
             form.target = 'zoho_form_iframe';
+            
+            console.log('Submitting form to Zoho...');
             
             // Submit form to Zoho via iframe
             form.submit();
@@ -1529,7 +1543,7 @@
                 }
                 // Reset form target
                 form.target = '';
-            }, 5000);
+            }, 8000);
             
             // Show success message
             document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and membership opportunities.';
