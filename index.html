@@ -5,20 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Design District Chamber of Commerce - Coming Soon</title>
     
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
-        
-        // Track form submissions
-        gtag('event', 'page_view', {
-            page_title: 'Design District Chamber - Coming Soon',
-            page_location: window.location.href
-        });
-    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KZLJZ4SP');</script>
+    <!-- End Google Tag Manager -->
     
     <style>
         * {
@@ -1068,6 +1061,11 @@
     </script>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZLJZ4SP"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
     <!-- Header -->
     <header>
         <div class="container">
@@ -1530,12 +1528,15 @@ Please follow up with this lead for membership information.`;
             // Open email client
             window.location.href = mailtoLink;
             
-            // Track form submission event
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'generate_lead', {
+            // Track form submission event with GTM
+            if (typeof dataLayer !== 'undefined') {
+                dataLayer.push({
+                    'event': 'generate_lead',
                     'event_category': 'engagement',
                     'event_label': 'waitlist_signup',
-                    'value': 1
+                    'lead_name': name,
+                    'lead_email': email,
+                    'lead_company': company
                 });
             }
             
