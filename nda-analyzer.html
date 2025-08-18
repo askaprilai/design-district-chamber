@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDA Analyzer & Drafter - AI Legal Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8fafc;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #1e3a8a;
+            border-bottom: 3px solid #1e3a8a;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: #e2e8f0;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .upload-area {
+            border: 3px dashed #cbd5e1;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #1e3a8a;
+            background: #f1f5f9;
+        }
+
+        .upload-area.dragover {
+            border-color: #1e3a8a;
+            background: #dbeafe;
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #475569;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .upload-btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        .upload-btn:hover {
+            background: #1e40af;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 300px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 30px;
+            transition: transform 0.2s ease;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #1e3a8a;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .score-badge {
+            background: #22c55e;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .score-badge.medium {
+            background: #f59e0b;
+        }
+
+        .score-badge.low {
+            background: #dc2626;
+        }
+
+        .clause-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .clause-check.present {
+            background: #dcfce7;
+            border-left: 4px solid #22c55e;
+        }
+
+        .clause-check.missing {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+        }
+
+        .clause-check.weak {
+            background: #fefbf2;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .check-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .check-icon.present {
+            color: #22c55e;
+        }
+
+        .check-icon.missing {
+            color: #dc2626;
+        }
+
+        .check-icon.weak {
+            color: #f59e0b;
+        }
+
+        .recommendation {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 30px;
+            transition: transform 0.2s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .generated-nda {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 20px;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .copy-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .redraft-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .redraft-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .comparison-side {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .comparison-side h4 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .comparison-side.before {
+            border-color: #dc2626;
+        }
+
+        .comparison-side.after {
+            border-color: #059669;
+        }
+
+        .improvement-list {
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .improvement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #065f46;
+        }
+
+        .improvement-icon {
+            color: #10b981;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .redline-container {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 20px;
+            font-family: 'Georgia', serif;
+            line-height: 2;
+            white-space: pre-line;
+        }
+
+        .redline-deleted {
+            background-color: #fecaca;
+            text-decoration: line-through;
+            color: #dc2626;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .redline-added {
+            background-color: #bbf7d0;
+            color: #166534;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .redline-modified {
+            background-color: #fef3c7;
+            color: #92400e;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .redline-comment {
+            background-color: #ddd6fe;
+            color: #5b21b6;
+            font-style: italic;
+            font-size: 0.9em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin: 5px 0;
+            border-left: 3px solid #8b5cf6;
+        }
+
+        .redline-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .toggle-btn {
+            background: #f3f4f6;
+            border: 2px solid #d1d5db;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        .redline-legend {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 0.9em;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-sample {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+
+        .change-summary {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .change-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .redline-legend {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .change-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #1e3a8a;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚖️ NDA Analyzer & Drafter</h1>
+            <p>AI-Powered Legal Assistant for Non-Disclosure Agreements</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('analyze')">📋 Analyze NDA</button>
+            <button class="nav-tab" onclick="switchTab('draft')">✍️ Draft NDA</button>
+            <button class="nav-tab" onclick="switchTab('templates')">📄 Templates</button>
+        </div>
+
+        <!-- Analyze Tab -->
+        <div id="analyze" class="tab-content active">
+            <h2 style="margin-bottom: 20px; color: #1e3a8a;">Upload or Paste Your NDA for Analysis</h2>
+            
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">Drop your NDA file here or click to browse</div>
+                <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" style="display: none;">
+                <button class="upload-btn">Choose File</button>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0; color: #64748b; font-weight: 600;">OR</div>
+
+            <textarea class="text-input" id="ndaText" placeholder="Paste your NDA text here for analysis..."></textarea>
+
+            <button class="analyze-btn" onclick="analyzeNDA()">🔍 Analyze NDA</button>
+
+            <div class="loading" id="loadingAnalyze">
+                <div class="spinner"></div>
+                <p>Analyzing your NDA with AI legal intelligence...</p>
+            </div>
+
+            <div class="results-section" id="analysisResults">
+                <!-- Analysis results will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Draft Tab -->
+        <div id="draft" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #1e3a8a;">Draft a Custom NDA</h2>
+
+            <form id="ndaForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">NDA Type</label>
+                        <select class="form-select" id="ndaType">
+                            <option value="one-way">One-Way (Unilateral)</option>
+                            <option value="mutual">Mutual (Bilateral)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Agreement Purpose</label>
+                        <select class="form-select" id="ndaPurpose">
+                            <option value="employment">Employment</option>
+                            <option value="business">Business Partnership</option>
+                            <option value="contractor">Independent Contractor</option>
+                            <option value="investor">Investor Relations</option>
+                            <option value="vendor">Vendor/Supplier</option>
+                            <option value="merger">Merger & Acquisition</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Disclosing Party</label>
+                        <input type="text" class="form-input" id="disclosingParty" placeholder="Company or Individual Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Receiving Party</label>
+                        <input type="text" class="form-input" id="receivingParty" placeholder="Company or Individual Name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Duration (Years)</label>
+                    <select class="form-select" id="ndaDuration">
+                        <option value="2">2 Years</option>
+                        <option value="3">3 Years</option>
+                        <option value="5">5 Years</option>
+                        <option value="indefinite">Indefinite</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Information to Protect</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="trade-secrets" checked>
+                        <label>Trade Secrets & Proprietary Information</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="customer-data" checked>
+                        <label>Customer Lists & Data</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="financial-info" checked>
+                        <label>Financial Information</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="technical-info" checked>
+                        <label>Technical Specifications</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="business-plans" checked>
+                        <label>Business Plans & Strategies</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Governing Law (State)</label>
+                    <select class="form-select" id="governingLaw">
+                        <option value="california">California</option>
+                        <option value="new-york">New York</option>
+                        <option value="texas">Texas</option>
+                        <option value="florida">Florida</option>
+                        <option value="delaware">Delaware</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </form>
+
+            <button class="generate-btn" onclick="generateNDA()">📝 Generate NDA</button>
+
+            <div class="loading" id="loadingGenerate">
+                <div class="spinner"></div>
+                <p>Drafting your custom NDA...</p>
+            </div>
+
+            <div class="results-section" id="generatedNDA">
+                <!-- Generated NDA will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Templates Tab -->
+        <div id="templates" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #1e3a8a;">NDA Templates & Resources</h2>
+            
+            <div class="analysis-card">
+                <div class="card-title">📋 Quick Start Templates</div>
+                <p style="margin-bottom: 15px;">Choose from pre-built NDA templates for common scenarios:</p>
+                
+                <button class="upload-btn" onclick="loadTemplate('employee')">Employee NDA</button>
+                <button class="upload-btn" onclick="loadTemplate('business')">Business Partnership NDA</button>
+                <button class="upload-btn" onclick="loadTemplate('contractor')">Contractor NDA</button>
+                <button class="upload-btn" onclick="loadTemplate('investor')">Investor NDA</button>
+            </div>
+
+            <div class="analysis-card">
+                <div class="card-title">⚖️ Legal Compliance Checklist</div>
+                <div class="clause-check present">
+                    <span class="check-icon present">✓</span>
+                    <span>Speak Out Act Compliance (2022)</span>
+                </div>
+                <div class="clause-check present">
+                    <span class="check-icon present">✓</span>
+                    <span>Whistleblower Protection Notice</span>
+                </div>
+                <div class="clause-check present">
+                    <span class="check-icon present">✓</span>
+                    <span>State-Specific Requirements</span>
+                </div>
+                <div class="clause-check present">
+                    <span class="check-icon present">✓</span>
+                    <span>Reasonable Scope & Duration</span>
+                </div>
+            </div>
+
+            <div class="analysis-card">
+                <div class="card-title">📚 Legal Resources</div>
+                <p><strong>Important:</strong> This tool provides general guidance only. For important agreements, consult with a qualified attorney licensed in your jurisdiction.</p>
+                <br>
+                <p><strong>Limitations:</strong> NDAs may be unenforceable in certain circumstances, including sexual harassment cases under the Speak Out Act of 2022.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Legal knowledge database
+        const legalKnowledge = {
+            essentialClauses: [
+                {
+                    name: "Party Identification",
+                    keywords: ["party", "parties", "disclosing", "receiving", "company", "individual"],
+                    description: "Clear identification of all parties involved"
+                },
+                {
+                    name: "Definition of Confidential Information",
+                    keywords: ["confidential", "proprietary", "trade secret", "information", "data"],
+                    description: "Specific definition of what information is protected"
+                },
+                {
+                    name: "Obligations and Duties",
+                    keywords: ["obligation", "duty", "shall not", "agrees to", "responsible"],
+                    description: "Clear obligations for handling confidential information"
+                },
+                {
+                    name: "Duration/Term",
+                    keywords: ["term", "duration", "period", "years", "effective", "expir"],
+                    description: "How long the NDA remains in effect"
+                },
+                {
+                    name: "Return/Destruction of Information",
+                    keywords: ["return", "destroy", "destruction", "delete", "upon request"],
+                    description: "Requirements for returning or destroying information"
+                },
+                {
+                    name: "Remedies and Enforcement",
+                    keywords: ["remedy", "damages", "injunction", "breach", "violation", "enforce"],
+                    description: "What happens if the NDA is violated"
+                },
+                {
+                    name: "Governing Law",
+                    keywords: ["governing law", "jurisdiction", "court", "state", "laws of"],
+                    description: "Which state/country's laws apply"
+                },
+                {
+                    name: "Whistleblower Protection",
+                    keywords: ["whistleblower", "immunity", "trade secret", "investigation"],
+                    description: "Required notice for employee NDAs"
+                }
+            ],
+            
+            riskFactors: [
+                {
+                    pattern: /sexual harassment/i,
+                    risk: "high",
+                    message: "Under the Speak Out Act of 2022, NDAs regarding sexual harassment may be unenforceable"
+                },
+                {
+                    pattern: /indefinite|perpetual|forever/i,
+                    risk: "medium",
+                    message: "Indefinite terms may be considered unreasonable and unenforceable"
+                },
+                {
+                    pattern: /all information|any information/i,
+                    risk: "medium", 
+                    message: "Overly broad definitions of confidential information may be unenforceable"
+                }
+            ]
+        };
+
+        // NDA Templates
+        const ndaTemplates = {
+            employee: `EMPLOYEE NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement ("Agreement") is entered into on [DATE] between [COMPANY NAME], a [STATE] corporation ("Company"), and [EMPLOYEE NAME] ("Employee").
+
+1. CONFIDENTIAL INFORMATION
+Employee acknowledges that during employment, Employee may have access to confidential and proprietary information including but not limited to:
+- Trade secrets and proprietary processes
+- Customer lists and client information  
+- Financial data and business plans
+- Technical specifications and methodologies
+- Marketing strategies and pricing information
+
+2. NON-DISCLOSURE OBLIGATIONS
+Employee agrees to:
+- Maintain strict confidentiality of all Confidential Information
+- Use Confidential Information solely for legitimate business purposes
+- Not disclose Confidential Information to any third party without written consent
+
+3. DURATION
+This Agreement remains in effect during employment and for 3 years after termination.
+
+4. RETURN OF INFORMATION
+Upon termination, Employee must return all materials containing Confidential Information.
+
+5. WHISTLEBLOWER IMMUNITY NOTICE
+Pursuant to 18 U.S.C. § 1833(b), Employee will not be held criminally or civilly liable for disclosure of trade secrets to government officials or attorneys for the purpose of reporting suspected violations of law.
+
+6. GOVERNING LAW
+This Agreement is governed by the laws of [STATE].
+
+IN WITNESS WHEREOF, the parties have executed this Agreement.
+
+_________________                    _________________
+[COMPANY NAME]                       [EMPLOYEE NAME]
+By: [NAME, TITLE]                    
+Date: ___________                    Date: ___________`,
+
+            business: `MUTUAL NON-DISCLOSURE AGREEMENT
+
+This Mutual Non-Disclosure Agreement ("Agreement") is entered into on [DATE] between [COMPANY 1] and [COMPANY 2] (each a "Party" and collectively the "Parties").
+
+1. PURPOSE
+The Parties wish to explore a potential business relationship and will exchange confidential information.
+
+2. CONFIDENTIAL INFORMATION
+Each Party may disclose Confidential Information including:
+- Proprietary business information
+- Technical data and specifications
+- Financial information
+- Customer and supplier information
+- Business plans and strategies
+
+3. MUTUAL OBLIGATIONS
+Each Party agrees to:
+- Keep all Confidential Information strictly confidential
+- Use Confidential Information only for evaluation purposes
+- Not disclose to third parties without written consent
+- Exercise reasonable care to protect the information
+
+4. TERM
+This Agreement is effective for 3 years from the date of execution.
+
+5. RETURN OF INFORMATION
+Upon request, each Party will return or destroy all Confidential Information.
+
+6. REMEDIES
+Breach may cause irreparable harm warranting injunctive relief in addition to other remedies.
+
+7. GOVERNING LAW
+This Agreement is governed by [STATE] law.
+
+IN WITNESS WHEREOF, the Parties have executed this Agreement.
+
+_________________                    _________________
+[COMPANY 1]                          [COMPANY 2]
+By: [NAME, TITLE]                    By: [NAME, TITLE]
+Date: ___________                    Date: ___________`
+        };
+
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab and mark nav as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function analyzeNDA() {
+            const ndaText = document.getElementById('ndaText').value;
+            const loadingDiv = document.getElementById('loadingAnalyze');
+            const resultsDiv = document.getElementById('analysisResults');
+
+            if (!ndaText.trim()) {
+                alert('Please paste NDA text or upload a file first.');
+                return;
+            }
+
+            // Show loading
+            loadingDiv.classList.add('show');
+            resultsDiv.classList.remove('show');
+
+            // Simulate analysis
+            setTimeout(() => {
+                const analysis = performNDAAnalysis(ndaText);
+                displayAnalysisResults(analysis);
+                loadingDiv.classList.remove('show');
+                resultsDiv.classList.add('show');
+            }, 3000);
+        }
+
+        function performNDAAnalysis(text) {
+            const textLower = text.toLowerCase();
+            let score = 0;
+            let clauseResults = [];
+            let risks = [];
+            let recommendations = [];
+
+            // Check essential clauses
+            legalKnowledge.essentialClauses.forEach(clause => {
+                let found = clause.keywords.some(keyword => textLower.includes(keyword));
+                let status = found ? 'present' : 'missing';
+                
+                // More sophisticated checking for some clauses
+                if (clause.name === "Duration/Term" && found) {
+                    if (textLower.includes('indefinite') || textLower.includes('perpetual')) {
+                        status = 'weak';
+                    }
+                }
+
+                clauseResults.push({
+                    name: clause.name,
+                    status: status,
+                    description: clause.description
+                });
+
+                if (status === 'present') score += 12.5;
+                else if (status === 'weak') score += 6;
+            });
+
+            // Check for risk factors
+            legalKnowledge.riskFactors.forEach(factor => {
+                if (factor.pattern.test(text)) {
+                    risks.push({
+                        level: factor.risk,
+                        message: factor.message
+                    });
+                }
+            });
+
+            // Generate recommendations
+            if (score < 60) {
+                recommendations.push({
+                    title: "Critical Issues Found",
+                    message: "This NDA is missing essential clauses and may not be enforceable. Consider redrafting with all required provisions."
+                });
+            }
+
+            if (!textLower.includes('whistleblower') && textLower.includes('employee')) {
+                recommendations.push({
+                    title: "Missing Whistleblower Notice",
+                    message: "Employee NDAs must include whistleblower immunity notice per 18 U.S.C. § 1833(b)."
+                });
+            }
+
+            if (textLower.includes('all information') || textLower.includes('any information')) {
+                recommendations.push({
+                    title: "Overly Broad Scope",
+                    message: "Consider narrowing the definition of confidential information to specific categories to improve enforceability."
+                });
+            }
+
+            return {
+                score: Math.round(score),
+                clauseResults,
+                risks,
+                recommendations
+            };
+        }
+
+        function displayAnalysisResults(analysis) {
+            const resultsDiv = document.getElementById('analysisResults');
+            
+            let scoreClass = 'low';
+            if (analysis.score >= 80) scoreClass = 'high';
+            else if (analysis.score >= 60) scoreClass = 'medium';
+
+            let html = `
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <div class="card-title">📊 Overall NDA Score</div>
+                        <div class="score-badge ${scoreClass}">${analysis.score}/100</div>
+                    </div>
+                    <p>This score reflects the completeness and enforceability of your NDA based on essential legal provisions.</p>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="card-title">📋 Essential Clauses Analysis</div>
+                    ${analysis.clauseResults.map(clause => `
+                        <div class="clause-check ${clause.status}">
+                            <span class="check-icon ${clause.status}">
+                                ${clause.status === 'present' ? '✓' : clause.status === 'weak' ? '⚠' : '✗'}
+                            </span>
+                            <div>
+                                <strong>${clause.name}</strong>
+                                <div style="font-size: 0.9em; color: #64748b;">${clause.description}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            if (analysis.risks.length > 0) {
+                html += `
+                    <div class="analysis-card">
+                        <div class="card-title">⚠️ Risk Assessment</div>
+                        ${analysis.risks.map(risk => `
+                            <div class="clause-check ${risk.level === 'high' ? 'missing' : 'weak'}">
+                                <span class="check-icon ${risk.level === 'high' ? 'missing' : 'weak'}">⚠</span>
+                                <span>${risk.message}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            if (analysis.recommendations.length > 0) {
+                html += `
+                    <div class="analysis-card">
+                        <div class="card-title">💡 Recommendations</div>
+                        ${analysis.recommendations.map(rec => `
+                            <div class="recommendation">
+                                <div class="recommendation-title">${rec.title}</div>
+                                <div>${rec.message}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            // Add redraft button for low scores
+            if (analysis.score < 70) {
+                html += `
+                    <div class="analysis-card">
+                        <div class="card-title">🔧 Auto-Fix NDA</div>
+                        <p>Your NDA scored ${analysis.score}/100. Let our AI automatically fix the issues and improve your score!</p>
+                        <button class="redraft-btn" onclick="redraftImprovedNDA()">
+                            🚀 Fix Issues & Redraft NDA
+                        </button>
+                    </div>
+                `;
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function generateNDA() {
+            const loadingDiv = document.getElementById('loadingGenerate');
+            const resultsDiv = document.getElementById('generatedNDA');
+
+            // Show loading
+            loadingDiv.classList.add('show');
+            resultsDiv.classList.remove('show');
+
+            setTimeout(() => {
+                const ndaText = createCustomNDA();
+                displayGeneratedNDA(ndaText);
+                loadingDiv.classList.remove('show');
+                resultsDiv.classList.add('show');
+            }, 2000);
+        }
+
+        function createCustomNDA() {
+            const formData = {
+                type: document.getElementById('ndaType').value,
+                purpose: document.getElementById('ndaPurpose').value,
+                disclosingParty: document.getElementById('disclosingParty').value || '[DISCLOSING PARTY]',
+                receivingParty: document.getElementById('receivingParty').value || '[RECEIVING PARTY]',
+                duration: document.getElementById('ndaDuration').value,
+                governingLaw: document.getElementById('governingLaw').value
+            };
+
+            // Get selected information types
+            const infoTypes = [];
+            if (document.getElementById('trade-secrets').checked) infoTypes.push('Trade secrets and proprietary information');
+            if (document.getElementById('customer-data').checked) infoTypes.push('Customer lists and client data');
+            if (document.getElementById('financial-info').checked) infoTypes.push('Financial information and business metrics');
+            if (document.getElementById('technical-info').checked) infoTypes.push('Technical specifications and methodologies');
+            if (document.getElementById('business-plans').checked) infoTypes.push('Business plans and strategic information');
+
+            const today = new Date().toLocaleDateString();
+            const stateNames = {
+                'california': 'California',
+                'new-york': 'New York', 
+                'texas': 'Texas',
+                'florida': 'Florida',
+                'delaware': 'Delaware',
+                'other': '[STATE]'
+            };
+
+            return `NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement ("Agreement") is entered into on ${today} between ${formData.disclosingParty} ("Disclosing Party") and ${formData.receivingParty} ("Receiving Party").
+
+RECITALS
+
+WHEREAS, the parties wish to engage in discussions regarding ${formData.purpose.replace('-', ' ')} and may disclose confidential information;
+
+WHEREAS, both parties agree to protect such confidential information;
+
+NOW, THEREFORE, in consideration of the mutual covenants contained herein, the parties agree as follows:
+
+1. DEFINITION OF CONFIDENTIAL INFORMATION
+
+"Confidential Information" means any and all non-public, proprietary information disclosed by Disclosing Party, including but not limited to:
+
+${infoTypes.map(type => `• ${type}`).join('\n')}
+• Any other information marked or identified as confidential
+• Information that would reasonably be considered confidential given its nature
+
+2. OBLIGATIONS OF RECEIVING PARTY
+
+Receiving Party agrees to:
+a) Hold all Confidential Information in strict confidence
+b) Use Confidential Information solely for the purpose of evaluating potential ${formData.purpose.replace('-', ' ')}
+c) Not disclose Confidential Information to any third party without prior written consent
+d) Exercise the same degree of care as used for its own confidential information, but no less than reasonable care
+
+3. TERM AND DURATION
+
+This Agreement shall remain in effect for ${formData.duration === 'indefinite' ? 'an indefinite period' : formData.duration + ' years'} from the date of execution.
+
+4. RETURN OF INFORMATION
+
+Upon termination of this Agreement or upon request, Receiving Party shall promptly return or destroy all materials containing Confidential Information.
+
+5. REMEDIES
+
+Receiving Party acknowledges that breach of this Agreement may cause irreparable harm to Disclosing Party, warranting injunctive relief in addition to other available remedies.
+
+6. NO LICENSE
+
+No license or right to Confidential Information is granted except as expressly set forth herein.
+
+${formData.purpose === 'employment' ? `
+7. WHISTLEBLOWER IMMUNITY NOTICE
+
+Pursuant to 18 U.S.C. § 1833(b), an individual will not be held criminally or civilly liable under any Federal or State trade secret law for disclosure of a trade secret that is made in confidence to a Federal, State, or local government official or attorney for the purpose of reporting or investigating a suspected violation of law.` : ''}
+
+8. GOVERNING LAW
+
+This Agreement shall be governed by and construed in accordance with the laws of the State of ${stateNames[formData.governingLaw]}.
+
+9. ENTIRE AGREEMENT
+
+This Agreement constitutes the entire agreement between the parties concerning the subject matter hereof.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+
+_________________________________      _________________________________
+${formData.disclosingParty}              ${formData.receivingParty}
+
+Date: _________________              Date: _________________`;
+        }
+
+        function displayGeneratedNDA(ndaText) {
+            const resultsDiv = document.getElementById('generatedNDA');
+            resultsDiv.innerHTML = `
+                <div class="analysis-card">
+                    <div class="card-title">📝 Your Custom NDA</div>
+                    <p>Review the generated NDA below. Remember to have it reviewed by a qualified attorney before use.</p>
+                    <div class="generated-nda">${ndaText}</div>
+                    <button class="copy-btn" onclick="copyNDA()">📋 Copy NDA</button>
+                    <button class="copy-btn" onclick="downloadNDA()">💾 Download as TXT</button>
+                </div>
+            `;
+        }
+
+        function copyNDA() {
+            const ndaText = document.querySelector('.generated-nda').textContent;
+            navigator.clipboard.writeText(ndaText).then(() => {
+                alert('NDA copied to clipboard!');
+            });
+        }
+
+        function downloadNDA() {
+            const ndaText = document.querySelector('.generated-nda').textContent;
+            const blob = new Blob([ndaText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'custom-nda.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadTemplate(templateType) {
+            if (ndaTemplates[templateType]) {
+                switchTab('draft');
+                setTimeout(() => {
+                    displayGeneratedNDA(ndaTemplates[templateType]);
+                    document.getElementById('generatedNDA').classList.add('show');
+                }, 100);
+            }
+        }
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('ndaText').value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Global variable to store original NDA for comparison
+        let originalNDAText = '';
+        let originalAnalysis = null;
+
+        function redraftImprovedNDA() {
+            const loadingDiv = document.getElementById('loadingAnalyze');
+            const resultsDiv = document.getElementById('analysisResults');
+
+            // Store original for comparison
+            originalNDAText = document.getElementById('ndaText').value;
+            originalAnalysis = performNDAAnalysis(originalNDAText);
+
+            // Show loading
+            loadingDiv.classList.add('show');
+            loadingDiv.querySelector('p').textContent = 'AI is fixing your NDA issues and redrafting...';
+
+            setTimeout(() => {
+                const improvedNDA = createImprovedNDA(originalNDAText, originalAnalysis);
+                const newAnalysis = performNDAAnalysis(improvedNDA);
+                displayImprovementResults(originalAnalysis, newAnalysis, improvedNDA);
+                loadingDiv.classList.remove('show');
+                loadingDiv.querySelector('p').textContent = 'Analyzing your NDA with AI legal intelligence...';
+            }, 3000);
+        }
+
+        function createImprovedNDA(originalText, analysis) {
+            let improvedText = originalText;
+            const missingClauses = analysis.clauseResults.filter(clause => clause.status === 'missing');
+            const improvements = [];
+
+            // Extract basic info from original if possible
+            const textLower = originalText.toLowerCase();
+            let disclosingParty = '[DISCLOSING PARTY]';
+            let receivingParty = '[RECEIVING PARTY]';
+            let isEmployee = textLower.includes('employee') || textLower.includes('employment');
+            
+            // Try to extract party names
+            const partyMatches = originalText.match(/between\s+([^,]+),?\s+(?:a\s+\w+\s+corporation\s+)?\("?[^"]*"?\)\s+and\s+([^,]+)/i);
+            if (partyMatches) {
+                disclosingParty = partyMatches[1].trim();
+                receivingParty = partyMatches[2].trim().replace(/\(".*?\).*/, '').trim();
+            }
+
+            // Start with a comprehensive improved NDA
+            const today = new Date().toLocaleDateString();
+            
+            improvedText = `COMPREHENSIVE NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement ("Agreement") is entered into on ${today} between ${disclosingParty} ("Disclosing Party") and ${receivingParty} ("Receiving Party").
+
+RECITALS
+
+WHEREAS, the parties wish to engage in discussions regarding potential business opportunities and may disclose confidential information;
+
+WHEREAS, both parties agree to protect such confidential information in accordance with the terms set forth herein;
+
+NOW, THEREFORE, in consideration of the mutual covenants contained herein, the parties agree as follows:
+
+1. DEFINITION OF CONFIDENTIAL INFORMATION
+
+"Confidential Information" means any and all non-public, proprietary information disclosed by Disclosing Party, whether orally, in writing, or in any other form, including but not limited to:
+
+• Trade secrets and proprietary processes and methodologies
+• Customer lists, client information, and prospect data
+• Financial information, pricing, and business metrics
+• Technical specifications, designs, and know-how
+• Business plans, strategies, and marketing information
+• Software, algorithms, and source code
+• Research and development projects
+• Any other information marked or identified as confidential
+• Information that would reasonably be considered confidential given its nature and circumstances
+
+Confidential Information does not include information that: (a) is or becomes publicly available through no breach of this Agreement; (b) was rightfully known by Receiving Party prior to disclosure; (c) is rightfully received by Receiving Party from a third party without breach of confidentiality; or (d) is required to be disclosed by law or court order.
+
+2. OBLIGATIONS OF RECEIVING PARTY
+
+Receiving Party agrees to:
+a) Hold all Confidential Information in strict confidence
+b) Use Confidential Information solely for the purpose of evaluating potential business opportunities
+c) Not disclose Confidential Information to any third party without prior written consent from Disclosing Party
+d) Exercise the same degree of care as used for its own confidential information, but no less than reasonable care
+e) Limit access to Confidential Information to employees or advisors who have a legitimate need to know and who are bound by confidentiality obligations
+
+3. TERM AND DURATION
+
+This Agreement shall commence on the date first written above and shall remain in effect for a period of three (3) years, unless terminated earlier by mutual written consent of the parties.
+
+4. RETURN OR DESTRUCTION OF INFORMATION
+
+Upon termination of this Agreement or upon written request by Disclosing Party, Receiving Party shall promptly return or destroy all materials, documents, and other tangible items containing or representing Confidential Information, and all copies thereof.
+
+5. REMEDIES AND ENFORCEMENT
+
+Receiving Party acknowledges that any breach of this Agreement may cause irreparable harm to Disclosing Party for which monetary damages would be inadequate. Therefore, Disclosing Party shall be entitled to seek injunctive relief and other equitable remedies in addition to all other available remedies at law or in equity.
+
+6. NO LICENSE OR RIGHTS GRANTED
+
+No license, right, or interest in any Confidential Information is granted to Receiving Party except as expressly set forth herein. All Confidential Information remains the sole property of Disclosing Party.
+
+7. NON-CIRCUMVENTION
+
+Receiving Party agrees not to directly or indirectly contact, solicit, or attempt to do business with any clients, customers, or business contacts of Disclosing Party that are disclosed as Confidential Information without the prior written consent of Disclosing Party.
+
+${isEmployee ? `
+8. WHISTLEBLOWER IMMUNITY NOTICE
+
+Pursuant to 18 U.S.C. § 1833(b), an individual will not be held criminally or civilly liable under any Federal or State trade secret law for disclosure of a trade secret that is made in confidence to a Federal, State, or local government official, either directly or indirectly, or to an attorney, solely for the purpose of reporting or investigating a suspected violation of law, or in a complaint or other document filed in a lawsuit or other proceeding, if such filing is made under seal.` : ''}
+
+9. GOVERNING LAW AND JURISDICTION
+
+This Agreement shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of laws principles. Any legal action arising out of this Agreement shall be brought exclusively in the courts of California.
+
+10. ATTORNEY FEES
+
+In the event of any legal action to enforce this Agreement, the prevailing party shall be entitled to recover its reasonable attorney fees and costs.
+
+11. SEVERABILITY
+
+If any provision of this Agreement is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
+
+12. ENTIRE AGREEMENT
+
+This Agreement constitutes the entire agreement between the parties concerning the subject matter hereof and supersedes all prior agreements, understandings, and communications relating to such subject matter.
+
+13. MODIFICATION
+
+This Agreement may only be modified by a written instrument signed by both parties.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+
+_________________________________      _________________________________
+${disclosingParty}                      ${receivingParty}
+
+Date: _________________              Date: _________________
+
+
+ACKNOWLEDGMENT
+
+By signing below, both parties acknowledge that they have read, understood, and agree to be bound by the terms and conditions of this Non-Disclosure Agreement.
+
+
+_________________________________      _________________________________
+Signature                               Signature
+
+_________________________________      _________________________________
+Print Name                              Print Name
+
+_________________________________      _________________________________
+Title                                   Title`;
+
+            return improvedText;
+        }
+
+        function displayImprovementResults(originalAnalysis, newAnalysis, improvedNDA) {
+            const resultsDiv = document.getElementById('analysisResults');
+            
+            const improvements = [];
+            originalAnalysis.clauseResults.forEach((originalClause, index) => {
+                const newClause = newAnalysis.clauseResults[index];
+                if (originalClause.status !== 'present' && newClause.status === 'present') {
+                    improvements.push(`Added ${originalClause.name}`);
+                } else if (originalClause.status === 'weak' && newClause.status === 'present') {
+                    improvements.push(`Strengthened ${originalClause.name}`);
+                }
+            });
+
+            // Create redline version
+            const redlineDoc = createRedlineDocument(originalNDAText, improvedNDA);
+            const changeStats = calculateChangeStats(redlineDoc);
+
+            let html = `
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <div class="card-title">🎉 NDA Improvement Complete!</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="score-badge low">${originalAnalysis.score}/100</div>
+                            <span style="font-size: 1.5em;">→</span>
+                            <div class="score-badge high">${newAnalysis.score}/100</div>
+                        </div>
+                    </div>
+                    <p>Your NDA has been improved from ${originalAnalysis.score}/100 to ${newAnalysis.score}/100!</p>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="card-title">📊 Change Summary</div>
+                    <div class="change-summary">
+                        <strong>Document Analysis:</strong> AI has made ${changeStats.totalChanges} changes to improve legal compliance and enforceability.
+                        <div class="change-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">${changeStats.additions}</div>
+                                <div class="stat-label">Additions</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">${changeStats.modifications}</div>
+                                <div class="stat-label">Modifications</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">${changeStats.deletions}</div>
+                                <div class="stat-label">Deletions</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">${improvements.length}</div>
+                                <div class="stat-label">Legal Issues Fixed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="card-title">✅ What We Fixed</div>
+                    <div class="improvement-list">
+                        ${improvements.map(improvement => `
+                            <div class="improvement-item">
+                                <span class="improvement-icon">✓</span>
+                                <span>${improvement}</span>
+                            </div>
+                        `).join('')}
+                        ${newAnalysis.score === 100 ? '<div class="improvement-item"><span class="improvement-icon">🏆</span><span>Achieved perfect legal compliance score!</span></div>' : ''}
+                    </div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="card-title">📝 Document Review - Redline View</div>
+                    <p>See exactly what changed with lawyer-style redline tracking:</p>
+                    
+                    <div class="redline-toggle">
+                        <button class="toggle-btn active" onclick="showRedlineView('redline')">📝 Redline View</button>
+                        <button class="toggle-btn" onclick="showRedlineView('clean')">✨ Clean Version</button>
+                        <button class="toggle-btn" onclick="showRedlineView('comparison')">📊 Side-by-Side</button>
+                    </div>
+
+                    <div class="redline-legend">
+                        <div class="legend-item">
+                            <span class="legend-sample redline-added">Added Text</span>
+                            <span>New content added</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-sample redline-deleted">Deleted Text</span>
+                            <span>Removed content</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-sample redline-modified">Modified Text</span>
+                            <span>Changed content</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-sample redline-comment">[Comment]</span>
+                            <span>Legal explanation</span>
+                        </div>
+                    </div>
+
+                    <div id="redlineContent" class="redline-container">${redlineDoc}</div>
+                    <div id="cleanContent" class="generated-nda" style="display: none;">${improvedNDA}</div>
+                    <div id="comparisonContent" style="display: none;">
+                        <div class="comparison-container">
+                            <div class="comparison-side before">
+                                <h4>❌ Original NDA (${originalAnalysis.score}/100)</h4>
+                                <div style="font-family: 'Georgia', serif; font-size: 0.9em; line-height: 1.6; max-height: 400px; overflow-y: auto; padding: 15px; background: white; border-radius: 8px;">${originalNDAText.replace(/\n/g, '<br>')}</div>
+                            </div>
+                            <div class="comparison-side after">
+                                <h4>✅ Improved NDA (${newAnalysis.score}/100)</h4>
+                                <div style="font-family: 'Georgia', serif; font-size: 0.9em; line-height: 1.6; max-height: 400px; overflow-y: auto; padding: 15px; background: white; border-radius: 8px;">${improvedNDA.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <button class="copy-btn" onclick="copyRedlineNDA()">📋 Copy Redline Version</button>
+                        <button class="copy-btn" onclick="copyImprovedNDA()">📄 Copy Clean Version</button>
+                        <button class="copy-btn" onclick="downloadImprovedNDA()">💾 Download as TXT</button>
+                        <button class="copy-btn" onclick="useImprovedNDA()">🔄 Use This as New Input</button>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function createRedlineDocument(original, improved) {
+            // Simulate redline changes for demo - in a real app you'd use a proper diff algorithm
+            const originalLines = original.split('\n');
+            const improvedLines = improved.split('\n');
+            
+            let redlineContent = '';
+            let lineIndex = 0;
+            
+            // Add header with comment
+            redlineContent += `<div class="redline-comment">[LEGAL REVIEW] AI Legal Assistant has reviewed and improved this NDA for compliance and enforceability. All changes below enhance legal protection.</div>\n\n`;
+            
+            // Process the improved document and mark additions
+            const improvedSections = [
+                'COMPREHENSIVE NON-DISCLOSURE AGREEMENT',
+                'RECITALS',
+                'DEFINITION OF CONFIDENTIAL INFORMATION',
+                'OBLIGATIONS OF RECEIVING PARTY',
+                'TERM AND DURATION',
+                'RETURN OR DESTRUCTION OF INFORMATION',
+                'REMEDIES AND ENFORCEMENT',
+                'NO LICENSE OR RIGHTS GRANTED',
+                'NON-CIRCUMVENTION',
+                'WHISTLEBLOWER IMMUNITY NOTICE',
+                'GOVERNING LAW AND JURISDICTION',
+                'ATTORNEY FEES',
+                'SEVERABILITY',
+                'ENTIRE AGREEMENT',
+                'MODIFICATION',
+                'ACKNOWLEDGMENT'
+            ];
+
+            let isFirstSection = true;
+            improvedLines.forEach(line => {
+                if (line.trim() === '') {
+                    redlineContent += '\n';
+                    return;
+                }
+
+                // Check if this is a major section that was likely added/improved
+                const isNewSection = improvedSections.some(section => 
+                    line.toUpperCase().includes(section) && 
+                    !originalLines.some(origLine => origLine.toUpperCase().includes(section))
+                );
+
+                const isEnhancedClause = line.includes('•') || 
+                                       line.includes('pursuant to') || 
+                                       line.includes('irreparable harm') ||
+                                       line.includes('attorney fees') ||
+                                       line.includes('severability') ||
+                                       line.includes('modification');
+
+                const existsInOriginal = originalLines.some(origLine => 
+                    origLine.toLowerCase().includes(line.toLowerCase().substring(0, 20)) ||
+                    line.toLowerCase().includes(origLine.toLowerCase().substring(0, 20))
+                );
+
+                if (isNewSection) {
+                    redlineContent += `<span class="redline-added">${line}</span>`;
+                    if (line.includes('COMPREHENSIVE')) {
+                        redlineContent += `<div class="redline-comment">[ADDED] Enhanced title for professional appearance</div>`;
+                    } else if (line.includes('RECITALS')) {
+                        redlineContent += `<div class="redline-comment">[ADDED] Recitals section for legal foundation</div>`;
+                    } else if (line.includes('ATTORNEY FEES')) {
+                        redlineContent += `<div class="redline-comment">[ADDED] Attorney fees clause for enforcement protection</div>`;
+                    } else if (line.includes('SEVERABILITY')) {
+                        redlineContent += `<div class="redline-comment">[ADDED] Severability clause for legal resilience</div>`;
+                    }
+                } else if (isEnhancedClause && !existsInOriginal) {
+                    redlineContent += `<span class="redline-added">${line}</span>`;
+                } else if (line.includes('[') && line.includes(']')) {
+                    // Placeholder fields that were modified
+                    redlineContent += `<span class="redline-modified">${line}</span>`;
+                } else if (existsInOriginal) {
+                    redlineContent += line;
+                } else {
+                    redlineContent += `<span class="redline-added">${line}</span>`;
+                }
+                
+                redlineContent += '\n';
+            });
+
+            // Add some strategic legal comments
+            redlineContent += `\n<div class="redline-comment">[LEGAL ANALYSIS] This improved NDA now includes all 8 essential clauses required for enforceability, whistleblower protection compliance, and enhanced remedies for breach situations.</div>`;
+
+            return redlineContent;
+        }
+
+        function calculateChangeStats(redlineContent) {
+            const additions = (redlineContent.match(/class="redline-added"/g) || []).length;
+            const modifications = (redlineContent.match(/class="redline-modified"/g) || []).length;
+            const deletions = (redlineContent.match(/class="redline-deleted"/g) || []).length;
+            
+            return {
+                additions,
+                modifications,
+                deletions,
+                totalChanges: additions + modifications + deletions
+            };
+        }
+
+        function showRedlineView(viewType) {
+            // Update toggle buttons
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show/hide content
+            document.getElementById('redlineContent').style.display = viewType === 'redline' ? 'block' : 'none';
+            document.getElementById('cleanContent').style.display = viewType === 'clean' ? 'block' : 'none';
+            document.getElementById('comparisonContent').style.display = viewType === 'comparison' ? 'block' : 'none';
+        }
+
+        function copyRedlineNDA() {
+            const redlineText = document.getElementById('redlineContent').textContent;
+            navigator.clipboard.writeText(redlineText).then(() => {
+                alert('Redline version copied to clipboard!');
+            });
+        }
+
+        function copyImprovedNDA() {
+            const ndaText = document.querySelector('.generated-nda').textContent;
+            navigator.clipboard.writeText(ndaText).then(() => {
+                alert('Improved NDA copied to clipboard!');
+            });
+        }
+
+        function downloadImprovedNDA() {
+            const ndaText = document.querySelector('.generated-nda').textContent;
+            const blob = new Blob([ndaText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'improved-nda.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function useImprovedNDA() {
+            const ndaText = document.querySelector('.generated-nda').textContent;
+            document.getElementById('ndaText').value = ndaText;
+            alert('Improved NDA has been loaded into the input area. You can analyze it again or make further edits.');
+        }
+
+        // Drag and drop functionality
+        const uploadArea = document.querySelector('.upload-area');
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('ndaText').value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Oracle - AI Dream Interpreter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1c3a 0%, #2d1b69 25%, #5b21b6 50%, #7c3aed 75%, #a855f7 100%);
+            background-size: 400% 400%;
+            animation: dreamyGradient 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes dreamyGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+            animation: floatingLights 10s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes floatingLights {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 
+                        0 0 0 1px rgba(255, 255, 255, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #a855f7, #7c3aed, #5b21b6, #6366f1, #8b5cf6);
+            border-radius: 32px;
+            z-index: -1;
+            opacity: 0.5;
+            animation: borderGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dream-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+            display: block;
+            animation: dreamFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.4));
+        }
+
+        @keyframes dreamFloat {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1);
+                filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.4));
+            }
+            50% { 
+                transform: translateY(-10px) rotate(2deg) scale(1.05);
+                filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.6));
+            }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .subtitle {
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-style: italic;
+            font-weight: bold;
+            opacity: 0.95;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .value-prop {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-prop::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .value-prop-text {
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .quick-dreams {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dream-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            padding: 18px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dream-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dream-btn:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            font-weight: bold;
+            border-color: #7c3aed;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+        }
+
+        .dream-btn:hover::before {
+            opacity: 1;
+        }
+
+        .dream-emoji {
+            display: block;
+            font-size: 1.5em;
+            margin-bottom: 8px;
+        }
+
+        .chat-container {
+            background: linear-gradient(135deg, rgba(247, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.9) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        .message {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .message.oracle .message-avatar {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            animation: avatarGlow 3s ease-in-out infinite;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); }
+        }
+
+        .message-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 75%;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .dream-symbol {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #a855f7;
+            font-weight: 500;
+            color: #4a5568;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dream-symbol::before {
+            content: '✨';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2em;
+            opacity: 0.6;
+        }
+
+        .interpretation {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #6366f1;
+            color: #4a5568;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interpretation::before {
+            content: '🔮';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2em;
+            opacity: 0.6;
+        }
+
+        .reflection-questions {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            padding: 18px;
+            border-radius: 15px;
+            border-left: 4px solid #22c55e;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reflection-questions::before {
+            content: '💭';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2em;
+            opacity: 0.6;
+        }
+
+        .reflection-questions h4 {
+            color: #15803d;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .reflection-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .question-number {
+            background: #22c55e;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        #dreamInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        #dreamInput:focus {
+            border-color: #667eea;
+        }
+
+        #interpretButton {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #interpretButton::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        #interpretButton:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
+
+        #interpretButton:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        #interpretButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            margin: 40px 0;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            color: #718096;
+            font-style: italic;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #718096;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #interpretButton {
+                margin-top: 10px;
+            }
+
+            .quick-dreams {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="dream-icon">🌙</span>
+            <h1>Dream Oracle</h1>
+            <p class="subtitle">Unlock the Hidden Messages in Your Dreams</p>
+        </div>
+
+        <div class="value-prop">
+            <div class="value-prop-text">
+                Choose a common dream below or describe your unique vision in detail for personalized insights into your subconscious mind
+            </div>
+        </div>
+
+        <div class="quick-dreams">
+            <button class="dream-btn" onclick="interpretDream('I was flying over my childhood home')">
+                <span class="dream-emoji">✈️</span>
+                Flying Dreams
+            </button>
+            <button class="dream-btn" onclick="interpretDream('I was being chased by someone I could not see')">
+                <span class="dream-emoji">🏃</span>
+                Being Chased
+            </button>
+            <button class="dream-btn" onclick="interpretDream('My teeth were falling out')">
+                <span class="dream-emoji">🦷</span>
+                Losing Teeth
+            </button>
+            <button class="dream-btn" onclick="interpretDream('I was naked in public and embarrassed')">
+                <span class="dream-emoji">😳</span>
+                Being Naked
+            </button>
+            <button class="dream-btn" onclick="interpretDream('I was falling from a great height')">
+                <span class="dream-emoji">⬇️</span>
+                Falling
+            </button>
+            <button class="dream-btn" onclick="interpretDream('I was back in school taking a test I had not studied for')">
+                <span class="dream-emoji">📝</span>
+                School/Test Dreams
+            </button>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-message">
+                Tell me about your dream and I'll help you understand what your subconscious mind might be trying to tell you.
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="message-avatar" style="background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color: white;">🌙</div>
+            <div>The Oracle is interpreting your dream...</div>
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <textarea id="dreamInput" placeholder="Describe your dream in detail... What did you see, feel, or experience?" rows="1"></textarea>
+            <button id="interpretButton" onclick="interpretDream()">Interpret Dream</button>
+        </div>
+
+        <!-- Donation Section -->
+        <div class="donation-section" style="margin-top: 40px; text-align: center; padding: 30px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%); border-radius: 20px; border: 1px solid rgba(168, 85, 247, 0.3);">
+            <h3 style="color: #fff; margin-bottom: 15px; font-size: 1.3em; text-shadow: 0 2px 4px rgba(0,0,0,0.3); background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Support Dream Oracle</h3>
+            <p style="color: #fff; margin-bottom: 25px; font-size: 1em; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">Help keep this dream interpretation service running with a small contribution</p>
+            
+            <div class="donation-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 500px; margin: 0 auto;">
+                <div class="donation-option" style="padding: 20px; border-radius: 15px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s ease; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);" onclick="openDonation('monthly')" onmouseover="this.style.borderColor='#7c3aed'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2em; margin-bottom: 10px;">🌙</div>
+                    <h4 style="color: #4a5568; margin-bottom: 8px;">Monthly Support</h4>
+                    <p style="color: #718096; font-size: 0.9em; margin-bottom: 10px;">$1/month</p>
+                    <p style="color: #666; font-size: 0.8em;">Unlimited dream interpretations</p>
+                </div>
+                
+                <div class="donation-option" style="padding: 20px; border-radius: 15px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s ease; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);" onclick="openDonation('per-dream')" onmouseover="this.style.borderColor='#7c3aed'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2em; margin-bottom: 10px;">✨</div>
+                    <h4 style="color: #4a5568; margin-bottom: 8px;">Per Dream</h4>
+                    <p style="color: #718096; font-size: 0.9em; margin-bottom: 10px;">$1/dream</p>
+                    <p style="color: #666; font-size: 0.8em;">Pay as you go</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <p style="color: #fff; font-size: 0.8em; text-shadow: 0 1px 2px rgba(0,0,0,0.2); opacity: 0.9;">💝 All contributions help maintain and improve this service</p>
+            </div>
+        </div>
+
+        <!-- Collapsible Disclaimer -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="toggleDisclaimer()" id="disclaimerToggle" style="background: rgba(255, 193, 7, 0.1); border: 1px solid #ffc107; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 13px; color: #856404; transition: all 0.3s ease;">
+                <span>⚠️ AI Disclaimer & Limitations</span>
+                <span id="disclaimerIcon" style="margin-left: 8px;">▼</span>
+            </button>
+            
+            <div id="disclaimerContent" style="display: none; margin-top: 15px; padding: 20px; background: rgba(255, 193, 7, 0.05); border: 1px solid #ffc107; border-radius: 15px; font-size: 0.85em; color: #856404; line-height: 1.6; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                <div style="margin-bottom: 15px;">
+                    <strong>🤖 AI-Generated Content:</strong> All dream interpretations are generated by artificial intelligence based on common dream symbolism. These are <strong>not</strong> professional psychological or therapeutic insights.
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>📚 For Entertainment:</strong> Dream interpretation is subjective and highly personal. Our AI provides general symbolic meanings that may not apply to your specific circumstances.
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #ef4444;">
+                    <strong>⚠️ Not Professional Advice:</strong> This tool cannot replace professional counseling, therapy, or medical advice. If dreams are causing distress, consult a qualified professional.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dreamSymbols = {
+            flying: {
+                symbol: "Flying represents freedom, liberation, and rising above limitations.",
+                interpretation: "Your dream suggests a desire to break free from current constraints or a feeling of empowerment. You may be overcoming obstacles or gaining a new perspective on life situations.",
+                questions: [
+                    "What in your waking life do you feel is holding you back?",
+                    "Are you experiencing a sense of achievement or progress recently?",
+                    "What would 'freedom' look like in your current situation?"
+                ]
+            },
+            chased: {
+                symbol: "Being chased symbolizes avoidance, fear, or running from something in your life.",
+                interpretation: "This dream often reflects anxiety about confronting a situation, person, or aspect of yourself. The invisible chaser suggests unknown fears or unconscious worries that you haven't fully acknowledged.",
+                questions: [
+                    "What situation or responsibility are you avoiding in real life?",
+                    "Are there unresolved conflicts or difficult conversations you're putting off?",
+                    "What would happen if you stopped running and faced what's chasing you?"
+                ]
+            },
+            teeth: {
+                symbol: "Losing teeth represents loss of control, anxiety about appearance, or communication issues.",
+                interpretation: "This common dream often reflects concerns about how others perceive you, fear of aging or losing attractiveness, or anxiety about saying the wrong thing. It can also indicate feeling powerless in a situation.",
+                questions: [
+                    "Are you worried about how you're coming across to others?",
+                    "Is there a situation where you feel you lack control or power?",
+                    "Are you holding back from expressing your true thoughts or feelings?"
+                ]
+            },
+            naked: {
+                symbol: "Being naked in public represents vulnerability, exposure, or fear of being judged.",
+                interpretation: "This dream reflects anxiety about being 'exposed' or having your flaws revealed. It often occurs during times when you feel unprepared, vulnerable, or worried about others discovering something about you.",
+                questions: [
+                    "What aspects of yourself are you trying to hide from others?",
+                    "Are you feeling unprepared for a challenge or opportunity?",
+                    "Where in your life do you feel most vulnerable right now?"
+                ]
+            },
+            falling: {
+                symbol: "Falling represents loss of control, instability, or fear of failure.",
+                interpretation: "This dream often occurs during times of uncertainty or when you feel like you're losing your grip on a situation. It can reflect anxiety about making the wrong decision or fear of 'falling' from your current position.",
+                questions: [
+                    "What area of your life feels unstable or uncertain right now?",
+                    "Are you afraid of failing at something important to you?",
+                    "What would help you feel more grounded and secure?"
+                ]
+            },
+            school: {
+                symbol: "School or test dreams represent performance anxiety, being judged, or feeling unprepared.",
+                interpretation: "These dreams often surface when you're facing evaluation in real life or feel unprepared for a challenge. They reflect concerns about meeting expectations and fear of not measuring up.",
+                questions: [
+                    "What situation in your life are you feeling unprepared for?",
+                    "Are you worried about meeting someone's expectations?",
+                    "What knowledge or skills do you feel you're lacking right now?"
+                ]
+            },
+            water: {
+                symbol: "Water represents emotions, the unconscious mind, and spiritual cleansing.",
+                interpretation: "Water in dreams often reflects your emotional state. Clear, calm water suggests peace and clarity, while turbulent water indicates emotional turmoil or overwhelming feelings.",
+                questions: [
+                    "How are you handling your emotions in your waking life?",
+                    "Are there feelings you've been suppressing or avoiding?",
+                    "What emotional situation needs your attention right now?"
+                ]
+            },
+            death: {
+                symbol: "Death in dreams represents transformation, endings, and new beginnings.",
+                interpretation: "Despite being unsettling, death dreams rarely predict actual death. Instead, they symbolize major life transitions, the end of one phase and the beginning of another, or the need to let go of something.",
+                questions: [
+                    "What in your life is coming to an end or needs to change?",
+                    "Are you resisting a necessary transformation?",
+                    "What new chapter of your life wants to begin?"
+                ]
+            },
+            animals: {
+                symbol: "Animals represent instincts, natural behaviors, and aspects of your personality.",
+                interpretation: "Different animals carry different meanings - predators might represent aggression or threats, while domestic animals could represent comfort and loyalty. The animal's behavior in your dream is key to interpretation.",
+                questions: [
+                    "What qualities does this animal represent to you?",
+                    "Are you suppressing or embracing your natural instincts?",
+                    "What aspect of your personality is this animal reflecting?"
+                ]
+            },
+            house: {
+                symbol: "Houses represent the self, your psyche, and different aspects of your personality.",
+                interpretation: "Different rooms represent different aspects of yourself. The condition of the house reflects your mental/emotional state. Childhood homes often represent your past or foundational beliefs.",
+                questions: [
+                    "What does this particular house represent in your life?",
+                    "Which 'rooms' of your personality need attention?",
+                    "Are you comfortable with all aspects of yourself?"
+                ]
+            }
+        };
+
+        function getDreamInterpretation(dreamText) {
+            const lowerDream = dreamText.toLowerCase();
+            
+            // Flight/Flying
+            if (lowerDream.includes('fly') || lowerDream.includes('flying') || lowerDream.includes('soar')) {
+                return dreamSymbols.flying;
+            }
+            
+            // Being chased
+            if (lowerDream.includes('chased') || lowerDream.includes('chasing') || lowerDream.includes('running away') || lowerDream.includes('escape')) {
+                return dreamSymbols.chased;
+            }
+            
+            // Teeth falling out
+            if (lowerDream.includes('teeth') || lowerDream.includes('tooth')) {
+                return dreamSymbols.teeth;
+            }
+            
+            // Being naked
+            if (lowerDream.includes('naked') || lowerDream.includes('nude') || lowerDream.includes('undressed')) {
+                return dreamSymbols.naked;
+            }
+            
+            // Falling
+            if (lowerDream.includes('fall') || lowerDream.includes('falling') || lowerDream.includes('drop')) {
+                return dreamSymbols.falling;
+            }
+            
+            // School/Test dreams
+            if (lowerDream.includes('school') || lowerDream.includes('test') || lowerDream.includes('exam') || lowerDream.includes('student')) {
+                return dreamSymbols.school;
+            }
+            
+            // Water
+            if (lowerDream.includes('water') || lowerDream.includes('ocean') || lowerDream.includes('river') || lowerDream.includes('swimming')) {
+                return dreamSymbols.water;
+            }
+            
+            // Death
+            if (lowerDream.includes('death') || lowerDream.includes('dying') || lowerDream.includes('dead') || lowerDream.includes('funeral')) {
+                return dreamSymbols.death;
+            }
+            
+            // Animals
+            if (lowerDream.includes('dog') || lowerDream.includes('cat') || lowerDream.includes('snake') || lowerDream.includes('bird') || lowerDream.includes('animal')) {
+                return dreamSymbols.animals;
+            }
+            
+            // House/Home
+            if (lowerDream.includes('house') || lowerDream.includes('home') || lowerDream.includes('room') || lowerDream.includes('building')) {
+                return dreamSymbols.house;
+            }
+            
+            // Default interpretation for unknown dreams
+            return {
+                symbol: "Your dream contains unique personal symbols that are meaningful to you.",
+                interpretation: "Dreams are highly personal and often draw from your individual experiences, memories, and emotions. The specific details, feelings, and context of your dream are important clues to its meaning.",
+                questions: [
+                    "What emotions did you feel most strongly in this dream?",
+                    "Do any elements remind you of current situations in your life?",
+                    "What was the overall mood or atmosphere of the dream?"
+                ]
+            };
+        }
+
+        function addMessage(content, isUser = false) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'oracle'}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            if (isUser) {
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">😴</div>
+                    <div class="message-content">
+                        ${content}
+                        <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7); margin-top: 10px;">${timeString}</div>
+                    </div>
+                `;
+            } else {
+                const interpretation = getDreamInterpretation(content);
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">🌙</div>
+                    <div class="message-content">
+                        <div class="dream-symbol">
+                            <strong>🔮 Dream Symbol:</strong> ${interpretation.symbol}
+                        </div>
+                        <div class="interpretation">
+                            <strong>💫 Interpretation:</strong> ${interpretation.interpretation}
+                        </div>
+                        <div class="reflection-questions">
+                            <h4>🤔 Reflection Questions:</h4>
+                            ${interpretation.questions.map((question, index) => `
+                                <div class="reflection-item">
+                                    <span class="question-number">${index + 1}</span>
+                                    <span>${question}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="font-size: 0.8em; color: #a0aec0; margin-top: 10px;">${timeString}</div>
+                    </div>
+                `;
+            }
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Remove welcome message if it exists
+            const welcomeMessage = chatContainer.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.remove();
+            }
+        }
+
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'flex';
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        async function interpretDream(predefinedDream = null) {
+            const input = document.getElementById('dreamInput');
+            const button = document.getElementById('interpretButton');
+            const dreamText = predefinedDream || input.value.trim();
+            
+            if (!dreamText) return;
+            
+            // Show payment modal before interpretation
+            showPaymentRequiredModal(dreamText);
+        }
+
+        // Show payment required modal
+        function showPaymentRequiredModal(dreamText) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                backdrop-filter: blur(10px);
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+                border-radius: 25px;
+                padding: 40px;
+                max-width: 500px;
+                width: 90%;
+                text-align: center;
+                position: relative;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(168, 85, 247, 0.2);
+            `;
+            
+            modalContent.innerHTML = `
+                <button onclick="this.closest('.payment-modal').remove()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">×</button>
+                
+                <div style="font-size: 3em; margin-bottom: 15px;">🔮</div>
+                <h3 style="color: #4a5568; margin-bottom: 15px; font-size: 1.4em;">Unlock Your Dream's Meaning</h3>
+                <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">Your dream is ready to be interpreted! Choose your preferred payment option to reveal the hidden messages from your subconscious mind.</p>
+                
+                <div style="background: rgba(168, 85, 247, 0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(168, 85, 247, 0.2); margin-bottom: 25px;">
+                    <p style="color: #5b21b6; font-weight: 600; font-size: 0.9em;">✨ Your Dream Preview:</p>
+                    <p style="color: #4a5568; font-style: italic; margin-top: 8px;">"${dreamText.substring(0, 100)}${dreamText.length > 100 ? '...' : ''}"</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <button onclick="purchaseInterpretation('${dreamText.replace(/'/g, "\\'")}', 'per-dream')" 
+                            style="padding: 20px 15px; border-radius: 15px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s ease; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-family: inherit;"
+                            onmouseover="this.style.borderColor='#7c3aed'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(124, 58, 237, 0.2)'"
+                            onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">✨</div>
+                        <h4 style="color: #4a5568; margin-bottom: 8px; font-size: 1em;">Per Dream</h4>
+                        <p style="color: #7c3aed; font-weight: 600; margin-bottom: 5px;">$1</p>
+                        <p style="color: #666; font-size: 0.8em;">One-time payment</p>
+                    </button>
+                    
+                    <button onclick="purchaseInterpretation('${dreamText.replace(/'/g, "\\'")}', 'monthly')" 
+                            style="padding: 20px 15px; border-radius: 15px; border: 2px solid #7c3aed; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%); box-shadow: 0 4px 15px rgba(124, 58, 237, 0.1); font-family: inherit;"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(124, 58, 237, 0.2)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(124, 58, 237, 0.1)'">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">🌙</div>
+                        <h4 style="color: #4a5568; margin-bottom: 8px; font-size: 1em;">Monthly</h4>
+                        <p style="color: #7c3aed; font-weight: 600; margin-bottom: 5px;">$1/month</p>
+                        <p style="color: #666; font-size: 0.8em;">Unlimited dreams</p>
+                        <div style="background: #7c3aed; color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.7em; margin-top: 5px; display: inline-block;">BEST VALUE</div>
+                    </button>
+                </div>
+                
+                <p style="color: #999; font-size: 0.8em;">🔒 Secure payment through PayPal</p>
+            `;
+            
+            modal.appendChild(modalContent);
+            modal.className = 'payment-modal';
+            document.body.appendChild(modal);
+        }
+
+        // Purchase interpretation
+        function purchaseInterpretation(dreamText, paymentType) {
+            // Store the dream text for after payment
+            sessionStorage.setItem('pendingDream', dreamText);
+            
+            // Close payment modal
+            document.querySelector('.payment-modal').remove();
+            
+            // Show PayPal payment modal
+            showPayPalModal(paymentType);
+        }
+
+        // Modified to handle post-payment interpretation
+        async function processInterpretationAfterPayment(dreamText) {
+            const input = document.getElementById('dreamInput');
+            const button = document.getElementById('interpretButton');
+            
+            // Disable input and button
+            input.disabled = true;
+            button.disabled = true;
+            
+            // Add user message
+            addMessage(dreamText, true);
+            
+            // Clear input
+            input.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate thinking time
+            await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
+            
+            // Hide typing indicator
+            hideTypingIndicator();
+            
+            // Add Oracle's interpretation
+            addMessage(dreamText, false);
+            
+            // Re-enable input and button
+            input.disabled = false;
+            button.disabled = false;
+            input.focus();
+        }
+
+        // Auto-resize textarea
+        document.getElementById('dreamInput').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Enter key to submit (Shift+Enter for new line)
+        document.getElementById('dreamInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                interpretDream();
+            }
+        });
+
+        // Focus on input when page loads
+        window.addEventListener('load', function() {
+            document.getElementById('dreamInput').focus();
+        });
+
+        // Toggle disclaimer visibility
+        function toggleDisclaimer() {
+            const content = document.getElementById('disclaimerContent');
+            const icon = document.getElementById('disclaimerIcon');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '▲';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '▼';
+            }
+        }
+
+        // Donation functionality
+        function openDonation(type) {
+            if (type === 'monthly') {
+                // Show PayPal monthly subscription modal
+                showPayPalModal('monthly');
+            } else if (type === 'per-dream') {
+                // Show PayPal one-time payment modal (waiting for your one-time payment code)
+                showPayPalModal('per-dream');
+            }
+        }
+
+        // Show PayPal payment modal
+        function showPayPalModal(type) {
+            // Create modal overlay
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                backdrop-filter: blur(5px);
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+                max-width: 400px;
+                width: 90%;
+                text-align: center;
+                position: relative;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            `;
+            
+            if (type === 'monthly') {
+                modalContent.innerHTML = `
+                    <button onclick="this.closest('.modal-overlay').remove()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">×</button>
+                    <h3 style="color: #4a5568; margin-bottom: 20px;">Monthly Support - $1/month</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Unlimited dream interpretations</p>
+                    <div id="paypal-monthly-container"></div>
+                `;
+                
+                modal.appendChild(modalContent);
+                modal.className = 'modal-overlay';
+                document.body.appendChild(modal);
+                
+                // Load PayPal subscription button
+                loadPayPalSubscription();
+                
+            } else {
+                modalContent.innerHTML = `
+                    <button onclick="this.closest('.modal-overlay').remove()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">×</button>
+                    <h3 style="color: #4a5568; margin-bottom: 20px;">Per Dream - $1</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Single dream interpretation</p>
+                    <div style="margin: 20px 0;">
+                        <a href="https://www.paypal.com/ncp/payment/SCVAQSALWA4C2" target="_blank" 
+                           style="display: inline-block; background: linear-gradient(135deg, #ffc439 0%, #ff914d 100%); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(255, 196, 57, 0.3); transition: all 0.3s ease;"
+                           onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(255, 196, 57, 0.4)'"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255, 196, 57, 0.3)'"
+                           onclick="handleOneTimePayment()">
+                           💫 Pay $1 with PayPal
+                        </a>
+                    </div>
+                    <p style="color: #999; font-size: 0.8em;">Opens PayPal in a new tab</p>
+                `;
+                
+                modal.appendChild(modalContent);
+                modal.className = 'modal-overlay';
+                document.body.appendChild(modal);
+            }
+        }
+
+        // Load PayPal subscription button
+        function loadPayPalSubscription() {
+            // Check if PayPal script is already loaded
+            if (!window.paypal) {
+                const script = document.createElement('script');
+                script.src = "https://www.paypal.com/sdk/js?client-id=AcB_e2yQsKVAGCPj9JlTnVxtioU9VOYeTo3-PDeH4Moc25Hd_D-SSkOcj1WTOJ4KQ2zX8s2R8ajlxIDg&vault=true&intent=subscription";
+                script.onload = function() {
+                    renderPayPalSubscription();
+                };
+                document.head.appendChild(script);
+            } else {
+                renderPayPalSubscription();
+            }
+        }
+
+        // Render PayPal subscription button
+        function renderPayPalSubscription() {
+            paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    color: 'gold',
+                    layout: 'vertical',
+                    label: 'subscribe'
+                },
+                createSubscription: function(data, actions) {
+                    return actions.subscription.create({
+                        plan_id: 'P-50953541L6558032VNCJDOAA'
+                    });
+                },
+                onApprove: function(data, actions) {
+                    alert('Thank you for your monthly support! Subscription ID: ' + data.subscriptionID);
+                    // Close modal
+                    document.querySelector('.modal-overlay').remove();
+                    
+                    // Process the pending dream interpretation
+                    const pendingDream = sessionStorage.getItem('pendingDream');
+                    if (pendingDream) {
+                        sessionStorage.removeItem('pendingDream');
+                        processInterpretationAfterPayment(pendingDream);
+                    }
+                },
+                onError: function(err) {
+                    console.error('PayPal error:', err);
+                    alert('There was an error processing your payment. Please try again.');
+                }
+            }).render('#paypal-monthly-container');
+        }
+
+        // Handle one-time payment
+        function handleOneTimePayment() {
+            // Close modal after a short delay
+            setTimeout(() => {
+                document.querySelector('.modal-overlay').remove();
+                
+                // Process the pending dream interpretation
+                const pendingDream = sessionStorage.getItem('pendingDream');
+                if (pendingDream) {
+                    sessionStorage.removeItem('pendingDream');
+                    // Show a message that interpretation will be provided after payment confirmation
+                    alert('After completing your PayPal payment, return here and your dream interpretation will be ready!');
+                    processInterpretationAfterPayment(pendingDream);
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

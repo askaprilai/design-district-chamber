@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mastery Admin Dashboard - Subscription & User Management</title>
+    <meta name="description" content="Comprehensive admin dashboard for managing enterprise subscriptions, user access, billing, and organizational analytics for the AI Mastery Platform.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f7fafc;
+            line-height: 1.6;
+            color: #2d3748;
+        }
+
+        /* Header */
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Main Layout */
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .stat-increase {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .stat-decrease {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        /* Main Panel */
+        .main-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Subscription Table */
+        .subscriptions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .subscriptions-table th,
+        .subscriptions-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .subscriptions-table th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .subscriptions-table tr:hover {
+            background: #f7fafc;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .status-cancelled {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .status-pending {
+            background: #fef5e7;
+            color: #d69e2e;
+        }
+
+        .plan-badge {
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .plan-starter {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+
+        .plan-enterprise {
+            background: #fbd38d;
+            color: #d69e2e;
+        }
+
+        .plan-enterprise-plus {
+            background: #d6f5d6;
+            color: #2f855a;
+        }
+
+        /* Action Menu */
+        .action-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .action-btn {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        .action-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            min-width: 150px;
+            z-index: 100;
+            display: none;
+        }
+
+        .action-dropdown.show {
+            display: block;
+        }
+
+        .action-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .action-item:hover {
+            background: #f7fafc;
+        }
+
+        .action-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Quick Actions Panel */
+        .quick-actions {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            height: fit-content;
+        }
+
+        .quick-actions h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f7fafc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #2d3748;
+        }
+
+        .quick-action:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .quick-action-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quick-action-content {
+            flex: 1;
+        }
+
+        .quick-action-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .quick-action-desc {
+            font-size: 0.85rem;
+            color: #4a5568;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+            font-weight: 500;
+        }
+
+        .alert-warning {
+            background: #fef5e7;
+            border-color: #d69e2e;
+            color: #744210;
+        }
+
+        .alert-info {
+            background: #bee3f8;
+            border-color: #4299e1;
+            color: #2a4a6b;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            border-color: #48bb78;
+            color: #22543d;
+        }
+
+        /* User Management Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            width: 100%;
+        }
+
+        .tab-content.active {
+            display: block !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 20px 15px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .admin-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .main-panel {
+                padding: 20px;
+            }
+            
+            .subscriptions-table {
+                font-size: 0.9rem;
+            }
+            
+            .subscriptions-table th,
+            .subscriptions-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="admin-header">
+        <div class="header-content">
+            <div class="admin-logo">
+                ⚙️ AI Mastery Admin
+            </div>
+            <nav class="admin-nav">
+                <a href="#overview" class="nav-item active" onclick="showTab('overview')">Overview</a>
+                <a href="#subscriptions" class="nav-item" onclick="showTab('subscriptions')">Subscriptions</a>
+                <a href="#users" class="nav-item" onclick="showTab('users')">Users</a>
+                <a href="#billing" class="nav-item" onclick="showTab('billing')">Billing</a>
+                <a href="#analytics" class="nav-item" onclick="showTab('analytics')">Analytics</a>
+                <a href="#settings" class="nav-item" onclick="showTab('settings')">Settings</a>
+            </nav>
+            <div class="user-menu">
+                <div class="user-avatar">AS</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <!-- Alerts -->
+        <div class="alert alert-info">
+            <strong>💡 New Feature:</strong> PayPal subscription webhooks are now active. All payment events are automatically tracked and processed.
+        </div>
+
+        <!-- Overview Tab -->
+        <div class="tab-content" id="overview-tab">
+            <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Left Panel - Quick Stats -->
+            <div class="stats-section">
+                <h2 style="margin-bottom: 20px; color: #2d3748; font-weight: 700;">📊 Quick Stats</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">247</div>
+                        <div class="stat-label">Active Subscriptions</div>
+                        <div class="stat-change stat-increase">↗️ +23 this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$18.4K</div>
+                        <div class="stat-label">Monthly Revenue</div>
+                        <div class="stat-change stat-increase">↗️ +15.3%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1,243</div>
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-change stat-increase">↗️ +89 this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">94.2%</div>
+                        <div class="stat-label">Platform Uptime</div>
+                        <div class="stat-change stat-increase">↗️ 99.1% target</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Panel - Subscription Management -->
+            <div class="main-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">💳 Subscription Management</h2>
+                    <div class="panel-actions">
+                        <button class="btn btn-secondary" onclick="exportSubscriptions()">📊 Export</button>
+                        <button class="btn btn-primary" onclick="openAddSubscription()">➕ Add Subscription</button>
+                    </div>
+                </div>
+
+                <!-- Subscription Filters -->
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <select class="form-select" style="width: auto;" onchange="filterSubscriptions(this.value)">
+                        <option value="all">All Subscriptions</option>
+                        <option value="active">Active Only</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                    <select class="form-select" style="width: auto;" onchange="filterByPlan(this.value)">
+                        <option value="all">All Plans</option>
+                        <option value="starter">Starter ($49)</option>
+                        <option value="enterprise">Enterprise ($99)</option>
+                        <option value="enterprise-plus">Enterprise Plus ($199)</option>
+                    </select>
+                    <input type="search" class="form-input" placeholder="Search organizations..." style="width: 200px;" oninput="searchSubscriptions(this.value)">
+                </div>
+
+                <!-- Subscriptions Table -->
+                <div style="overflow-x: auto;">
+                    <table class="subscriptions-table" id="subscriptions-table">
+                        <thead>
+                            <tr>
+                                <th>Organization</th>
+                                <th>Plan</th>
+                                <th>Status</th>
+                                <th>Users</th>
+                                <th>Next Billing</th>
+                                <th>Revenue</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscriptions-tbody">
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div style="display: flex; justify-content: between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                    <div style="color: #4a5568;">Showing 1-10 of 247 subscriptions</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" style="padding: 8px 12px;">← Previous</button>
+                        <button class="btn btn-secondary" style="padding: 8px 12px;">1</button>
+                        <button class="btn btn-primary" style="padding: 8px 12px;">2</button>
+                        <button class="btn btn-secondary" style="padding: 8px 12px;">3</button>
+                        <button class="btn btn-secondary" style="padding: 8px 12px;">Next →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Quick Actions -->
+            <div class="quick-actions">
+                <h3>⚡ Quick Actions</h3>
+                
+                <a href="#" class="quick-action" onclick="openUserInvite()">
+                    <div class="quick-action-icon">👥</div>
+                    <div class="quick-action-content">
+                        <div class="quick-action-title">Invite Users</div>
+                        <div class="quick-action-desc">Add new users to organizations</div>
+                    </div>
+                </a>
+
+                <a href="#" class="quick-action" onclick="openBillingReport()">
+                    <div class="quick-action-icon">💰</div>
+                    <div class="quick-action-content">
+                        <div class="quick-action-title">Billing Report</div>
+                        <div class="quick-action-desc">Generate monthly billing summary</div>
+                    </div>
+                </a>
+
+                <a href="#" class="quick-action" onclick="openAnalytics()">
+                    <div class="quick-action-icon">📈</div>
+                    <div class="quick-action-content">
+                        <div class="quick-action-title">Usage Analytics</div>
+                        <div class="quick-action-desc">View platform usage insights</div>
+                    </div>
+                </a>
+
+                <a href="#" class="quick-action" onclick="openSupport()">
+                    <div class="quick-action-icon">🎧</div>
+                    <div class="quick-action-content">
+                        <div class="quick-action-title">Customer Support</div>
+                        <div class="quick-action-desc">Handle support tickets</div>
+                    </div>
+                </a>
+
+                <a href="#" class="quick-action" onclick="openPayPalDashboard()">
+                    <div class="quick-action-icon">💳</div>
+                    <div class="quick-action-content">
+                        <div class="quick-action-title">PayPal Dashboard</div>
+                        <div class="quick-action-desc">Manage payment settings</div>
+                    </div>
+                </a>
+
+                <a href="#" class="quick-action" onclick="openPlatformSettings()">
+                    <div class="quick-action-icon">⚙️</div>
+                    <div class="quick-action-content">
+                        <div class="quick-action-title">Platform Settings</div>
+                        <div class="quick-action-desc">Configure global settings</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="main-panel" style="margin-top: 30px;">
+            <div class="panel-header">
+                <h2 class="panel-title">📊 Recent Activities</h2>
+                <div class="panel-actions">
+                    <button class="btn btn-secondary">📅 Last 30 Days</button>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: #f7fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #48bb78;">
+                    <div style="font-weight: 600; color: #2f855a; margin-bottom: 5px;">New Subscription</div>
+                    <div style="color: #4a5568; margin-bottom: 10px;">TechCorp Inc. subscribed to Enterprise plan</div>
+                    <div style="font-size: 0.85rem; color: #718096;">2 hours ago</div>
+                </div>
+
+                <div style="background: #f7fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #4299e1;">
+                    <div style="font-weight: 600; color: #2b6cb0; margin-bottom: 5px;">Plan Upgrade</div>
+                    <div style="color: #4a5568; margin-bottom: 10px;">Innovation Labs upgraded to Enterprise Plus</div>
+                    <div style="font-size: 0.85rem; color: #718096;">5 hours ago</div>
+                </div>
+
+                <div style="background: #f7fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #d69e2e;">
+                    <div style="font-weight: 600; color: #d69e2e; margin-bottom: 5px;">Payment Issue</div>
+                    <div style="color: #4a5568; margin-bottom: 10px;">StartupXYZ payment failed - retry scheduled</div>
+                    <div style="font-size: 0.85rem; color: #718096;">1 day ago</div>
+                </div>
+
+                <div style="background: #f7fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #805ad5;">
+                    <div style="font-weight: 600; color: #553c9a; margin-bottom: 5px;">Feature Usage</div>
+                    <div style="color: #4a5568; margin-bottom: 10px;">AI Tools Tracker reached 1000+ feedback entries</div>
+                    <div style="font-size: 0.85rem; color: #718096;">2 days ago</div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- End Overview Tab -->
+
+        <!-- Subscriptions Tab -->
+        <div class="tab-content" id="subscriptions-tab" style="display: none;">
+            <div class="main-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">💳 Subscription Management</h2>
+                    <div class="panel-actions">
+                        <button class="btn btn-secondary" onclick="exportSubscriptions()">📊 Export</button>
+                        <button class="btn btn-primary" onclick="openAddSubscription()">➕ Add Subscription</button>
+                    </div>
+                </div>
+
+                <!-- Subscription Filters -->
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <select class="form-select" style="width: auto;" onchange="filterSubscriptions(this.value)">
+                        <option value="all">All Subscriptions</option>
+                        <option value="active">Active Only</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                    <select class="form-select" style="width: auto;" onchange="filterByPlan(this.value)">
+                        <option value="all">All Plans</option>
+                        <option value="starter">Starter ($49)</option>
+                        <option value="enterprise">Enterprise ($99)</option>
+                        <option value="enterprise-plus">Enterprise Plus ($199)</option>
+                    </select>
+                    <input type="search" class="form-input" placeholder="Search organizations..." style="width: 200px;" oninput="searchSubscriptions(this.value)">
+                </div>
+
+                <!-- Subscriptions Table -->
+                <div style="overflow-x: auto;">
+                    <table class="subscriptions-table" id="subscriptions-table">
+                        <thead>
+                            <tr>
+                                <th>Organization</th>
+                                <th>Plan</th>
+                                <th>Status</th>
+                                <th>Users</th>
+                                <th>Next Billing</th>
+                                <th>Revenue</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscriptions-tbody">
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" style="text-align: center; padding: 60px 20px; color: #4a5568;">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">📋</div>
+                    <h3 style="margin-bottom: 10px;">No Subscriptions Yet</h3>
+                    <p style="margin-bottom: 20px;">Get started by adding your first subscription.</p>
+                    <button class="btn btn-primary" onclick="openAddSubscription()">➕ Add First Subscription</button>
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination" style="display: flex; justify-content: between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; display: none;">
+                    <div style="color: #4a5568;">Showing 1-10 of 0 subscriptions</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" style="padding: 8px 12px;">← Previous</button>
+                        <button class="btn btn-primary" style="padding: 8px 12px;">1</button>
+                        <button class="btn btn-secondary" style="padding: 8px 12px;">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div class="tab-content" id="users-tab" style="display: none;">
+            <div class="main-panel">
+                <h2 class="panel-title">👥 User Management</h2>
+                <p style="color: #4a5568; text-align: center; margin: 40px 0;">User management features will be available here. Invite users, manage roles, and track platform usage.</p>
+            </div>
+        </div>
+
+        <!-- Billing Tab -->
+        <div class="tab-content" id="billing-tab" style="display: none;">
+            <div class="main-panel">
+                <h2 class="panel-title">💰 Billing & Revenue</h2>
+                <p style="color: #4a5568; text-align: center; margin: 40px 0;">Billing management, revenue tracking, and financial analytics will be available here.</p>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analytics-tab" style="display: none;">
+            <div class="main-panel">
+                <h2 class="panel-title">📈 Platform Analytics</h2>
+                <p style="color: #4a5568; text-align: center; margin: 40px 0;">Advanced analytics, usage insights, and performance metrics will be available here.</p>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings-tab" style="display: none;">
+            <div class="main-panel">
+                <h2 class="panel-title">⚙️ Platform Settings</h2>
+                <p style="color: #4a5568; text-align: center; margin: 40px 0;">Platform configuration, feature flags, and system settings will be available here.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subscription Modal -->
+    <div class="modal-overlay" id="subscription-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">➕ Add New Subscription</h2>
+            <form onsubmit="addSubscription(event)">
+                <div class="form-group">
+                    <label class="form-label">Organization Name</label>
+                    <input type="text" class="form-input" id="org-name" placeholder="e.g., TechCorp Inc." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Organization Email</label>
+                    <input type="email" class="form-input" id="org-email" placeholder="admin@company.com" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Subscription Plan</label>
+                        <select class="form-select" id="subscription-plan" onchange="updatePlanDetails()" required>
+                            <option value="">Select plan...</option>
+                            <option value="starter">Starter - $49/month</option>
+                            <option value="enterprise">Enterprise - $99/month</option>
+                            <option value="enterprise-plus">Enterprise Plus - $199/month</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Number of Users</label>
+                        <input type="number" class="form-input" id="user-count" placeholder="10" min="1" value="10" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">PayPal Subscription ID (Optional)</label>
+                    <input type="text" class="form-input" id="paypal-sub-id" placeholder="I-BW452GLLEP1G">
+                    <small style="color: #718096;">If creating manually, leave blank to generate a temporary ID</small>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" class="form-input" id="start-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">First Billing Date</label>
+                        <input type="date" class="form-input" id="billing-date" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Subscription Status</label>
+                    <select class="form-select" id="subscription-status" required>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending Activation</option>
+                        <option value="trial">Free Trial</option>
+                    </select>
+                </div>
+
+                <div id="plan-summary" style="background: #f0fff4; border: 2px solid #48bb78; border-radius: 8px; padding: 15px; margin: 20px 0; display: none;">
+                    <div style="font-weight: 600; color: #2f855a; margin-bottom: 10px;">📋 Subscription Summary:</div>
+                    <div id="summary-details" style="color: #2d3748;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Admin Notes (Internal)</label>
+                    <textarea class="form-input" id="admin-notes" rows="3" placeholder="Special pricing, custom terms, contact info, etc."></textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeSubscriptionModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Subscription</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Management Modal -->
+    <div class="modal-overlay" id="user-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">👥 Invite New Users</h2>
+            <form onsubmit="inviteUsers(event)">
+                <div class="form-group">
+                    <label class="form-label">Organization</label>
+                    <select class="form-select" id="org-select" required>
+                        <option value="">Select organization...</option>
+                        <option value="techcorp">TechCorp Inc. (Enterprise)</option>
+                        <option value="innovation-labs">Innovation Labs (Enterprise Plus)</option>
+                        <option value="startup-xyz">StartupXYZ (Starter)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Addresses (one per line)</label>
+                    <textarea class="form-input" id="user-emails" rows="5" placeholder="user1@company.com
+user2@company.com
+user3@company.com" required style="resize: vertical;"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">User Role</label>
+                    <select class="form-select" id="user-role" required>
+                        <option value="member">Member</option>
+                        <option value="admin">Organization Admin</option>
+                        <option value="champion">AI Champion</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Welcome Message (Optional)</label>
+                    <textarea class="form-input" id="welcome-message" rows="3" placeholder="Welcome to AI Mastery! Your organization has provided you access to our platform..."></textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Send Invitations</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Subscription data - starts empty
+        const subscriptions = [];
+
+        let filteredSubscriptions = [...subscriptions];
+
+        // Initialize admin dashboard
+        function initializeAdminDashboard() {
+            renderSubscriptionsTable();
+            updateStats();
+            showTab('overview'); // Start with overview tab
+        }
+
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            // Update stats if on overview
+            if (tabName === 'overview') {
+                updateStats();
+            }
+        }
+
+        // Render subscriptions table
+        function renderSubscriptionsTable() {
+            const tbody = document.getElementById('subscriptions-tbody');
+            
+            tbody.innerHTML = filteredSubscriptions.map(sub => `
+                <tr>
+                    <td>
+                        <div style="font-weight: 600;">${sub.organization}</div>
+                        <div style="font-size: 0.8rem; color: #718096;">ID: ${sub.subscriptionId}</div>
+                    </td>
+                    <td>
+                        <span class="plan-badge plan-${sub.plan}">
+                            ${sub.plan === 'starter' ? 'Starter' : 
+                              sub.plan === 'enterprise' ? 'Enterprise' : 'Enterprise Plus'}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge status-${sub.status}">
+                            ${sub.status.charAt(0).toUpperCase() + sub.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>${sub.users} users</td>
+                    <td>${sub.nextBilling === '-' ? '-' : new Date(sub.nextBilling).toLocaleDateString()}</td>
+                    <td>$${sub.monthlyRevenue.toLocaleString()}</td>
+                    <td>
+                        <div class="action-menu">
+                            <button class="action-btn" onclick="toggleActionMenu('${sub.id}')">
+                                ⋮
+                            </button>
+                            <div class="action-dropdown" id="actions-${sub.id}">
+                                <div class="action-item" onclick="viewSubscription('${sub.id}')">👁️ View Details</div>
+                                <div class="action-item" onclick="manageUsers('${sub.id}')">👥 Manage Users</div>
+                                <div class="action-item" onclick="changePlan('${sub.id}')">🔄 Change Plan</div>
+                                <div class="action-item" onclick="viewBilling('${sub.id}')">💳 Billing History</div>
+                                <div class="action-item" onclick="pauseSubscription('${sub.id}')">⏸️ Pause Subscription</div>
+                                <div class="action-item" onclick="cancelSubscription('${sub.id}')">❌ Cancel</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter subscriptions by status
+        function filterSubscriptions(status) {
+            if (status === 'all') {
+                filteredSubscriptions = [...subscriptions];
+            } else {
+                filteredSubscriptions = subscriptions.filter(sub => sub.status === status);
+            }
+            renderSubscriptionsTable();
+        }
+
+        // Filter subscriptions by plan
+        function filterByPlan(plan) {
+            if (plan === 'all') {
+                filteredSubscriptions = [...subscriptions];
+            } else {
+                filteredSubscriptions = subscriptions.filter(sub => sub.plan === plan);
+            }
+            renderSubscriptionsTable();
+        }
+
+        // Search subscriptions
+        function searchSubscriptions(query) {
+            if (!query) {
+                filteredSubscriptions = [...subscriptions];
+            } else {
+                filteredSubscriptions = subscriptions.filter(sub => 
+                    sub.organization.toLowerCase().includes(query.toLowerCase()) ||
+                    sub.subscriptionId.toLowerCase().includes(query.toLowerCase())
+                );
+            }
+            renderSubscriptionsTable();
+        }
+
+        // Toggle action menu
+        function toggleActionMenu(id) {
+            const dropdown = document.getElementById(`actions-${id}`);
+            const isShown = dropdown.classList.contains('show');
+            
+            // Hide all other dropdowns
+            document.querySelectorAll('.action-dropdown').forEach(dd => {
+                dd.classList.remove('show');
+            });
+            
+            // Toggle current dropdown
+            if (!isShown) {
+                dropdown.classList.add('show');
+            }
+        }
+
+        // Close action menus when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.action-menu')) {
+                document.querySelectorAll('.action-dropdown').forEach(dd => {
+                    dd.classList.remove('show');
+                });
+            }
+        });
+
+        // Subscription management functions
+        function viewSubscription(id) {
+            const sub = subscriptions.find(s => s.id === id);
+            alert(`Subscription Details:\n\nOrganization: ${sub.organization}\nPlan: ${sub.plan}\nStatus: ${sub.status}\nUsers: ${sub.users}\nMonthly Revenue: $${sub.monthlyRevenue}`);
+        }
+
+        function manageUsers(id) {
+            const sub = subscriptions.find(s => s.id === id);
+            alert(`Managing users for ${sub.organization}\n\nCurrent users: ${sub.users}\n\nFeatures:\n• Add/remove users\n• Set user roles\n• Bulk user invitations\n• Usage analytics per user`);
+        }
+
+        function changePlan(id) {
+            const sub = subscriptions.find(s => s.id === id);
+            const newPlan = prompt(`Change plan for ${sub.organization}\n\nCurrent plan: ${sub.plan}\n\nEnter new plan (starter/enterprise/enterprise-plus):`);
+            
+            if (newPlan && ['starter', 'enterprise', 'enterprise-plus'].includes(newPlan)) {
+                sub.plan = newPlan;
+                // Update revenue based on plan
+                const pricing = { starter: 49, enterprise: 99, 'enterprise-plus': 199 };
+                sub.monthlyRevenue = pricing[newPlan] * sub.users;
+                renderSubscriptionsTable();
+                alert(`✅ Plan changed to ${newPlan} for ${sub.organization}`);
+            }
+        }
+
+        function viewBilling(id) {
+            const sub = subscriptions.find(s => s.id === id);
+            alert(`Billing History for ${sub.organization}\n\n• Last payment: $${sub.monthlyRevenue} (Jan 15, 2024)\n• Payment method: PayPal\n• Next billing: ${sub.nextBilling}\n• Total paid: $${sub.monthlyRevenue * 6} (6 months)\n\nPayPal Subscription ID: ${sub.subscriptionId}`);
+        }
+
+        function pauseSubscription(id) {
+            const sub = subscriptions.find(s => s.id === id);
+            if (confirm(`Pause subscription for ${sub.organization}?\n\nThis will:\n• Stop billing immediately\n• Retain user data\n• Allow reactivation anytime`)) {
+                sub.status = 'paused';
+                renderSubscriptionsTable();
+                alert(`✅ Subscription paused for ${sub.organization}`);
+            }
+        }
+
+        function cancelSubscription(id) {
+            const sub = subscriptions.find(s => s.id === id);
+            if (confirm(`Cancel subscription for ${sub.organization}?\n\nThis will:\n• Stop billing immediately\n• Deactivate platform access\n• Retain data for 30 days`)) {
+                sub.status = 'cancelled';
+                sub.monthlyRevenue = 0;
+                sub.nextBilling = '-';
+                renderSubscriptionsTable();
+                updateStats();
+                alert(`✅ Subscription cancelled for ${sub.organization}`);
+            }
+        }
+
+        // Modal functions
+        function openAddSubscription() {
+            // Set default dates
+            const today = new Date();
+            const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            
+            document.getElementById('start-date').value = today.toISOString().split('T')[0];
+            document.getElementById('billing-date').value = nextMonth.toISOString().split('T')[0];
+            
+            document.getElementById('subscription-modal').style.display = 'flex';
+        }
+
+        function closeSubscriptionModal() {
+            document.getElementById('subscription-modal').style.display = 'none';
+            clearSubscriptionForm();
+        }
+
+        function clearSubscriptionForm() {
+            const form = document.querySelector('#subscription-modal form');
+            form.reset();
+            document.getElementById('plan-summary').style.display = 'none';
+        }
+
+        function updatePlanDetails() {
+            const plan = document.getElementById('subscription-plan').value;
+            const userCount = parseInt(document.getElementById('user-count').value) || 10;
+            const summaryDiv = document.getElementById('plan-summary');
+            const detailsDiv = document.getElementById('summary-details');
+
+            if (!plan) {
+                summaryDiv.style.display = 'none';
+                return;
+            }
+
+            const planDetails = {
+                starter: { price: 49, name: 'Starter', features: ['Basic assessments', 'Individual progress tracking', 'Email support'] },
+                enterprise: { price: 99, name: 'Enterprise', features: ['All Starter features', 'Advanced missions', 'Team collaboration', 'Priority support'] },
+                'enterprise-plus': { price: 199, name: 'Enterprise Plus', features: ['All Enterprise features', 'White-label solution', 'Custom development', 'Dedicated support'] }
+            };
+
+            const planInfo = planDetails[plan];
+            const monthlyRevenue = planInfo.price * userCount;
+            const annualRevenue = monthlyRevenue * 12;
+
+            detailsDiv.innerHTML = `
+                <div style="margin-bottom: 10px;"><strong>Plan:</strong> ${planInfo.name} (${userCount} users)</div>
+                <div style="margin-bottom: 10px;"><strong>Monthly Revenue:</strong> $${monthlyRevenue.toLocaleString()}</div>
+                <div style="margin-bottom: 15px;"><strong>Annual Revenue:</strong> $${annualRevenue.toLocaleString()}</div>
+                <div style="font-size: 0.9rem; color: #4a5568;">
+                    <strong>Included Features:</strong><br>
+                    ${planInfo.features.map(feature => `• ${feature}`).join('<br>')}
+                </div>
+            `;
+
+            summaryDiv.style.display = 'block';
+        }
+
+        function addSubscription(event) {
+            event.preventDefault();
+
+            // Get form data
+            const orgName = document.getElementById('org-name').value;
+            const orgEmail = document.getElementById('org-email').value;
+            const plan = document.getElementById('subscription-plan').value;
+            const userCount = parseInt(document.getElementById('user-count').value);
+            const paypalSubId = document.getElementById('paypal-sub-id').value || generateTempSubscriptionId();
+            const startDate = document.getElementById('start-date').value;
+            const billingDate = document.getElementById('billing-date').value;
+            const status = document.getElementById('subscription-status').value;
+            const adminNotes = document.getElementById('admin-notes').value;
+
+            // Calculate monthly revenue
+            const planPricing = { starter: 49, enterprise: 99, 'enterprise-plus': 199 };
+            const monthlyRevenue = planPricing[plan] * userCount;
+
+            // Create new subscription object
+            const newSubscription = {
+                id: 'sub_' + Date.now().toString().substr(-6),
+                organization: orgName,
+                email: orgEmail,
+                plan: plan,
+                status: status,
+                users: userCount,
+                nextBilling: billingDate,
+                monthlyRevenue: status === 'active' ? monthlyRevenue : 0,
+                subscriptionId: paypalSubId,
+                startDate: startDate,
+                adminNotes: adminNotes,
+                createdBy: 'Admin',
+                createdAt: new Date().toISOString()
+            };
+
+            // Add to subscriptions array
+            subscriptions.unshift(newSubscription);
+            
+            // Update filtered subscriptions and re-render
+            filteredSubscriptions = [...subscriptions];
+            renderSubscriptionsTable();
+            updateStats();
+
+            // Close modal and show success
+            closeSubscriptionModal();
+
+            // Show success message with subscription details
+            const successMessage = `✅ Subscription Created Successfully!\n\nOrganization: ${orgName}\nPlan: ${plan.charAt(0).toUpperCase() + plan.slice(1)}\nUsers: ${userCount}\nMonthly Revenue: $${monthlyRevenue.toLocaleString()}\nPayPal ID: ${paypalSubId}\n\n${status === 'pending' ? '⚠️ Don\'t forget to activate the subscription and send login credentials to ' + orgEmail : '🚀 The subscription is now active!'}`;
+            
+            alert(successMessage);
+
+            // In production, this would also:
+            // 1. Create PayPal subscription if not provided
+            // 2. Send welcome email to organization
+            // 3. Set up user accounts
+            // 4. Configure organization settings
+            console.log('New subscription created:', newSubscription);
+        }
+
+        function generateTempSubscriptionId() {
+            const prefix = 'I-TEMP';
+            const randomStr = Math.random().toString(36).substr(2, 9).toUpperCase();
+            return `${prefix}${randomStr}`;
+        }
+
+        function openUserInvite() {
+            document.getElementById('user-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('user-modal').style.display = 'none';
+        }
+
+        function inviteUsers(event) {
+            event.preventDefault();
+            
+            const orgSelect = document.getElementById('org-select').value;
+            const emails = document.getElementById('user-emails').value.trim().split('\n').filter(email => email.trim());
+            const role = document.getElementById('user-role').value;
+            const message = document.getElementById('welcome-message').value;
+            
+            if (emails.length === 0) {
+                alert('Please enter at least one email address.');
+                return;
+            }
+            
+            // Simulate sending invitations
+            alert(`✅ Invitations Sent!\n\nOrganization: ${orgSelect}\nUsers invited: ${emails.length}\nRole: ${role}\n\nUsers will receive:\n• Welcome email with login instructions\n• Platform access based on subscription tier\n• Getting started guide\n\nInvitations sent to:\n${emails.join('\n')}`);
+            
+            // Reset form and close modal
+            event.target.reset();
+            closeModal();
+        }
+
+        // Quick action functions
+        function openBillingReport() {
+            alert('Billing Report\n\nGenerating comprehensive report:\n\n• Monthly revenue: $18,400\n• New subscriptions: 23\n• Churn rate: 2.1%\n• Average revenue per user: $74\n• Payment success rate: 98.7%\n\nReport will be emailed to admin@company.com');
+        }
+
+        function openAnalytics() {
+            window.open('organizational-ai-insights-dashboard.html', '_blank');
+        }
+
+        function openSupport() {
+            alert('Customer Support\n\nSupport Dashboard:\n\n• Open tickets: 12\n• Avg response time: 2.3 hours\n• Customer satisfaction: 94.2%\n• Most common issues:\n  - Login assistance\n  - Feature questions\n  - Billing inquiries');
+        }
+
+        function openPayPalDashboard() {
+            window.open('https://www.paypal.com/businessprofile/mytools/appsandintegrations', '_blank');
+        }
+
+        function openPlatformSettings() {
+            alert('Platform Settings\n\nGlobal configurations:\n\n• Feature flags\n• API rate limits\n• Email templates\n• Subscription tiers\n• Payment processors\n• Data retention policies\n• Security settings');
+        }
+
+        function exportSubscriptions() {
+            const csvData = [
+                ['Organization', 'Plan', 'Status', 'Users', 'Next Billing', 'Monthly Revenue', 'Subscription ID'],
+                ...filteredSubscriptions.map(sub => [
+                    sub.organization,
+                    sub.plan,
+                    sub.status,
+                    sub.users,
+                    sub.nextBilling,
+                    sub.monthlyRevenue,
+                    sub.subscriptionId
+                ])
+            ].map(row => row.join(',')).join('\n');
+            
+            const blob = new Blob([csvData], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'subscriptions.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            alert('✅ Subscription data exported to CSV');
+        }
+
+        // Update dashboard stats
+        function updateStats() {
+            const activeSubscriptions = subscriptions.filter(sub => sub.status === 'active').length;
+            const totalRevenue = subscriptions.filter(sub => sub.status === 'active')
+                .reduce((sum, sub) => sum + sub.monthlyRevenue, 0);
+            const totalUsers = subscriptions.reduce((sum, sub) => sum + sub.users, 0);
+            
+            document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = activeSubscriptions;
+            document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = `$${(totalRevenue/1000).toFixed(1)}K`;
+            document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = totalUsers.toLocaleString();
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', initializeAdminDashboard);
+
+        // Close modal when clicking outside
+        document.getElementById('user-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

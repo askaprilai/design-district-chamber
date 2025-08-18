@@ -1,0 +1,907 @@
+<!-- ====== START: Full Dashboard Block with Updated Background & Course Action Alignment ====== -->
+<style>
+  /* 1) RESET & BASIC STYLING + IMAGE BACKGROUND FOR MAIN PAGE */
+  #custom-dashboard * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body, html {
+    font-family: Arial, sans-serif;
+    height: 100%;
+    min-height: 100%;
+    /* Main-page background (not menu bar) */
+    background: url("https://retailu.newzenler.com/527/files/683c8b878a430_1748798343_untitled-design-8.png") no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+  }
+
+  /* 2) SIDEBAR (WHITE WITH NAVY TEXT, STRONG SHADOW, YELLOW HOVER) */
+  #side-menu {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    width: 300px;
+    height: calc(100% - 80px);
+    background-color: #FFFFFF;
+    color: #1A3E8C;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    z-index: 10;
+  }
+  #side-menu h2 {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #1A3E8C;
+  }
+  #side-menu ul {
+    list-style: none;
+    padding: 0 18px;
+  }
+  #side-menu li {
+    margin-bottom: 16px;
+  }
+  #side-menu a {
+    color: #1A3E8C;
+    text-decoration: none;
+    padding: 8px 20px;
+    display: block;
+    border-left: 4px solid transparent;
+    border-radius: 8px;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    font-size: 20px;
+  }
+  #side-menu a:hover {
+    background-color: #FFD700;
+    color: #1A3E8C;
+    border-left: 4px solid #1A3E8C;
+  }
+  
+  /* Special styling for MY COURSES */
+  #side-menu .featured-course {
+    background: linear-gradient(135deg, #1A3E8C 0%, #3A5FAA 100%);
+    color: #FFFFFF;
+    border: 2px solid #FFD700;
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(26, 62, 140, 0.3);
+    border-left: 4px solid #FFD700;
+  }
+  #side-menu .featured-course:hover {
+    background: linear-gradient(135deg, #FFD700 0%, #FFC107 100%);
+    color: #1A3E8C;
+    border-color: #1A3E8C;
+    border-left: 4px solid #1A3E8C;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(26, 62, 140, 0.4);
+  }
+
+  /* 3) MAIN CONTENT (SHIFTED RIGHT TO ACCOMMODATE SIDEBAR) */
+  #main-content {
+    margin-left: 340px; /* 300px sidebar + 40px margin */
+    margin-right: 40px; /* Add right margin for balance */
+    padding: 20px;
+    position: relative;
+    background-color: transparent; /* fully transparent so background image shows */
+  }
+
+  /* 4) TILES CONTAINER (RESPONSIVE WIDTH FOR LARGE SCREENS) */
+  #tiles-wrapper {
+    width: 100%; /* Remove max-width constraint */
+    margin: 0 0 20px 0; /* Reduced gap between tiles and action buttons */
+  }
+  #tiles-container {
+    display: flex;
+    gap: 24px; /* Slightly larger gap for big screens */
+    width: 100%;
+  }
+  .dash-block {
+    position: relative;
+    flex: 1;
+    height: 220px; /* Taller on large screens */
+    background-color: #FFFFFF;
+    border: 2px solid #1A3E8C;
+    border-radius: 12px; /* More rounded corners */
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dash-block:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  }
+  .dash-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 0;
+  }
+  .dash-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 20px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .dash-block:hover .dash-overlay {
+    opacity: 1;
+  }
+  .dash-overlay a.cta-button {
+    color: #FFD700;
+    background-color: #1A3E8C;
+    padding: 12px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    transform: translateY(20px);
+  }
+  .dash-block:hover .dash-overlay a.cta-button {
+    transform: translateY(0);
+  }
+  .dash-overlay a.cta-button:hover {
+    background-color: #FFD700;
+    color: #1A3E8C;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  }
+
+  /* 5) HERO SECTION: DAILY RIPPLE (RESPONSIVE WIDTH) */
+  #daily-ripple {
+    position: relative;
+    width: 100%; /* Use full available width */
+    background: linear-gradient(135deg, #0F1F4A 0%, #1A3E8C 50%, #3A5FAA 100%);
+    border-radius: 12px;
+    padding: 40px;
+    min-height: 240px; /* Taller for large screens */
+    text-align: left;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 0 0 30px 0; /* Reduced margin to move everything up */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+  
+  .ripple-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .april-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #FFD700;
+    object-fit: cover;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+  }
+  #daily-ripple:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  }
+  #daily-ripple h3 {
+    font-size: 2.2rem; /* Larger font for big screens */
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+  #daily-ripple audio {
+    width: 100%;
+    max-width: 600px; /* Limit audio player width */
+    outline: none;
+    margin-top: 20px;
+    border-radius: 8px;
+  }
+  #daily-ripple::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: waterRipple 4s infinite;
+    pointer-events: none;
+  }
+  @keyframes waterRipple {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(0);
+    }
+    30% {
+      width: 120px;
+      height: 120px;
+      opacity: 0.4;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    60% {
+      width: 240px;
+      height: 240px;
+      opacity: 0.2;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+    100% {
+      width: 360px;
+      height: 360px;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+  }
+
+  /* 5.5) APRIL AI CALLOUT SECTION */
+  #april-ai-callout {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(250, 197, 28, 0.1) 0%, rgba(26, 62, 140, 0.1) 100%);
+    border-radius: 12px;
+    border: 2px dashed #FFD700;
+  }
+  
+  #april-ai-callout .callout-text {
+    color: #1A3E8C;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  #april-ai-callout .arrow {
+    font-size: 1.5rem;
+    color: #FFD700;
+    animation: bounce 2s infinite;
+  }
+  
+  #april-ai-callout .ai-link {
+    color: #1A3E8C;
+    text-decoration: none;
+    font-weight: bold;
+    background: #FFD700;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: 5px;
+  }
+  
+  #april-ai-callout .ai-link:hover {
+    background: #1A3E8C;
+    color: #FFD700;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 62, 140, 0.3);
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* 6) COURSES ACTION BLOCK (RESPONSIVE WIDTH) */
+  #courses-action {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    padding-top: 0px; /* Removed top padding to bring closer to tiles */
+    padding-bottom: 40px;
+  }
+  #action-wrapper {
+    width: 100%; /* Remove margin-left constraint */
+  }
+  #action-container {
+    display: flex;
+    gap: 24px; /* Larger gap for big screens */
+    width: 100%; /* Remove max-width constraint */
+  }
+  .action-box {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(135deg, #0F1F4A 0%, #1A3E8C 50%, #3A5FAA 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 180px; /* Taller for large screens */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 20px rgba(26, 62, 140, 0.15);
+  }
+  .action-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(26, 62, 140, 0.3);
+  }
+  .action-box a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 2rem; /* Slightly smaller for better fit */
+    font-weight: bold;
+    padding: 20px 30px;
+    border: 3px solid #FFFFFF;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: block;
+    line-height: 1.2;
+  }
+  .action-box a:hover {
+    background-color: #FFD700;
+    color: #1A3E8C;
+    border-color: #FFD700;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+
+  /* 7) RESPONSIVE BREAKPOINTS */
+  
+  /* Extra Large Screens (1400px+) */
+  @media (min-width: 1400px) {
+    #main-content {
+      margin-left: 360px;
+      margin-right: 60px;
+    }
+    .dash-block {
+      height: 260px;
+    }
+    #daily-ripple {
+      min-height: 280px;
+      padding: 50px;
+    }
+    #daily-ripple h3 {
+      font-size: 2.5rem;
+    }
+    .action-box {
+      min-height: 200px;
+    }
+    .action-box a {
+      font-size: 2.2rem;
+      padding: 25px 35px;
+    }
+  }
+
+  /* Large Screens (1200px - 1399px) */
+  @media (min-width: 1200px) and (max-width: 1399px) {
+    #tiles-container {
+      gap: 20px;
+    }
+    .dash-block {
+      height: 200px;
+    }
+    #daily-ripple h3 {
+      font-size: 2rem;
+    }
+  }
+
+  /* Medium-Large Screens (992px - 1199px) */
+  @media (min-width: 992px) and (max-width: 1199px) {
+    #main-content {
+      margin-left: 320px;
+      margin-right: 20px;
+    }
+    #side-menu {
+      width: 280px;
+    }
+    .dash-block {
+      height: 180px;
+    }
+    #daily-ripple {
+      padding: 35px;
+      min-height: 220px;
+    }
+    .action-box {
+      min-height: 160px;
+    }
+    .action-box a {
+      font-size: 1.8rem;
+    }
+  }
+
+  /* Tablet Screens (768px - 991px) */
+  @media (min-width: 768px) and (max-width: 991px) {
+    #main-content {
+      margin-left: 260px;
+      margin-right: 20px;
+    }
+    #side-menu {
+      width: 240px;
+    }
+    #tiles-container {
+      gap: 16px;
+    }
+    .dash-block {
+      height: 160px;
+    }
+    #daily-ripple {
+      padding: 30px;
+      min-height: 200px;
+    }
+    #daily-ripple h3 {
+      font-size: 1.8rem;
+    }
+    .action-box {
+      min-height: 140px;
+    }
+    .action-box a {
+      font-size: 1.6rem;
+      padding: 15px 25px;
+    }
+  }
+
+  /* Mobile Screens (below 768px) */
+  @media (max-width: 767px) {
+    /* Restructure layout for mobile */
+    #custom-dashboard {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    #side-menu {
+      width: 100%;
+      height: auto;
+      position: relative;
+      top: 0;
+      left: 0;
+      border-radius: 0;
+      margin-bottom: 20px;
+      order: 2; /* Sidebar second */
+    }
+    
+    #main-content {
+      margin-left: 0;
+      margin-right: 0;
+      padding: 10px;
+      order: 1; /* Main content first (contains Daily Ripple) */
+    }
+    
+    /* Ensure Daily Ripple appears first by moving it to the top */
+    #daily-ripple {
+      padding: 25px 20px;
+      min-height: 180px;
+      text-align: center;
+      margin-bottom: 20px;
+      order: -1; /* Force Daily Ripple to appear first */
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .april-image {
+      width: 100px;
+      height: 100px;
+      align-self: center;
+    }
+    
+    #tiles-wrapper {
+      order: 1; /* Tiles appear after Daily Ripple */
+    }
+    
+    #courses-action {
+      order: 2; /* Action buttons appear last */
+    }
+    
+    #tiles-container {
+      flex-direction: column;
+      gap: 16px;
+    }
+    .dash-block {
+      height: 140px;
+    }
+    #daily-ripple h3 {
+      font-size: 1.5rem;
+    }
+    #action-wrapper {
+      margin-left: 0;
+    }
+    #action-container {
+      flex-direction: column;
+      gap: 16px;
+    }
+    .action-box {
+      min-height: 120px;
+    }
+    .action-box a {
+      font-size: 1.4rem;
+      padding: 12px 20px;
+    }
+  }
+
+  /* Small Mobile (below 480px) */
+  @media (max-width: 479px) {
+    #main-content {
+      padding: 5px;
+    }
+    #daily-ripple {
+      padding: 20px 15px;
+      min-height: 160px;
+    }
+    #daily-ripple h3 {
+      font-size: 1.3rem;
+    }
+    .action-box a {
+      font-size: 1.2rem;
+      padding: 10px 15px;
+    }
+  }
+
+  /* Audio loader animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+  }
+
+  /* 8) ADMIN PANEL STYLES */
+  #admin-toggle {
+    display: none; /* HIDDEN BY DEFAULT */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  body.admin-mode #admin-toggle {
+    display: block;
+  }
+
+  #admin-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    overflow-y: auto;
+  }
+
+  #admin-panel.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .admin-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .admin-section {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .admin-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .admin-section h3 {
+    color: #1A3E8C;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+  }
+
+  .admin-field {
+    margin-bottom: 15px;
+  }
+
+  .admin-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .admin-field input[type="url"],
+  .admin-field input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .admin-field input:focus {
+    outline: none;
+    border-color: #1A3E8C;
+  }
+
+  .admin-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid #e9ecef;
+  }
+
+  .admin-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .admin-btn.save {
+    background: #28a745;
+    color: white;
+  }
+
+  .admin-btn.save:hover {
+    background: #218838;
+  }
+
+  .admin-btn.cancel {
+    background: #6c757d;
+    color: white;
+  }
+
+  .admin-btn.cancel:hover {
+    background: #545b62;
+  }
+</style>
+
+<!-- Admin Toggle Button (only visible with ?admin=true) -->
+<button id="admin-toggle" onclick="toggleAdminPanel()">Edit Dashboard</button>
+
+<!-- Admin Panel -->
+<div id="admin-panel">
+  <div class="admin-content">
+    <h2 style="color: #1A3E8C; margin-bottom: 25px; text-align: center;">Dashboard Admin Panel</h2>
+    
+    <div class="admin-section">
+      <h3>Daily Ripple Audio</h3>
+      <div class="admin-field">
+        <label for="daily-ripple-url">Audio File URL:</label>
+        <input type="url" id="daily-ripple-url" placeholder="https://example.com/audio.mp3">
+      </div>
+    </div>
+
+
+    <div class="admin-buttons">
+      <button class="admin-btn cancel" onclick="closeAdminPanel()">Cancel</button>
+      <button class="admin-btn save" onclick="saveAdminSettings()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div id="custom-dashboard">
+  <!-- ===== SIDEBAR ===== -->
+  <nav id="side-menu">
+    <h2 data-uniqid="1748797477393" class="" data-selector="h1,h2,h3,h4,h5,h6,p">
+      <div class="padding-resizer top" style="height: 0px;">
+        <p class="padding-resizer-value" data-uniqid="1753634831321">0px</p>
+      </div>
+      <div data-component="grid" class="row v-center margin-top-10 margin-bottom-10" style="margin-left:0px;margin-right:0px;" data-uniqid="1748797500257" data-selector="*[data-component=&quot;grid&quot;]">
+        <div class="col-md-12">
+          <div data-container="true">
+            <div data-component="heading" data-content="true">
+              <h1 class="margin-top-10 margin-bottom-10" data-uniqid="1748797504406" style="z-index: 99999999;" data-selector="*[data-component=&quot;heading&quot;] &gt; *">Learning Hub</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-resizer bottom" style="height: 0px;">
+        <p class="padding-resizer-value" data-uniqid="1753634831321">0px</p>
+      </div>
+    </h2>
+    <ul>
+      <li class="active"><a href="https://askaprilai.newzenler.com/mycourses" class="featured-course" data-uniqid="1748797477385" data-tags="" data-action="href" data-lists="" data-selector="nav a">MY COURSES</a></li>
+      <li class="active"><a href="https://askaprilai.newzenler.com/getstarted" data-uniqid="1748797477386" class="" data-tags="" data-action="href" data-lists="" data-selector="nav a">GET STARTED</a></li>
+      <li class="active"><a href="https://askaprilai.newzenler.com/aprilai" data-uniqid="1748797477387" class="" data-tags="" data-action="href" data-lists="" data-selector="nav a">April AI</a></li>
+      <li class="active"><a href="https://calendly.com/aprilcoaching/salesstrategysession" data-uniqid="1748797477387" class="" data-tags="" data-action="href" data-lists="" data-selector="nav a">Sales Strategy Session</a></li>
+      <li><a href="https://askaprilai.newzenler.com/community/feed" data-uniqid="1748797477391" class="" data-tags="" data-action="href" data-lists="" target="_blank" data-selector="nav a">Community</a></li>
+      <li><a href="https://askaprilai.newzenler.com/bookacoachbookacoach" data-uniqid="1748797477389" class="" data-tags="" data-action="href" data-lists="" data-selector="nav a">Talk to a Coach</a></li>
+      <li><a href="https://calendly.com/aprilcoaching/askaprilcourses" data-uniqid="1748797477390" class="" data-tags="" data-action="href" data-lists="" data-selector="nav a">Build a Course</a></li>
+      <li><a href="mailto:support@askapril.ai" data-uniqid="1748797477387" class="" data-tags="" data-action="href" data-lists="" data-selector="nav a">IT Support</a></li>
+      <li><a href="https://askaprilai.newzenler.com/pcc-1cc" data-uniqid="1748797477387" class="" data-tags="" data-action="href" data-lists="" target="_self" data-selector="nav a">PCC's Podcasts</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div id="main-content">
+    <!-- ==== TWO TILES (WHITE BACKGROUND + NAVY BORDER + IMAGE PLACEHOLDERS) ==== -->
+    <!-- ==== HERO SECTION: DAILY RIPPLE (DARK NAVY GRADIENT) ==== -->
+    <div id="daily-ripple">
+      <div class="ripple-content">
+        <h3 data-uniqid="1748797477393" class="" style="z-index: 99999999; text-align: left; font-size: 32px;" data-selector="h1,h2,h3,h4,h5,h6,p">
+          <span style="color: rgb(250, 197, 28);">🎧</span> Daily Ripple &nbsp;<br>
+          <span style="color: rgb(255, 255, 255); font-size: 22px;">Your Daily Dose of Positivity</span><span style="color: rgb(250, 197, 28); font-size: 22px;">&nbsp;</span><br>
+          <span style="color: rgb(250, 197, 28); font-size: 22px;">💫&nbsp;</span><span style="font-family: Open Sans;"><span style="color: rgb(250, 197, 28); font-size: 14px;">Start your day with inspiration from April</span></span>
+        </h3>
+        
+        <!-- Pulse Loader -->
+        <div id="audio-loader" style="width: 50px; height: 50px; border-radius: 40%; background-color: rgb(250, 197, 28); position: absolute; left: 3px; top: 130px; animation: 1.5s ease 0s infinite normal none running pulse; z-index: 7; display: none;"></div>
+
+        <!-- Audio -->
+        <audio id="daily-audio" autoplay="" muted="" controls="" preload="auto" style="margin-top: 20px;">
+          <source src="https://askaprilai.newzenler.com/527/files/6880c390e5f8b_1753269136_daily-ripple.m4a" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      
+      <!-- April's Profile Image -->
+      <img src="YOUR_IMAGE_URL_HERE" alt="April" class="april-image">
+    </div>
+
+    <div id="tiles-wrapper">
+      <div id="tiles-container">
+        <!-- Tile 1: Office Hours with April -->
+        <div class="dash-block">
+          <img src="https://s3.us-east-1.amazonaws.com/contents.newzenler.com/527/library/urple-nd-lue-radient-odern-llustrative-n-ducation-resentation-3683c886d71b4a_lg.jpg" alt="Office Hours with April">
+          <div class="dash-overlay">
+            <a href="https://askaprilai.newzenler.com/live-class/ask-april-anything-live/register" class="cta-button">Join Office Hours →</a>
+          </div>
+        </div>
+        <!-- Tile 2: Ask April AI Coach -->
+        <div class="dash-block">
+          <img src="https://s3.us-east-1.amazonaws.com/contents.newzenler.com/527/library/urple-nd-lue-radient-odern-llustrative-n-ducation-resentation-4683c887a4d171_lg.jpg" alt="Ask April AI Coach">
+          <div class="dash-overlay">
+            <a href="https://askaprilai.newzenler.com/aprilai" class="cta-button">Chat with AI →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==== APRIL AI CALLOUT ==== -->
+    <div id="april-ai-callout">
+      <div class="callout-text">
+        Talk to April AI here <span class="arrow">↗️</span>
+      </div>
+      <a href="https://askaprilai.newzenler.com/aprilai" class="ai-link">Chat with April AI</a>
+    </div>
+  </div>
+</div>
+
+<!-- Script to Unmute and Remove Loader -->
+<script>
+  // Audio functionality
+  const audio = document.getElementById('daily-audio');
+  const loader = document.getElementById('audio-loader');
+
+  if (audio && loader) {
+    audio.addEventListener('canplaythrough', () => {
+      loader.style.display = 'none';
+      audio.muted = false;
+      audio.volume = 1.0;
+      audio.play().catch(() => {
+        console.log('Autoplay blocked. User interaction required.');
+      });
+    });
+  }
+
+  // Admin functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check for admin mode
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true') {
+      document.body.classList.add('admin-mode');
+      loadAdminSettings();
+    }
+  });
+
+  function toggleAdminPanel() {
+    const panel = document.getElementById('admin-panel');
+    panel.classList.toggle('active');
+    if (panel.classList.contains('active')) {
+      loadAdminSettings();
+    }
+  }
+
+  function closeAdminPanel() {
+    document.getElementById('admin-panel').classList.remove('active');
+  }
+
+  function loadAdminSettings() {
+    // Load current audio URL into admin field
+    const audioUrl = document.querySelector('#daily-audio source')?.src || '';
+    const input = document.getElementById('daily-ripple-url');
+    if (input) {
+      input.value = audioUrl;
+    }
+  }
+
+  function saveAdminSettings() {
+    const input = document.getElementById('daily-ripple-url');
+    const newUrl = input.value.trim();
+    
+    if (newUrl) {
+      const audioSource = document.querySelector('#daily-audio source');
+      if (audioSource) {
+        audioSource.src = newUrl;
+        audio.load(); // Reload audio with new source
+      }
+      
+      // Save to localStorage for persistence
+      localStorage.setItem('dailyRippleUrl', newUrl);
+      
+      closeAdminPanel();
+      alert('Audio URL updated successfully!');
+    } else {
+      alert('Please enter a valid audio URL.');
+    }
+  }
+
+  // Load saved audio URL on page load
+  function loadSavedSettings() {
+    const savedAudioUrl = localStorage.getItem('dailyRippleUrl');
+    if (savedAudioUrl) {
+      const audioSource = document.querySelector('#daily-audio source');
+      if (audioSource) {
+        audioSource.src = savedAudioUrl;
+      }
+    }
+  }
+
+  // Load saved settings when page loads
+  document.addEventListener('DOMContentLoaded', loadSavedSettings);
+</script>

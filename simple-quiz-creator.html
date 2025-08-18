@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Quiz - Quiz for Profits</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .step {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .big-input {
+            width: 100%;
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .big-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .example {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            border-left: 4px solid #667eea;
+        }
+
+        .example strong {
+            color: #667eea;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-option {
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            background: white;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .quiz-option h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .quiz-option p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .big-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .big-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .big-button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .secondary-button:hover {
+            background: #f0f4ff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e5e9;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 40px 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .quiz-preview {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .preview-question {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .preview-question h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .preview-answer {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+
+        .tada {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .quiz-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .quiz-types {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="goBack()" id="backBtn" style="display: none;">← Back</button>
+
+    <div class="container">
+        <!-- Step 1: Welcome -->
+        <div class="step active" id="step1">
+            <div class="step-number">1</div>
+            <h1>Let's Create Your Quiz!</h1>
+            <p class="subtitle">In just 3 simple steps, you'll have a professional quiz ready to capture leads</p>
+            
+            <div class="example">
+                <strong>Perfect for:</strong> Coaches, consultants, marketing agencies, course creators, and anyone who wants to grow their email list with engaging quizzes
+            </div>
+            
+            <button class="big-button" onclick="nextStep()">Get Started →</button>
+        </div>
+
+        <!-- Step 2: What's your quiz about? -->
+        <div class="step" id="step2">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 33%"></div>
+            </div>
+            <div class="step-number">2</div>
+            <h1>What's Your Quiz About?</h1>
+            <p class="subtitle">Just tell us in plain English - like you're talking to a friend</p>
+            
+            <textarea class="big-input" id="quizTopic" placeholder="Type here..."></textarea>
+            
+            <div class="example">
+                <strong>Examples:</strong><br>
+                • "Help coaches figure out their ideal client"<br>
+                • "What type of leader are you?"<br>
+                • "Find your marketing personality"<br>
+                • "Discover your biggest business challenge"
+            </div>
+            
+            <button class="big-button" onclick="nextStep()" disabled id="step2Btn">Continue →</button>
+        </div>
+
+        <!-- Step 3: Pick a style -->
+        <div class="step" id="step3">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 67%"></div>
+            </div>
+            <div class="step-number">3</div>
+            <h1>Pick Your Quiz Style</h1>
+            <p class="subtitle">Choose the type that fits your business best</p>
+            
+            <div class="quiz-types">
+                <div class="quiz-option selected" onclick="selectQuizType('personality')" data-type="personality">
+                    <h3>🎭 "What Type Are You?"</h3>
+                    <p>Great for categorizing people and giving personalized results</p>
+                </div>
+                
+                <div class="quiz-option" onclick="selectQuizType('diagnostic')" data-type="diagnostic">
+                    <h3>🔍 "What's Your Problem?"</h3>
+                    <p>Perfect for identifying issues and offering solutions</p>
+                </div>
+                
+                <div class="quiz-option" onclick="selectQuizType('assessment')" data-type="assessment">
+                    <h3>📊 "How Good Are You?"</h3>
+                    <p>Ideal for testing skills and knowledge levels</p>
+                </div>
+                
+                <div class="quiz-option" onclick="selectQuizType('discovery')" data-type="discovery">
+                    <h3>✨ "What Should You Do?"</h3>
+                    <p>Best for giving recommendations and next steps</p>
+                </div>
+            </div>
+            
+            <button class="big-button" onclick="createQuiz()">Create My Quiz! ✨</button>
+        </div>
+
+        <!-- Step 4: Creating -->
+        <div class="step" id="step4">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+            </div>
+            <div class="step-number">4</div>
+            <h1>Creating Your Quiz...</h1>
+            <p class="subtitle">This will just take a moment</p>
+            
+            <div class="loading">
+                <div class="spinner"></div>
+                <span id="loadingText">Writing your questions...</span>
+            </div>
+        </div>
+
+        <!-- Step 5: Preview -->
+        <div class="step" id="step5">
+            <div class="tada">🎉</div>
+            <h1>Your Quiz is Ready!</h1>
+            <p class="subtitle">Here's what we created for you</p>
+            
+            <div class="quiz-preview" id="quizPreview">
+                <!-- Generated quiz will appear here -->
+            </div>
+            
+            <button class="big-button" onclick="finalizeQuiz()">Looks Great! →</button>
+            <button class="secondary-button" onclick="regenerateQuiz()">Make Different Questions</button>
+        </div>
+
+        <!-- Step 6: Final -->
+        <div class="step" id="step6">
+            <div class="tada">✅</div>
+            <h1>Quiz Created Successfully!</h1>
+            <p class="subtitle">Your quiz is ready to start capturing leads</p>
+            
+            <div style="margin: 30px 0;">
+                <p><strong>Quiz Title:</strong> <span id="finalTitle"></span></p>
+                <p><strong>Questions:</strong> <span id="finalCount"></span></p>
+                <p><strong>Ready to publish:</strong> Yes!</p>
+            </div>
+            
+            <button class="big-button" onclick="goToBuilder()">Customize & Publish</button>
+            <button class="secondary-button" onclick="startOver()">Create Another Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedQuizType = 'personality';
+        let generatedQuiz = null;
+
+        // Check if user typed something in step 2
+        document.getElementById('quizTopic').addEventListener('input', function() {
+            const btn = document.getElementById('step2Btn');
+            if (this.value.trim().length > 10) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        });
+
+        function nextStep() {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            currentStep++;
+            document.getElementById('step' + currentStep).classList.add('active');
+            
+            if (currentStep > 1) {
+                document.getElementById('backBtn').style.display = 'block';
+            }
+        }
+
+        function goBack() {
+            if (currentStep > 1) {
+                document.getElementById('step' + currentStep).classList.remove('active');
+                currentStep--;
+                document.getElementById('step' + currentStep).classList.add('active');
+                
+                if (currentStep === 1) {
+                    document.getElementById('backBtn').style.display = 'none';
+                }
+            }
+        }
+
+        function selectQuizType(type) {
+            selectedQuizType = type;
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+        }
+
+        async function createQuiz() {
+            nextStep(); // Go to loading step
+            
+            const topic = document.getElementById('quizTopic').value.trim();
+            
+            // Simulate creation process
+            const loadingMessages = [
+                "Writing your questions...",
+                "Creating answer options...",
+                "Setting up scoring...",
+                "Almost done..."
+            ];
+            
+            let messageIndex = 0;
+            const loadingInterval = setInterval(() => {
+                document.getElementById('loadingText').textContent = loadingMessages[messageIndex];
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+            }, 800);
+            
+            // Generate quiz
+            setTimeout(async () => {
+                clearInterval(loadingInterval);
+                generatedQuiz = await generateSimpleQuiz(topic, selectedQuizType);
+                showPreview();
+                nextStep(); // Go to preview step
+            }, 3000);
+        }
+
+        async function generateSimpleQuiz(topic, type) {
+            const templates = {
+                personality: {
+                    titlePattern: "What's Your {topic} Style?",
+                    questions: [
+                        "When it comes to {topic}, what describes you best?",
+                        "Your approach to {topic} is usually:",
+                        "People would say your {topic} style is:",
+                        "When facing a {topic} challenge, you:",
+                        "Your {topic} superpower is:"
+                    ]
+                },
+                diagnostic: {
+                    titlePattern: "What's Your Biggest {topic} Challenge?",
+                    questions: [
+                        "Right now, your biggest {topic} struggle is:",
+                        "When it comes to {topic}, you feel:",
+                        "Your main {topic} goal is:",
+                        "The thing holding you back in {topic} is:",
+                        "You wish you could improve your {topic} by:"
+                    ]
+                },
+                assessment: {
+                    titlePattern: "How Good Are You at {topic}?",
+                    questions: [
+                        "Your current {topic} level is:",
+                        "When it comes to {topic}, you:",
+                        "Others would rate your {topic} skills as:",
+                        "Your {topic} experience includes:",
+                        "Your confidence in {topic} is:"
+                    ]
+                },
+                discovery: {
+                    titlePattern: "What's Your Next {topic} Move?",
+                    questions: [
+                        "Your {topic} priority should be:",
+                        "The best next step for your {topic} is:",
+                        "Your {topic} focus should be:",
+                        "To improve your {topic}, you should:",
+                        "Your {topic} action plan should include:"
+                    ]
+                }
+            };
+
+            const template = templates[type] || templates.personality;
+            const cleanTopic = topic.toLowerCase().replace(/[^\w\s]/g, '');
+            
+            return {
+                title: template.titlePattern.replace('{topic}', cleanTopic),
+                description: `Discover insights about your ${cleanTopic} and get personalized recommendations.`,
+                questions: template.questions.map((q, index) => ({
+                    question: q.replace('{topic}', cleanTopic),
+                    answers: [
+                        { text: `Option A for question ${index + 1}`, score: 1 },
+                        { text: `Option B for question ${index + 1}`, score: 2 },
+                        { text: `Option C for question ${index + 1}`, score: 3 },
+                        { text: `Option D for question ${index + 1}`, score: 4 }
+                    ]
+                }))
+            };
+        }
+
+        function showPreview() {
+            const preview = document.getElementById('quizPreview');
+            preview.innerHTML = `
+                <h3>${generatedQuiz.title}</h3>
+                <p style="margin-bottom: 20px; color: #666;">${generatedQuiz.description}</p>
+                ${generatedQuiz.questions.map((q, i) => `
+                    <div class="preview-question">
+                        <h4>Question ${i + 1}: ${q.question}</h4>
+                        ${q.answers.map(a => `<div class="preview-answer">• ${a.text}</div>`).join('')}
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function regenerateQuiz() {
+            currentStep = 3; // Go back to step 4 (loading)
+            document.getElementById('step5').classList.remove('active');
+            createQuiz();
+        }
+
+        function finalizeQuiz() {
+            document.getElementById('finalTitle').textContent = generatedQuiz.title;
+            document.getElementById('finalCount').textContent = generatedQuiz.questions.length;
+            nextStep();
+        }
+
+        function goToBuilder() {
+            // Store quiz data and redirect to easy builder
+            localStorage.setItem('generatedQuiz', JSON.stringify(generatedQuiz));
+            window.location.href = 'easy-quiz-builder.html';
+        }
+
+        function startOver() {
+            currentStep = 1;
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('quizTopic').value = '';
+            document.getElementById('step2Btn').disabled = true;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Leadership Cards - Positive Leadership Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .card-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card-type {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .card-type:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-type.active {
+            border-color: #1e40af;
+            transform: translateY(-5px);
+        }
+
+        .card-type-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .card-type h3 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card-type p {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .main-card-area {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .card-display {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-content {
+            max-width: 100%;
+        }
+
+        .card-category {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .card-question {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.3;
+            margin-bottom: 30px;
+        }
+
+        .card-description {
+            color: #64748b;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8fafc;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            color: #1e293b;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .reflection-area {
+            margin-bottom: 30px;
+        }
+
+        .reflection-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .reflection-textarea:focus {
+            outline: none;
+            border-color: #1e40af;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1e40af;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        @media (max-width: 1024px) {
+            .main-card-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-question {
+                font-size: 1.5rem;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 Daily Leadership Cards</h1>
+        <p>Your daily practice for intentional leadership growth</p>
+    </div>
+
+    <div class="container">
+        <!-- Card Type Selection -->
+        <div class="card-types">
+            <div class="card-type active" data-type="reflection" onclick="selectCardType('reflection')">
+                <div class="card-type-icon">🔍</div>
+                <h3>Self-Reflection</h3>
+                <p>Deep questions for personal leadership awareness and growth</p>
+            </div>
+            
+            <div class="card-type" data-type="team" onclick="selectCardType('team')">
+                <div class="card-type-icon">👥</div>
+                <h3>Team Conversations</h3>
+                <p>Powerful questions to facilitate meaningful team discussions</p>
+            </div>
+            
+            <div class="card-type" data-type="scenario" onclick="selectCardType('scenario')">
+                <div class="card-type-icon">⚡</div>
+                <h3>Leadership Scenarios</h3>
+                <p>Real-world challenges to practice decision-making skills</p>
+            </div>
+            
+            <div class="card-type" data-type="action" onclick="selectCardType('action')">
+                <div class="card-type-icon">🎯</div>
+                <h3>Action Challenges</h3>
+                <p>Daily practices to stretch your leadership comfort zone</p>
+            </div>
+        </div>
+
+        <!-- Main Card Display Area -->
+        <div class="main-card-area">
+            <div class="card-display">
+                <div class="card-content" id="cardContent">
+                    <div class="empty-state">
+                        <h3>Draw your first leadership card!</h3>
+                        <p>Select a card type above and click "Draw New Card" to begin your leadership practice.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h3>📝 Your Reflection</h3>
+                <div class="reflection-area">
+                    <textarea 
+                        class="reflection-textarea" 
+                        placeholder="Write your thoughts, insights, and commitments here..."
+                        id="reflectionText"
+                    ></textarea>
+                    <button class="btn btn-primary" onclick="saveReflection()" style="margin-top: 15px; width: 100%;">
+                        Save Reflection
+                    </button>
+                </div>
+
+                <h3>📊 Your Progress</h3>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="cardsDrawn">0</div>
+                        <div class="stat-label">Cards Drawn</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="reflectionsSaved">0</div>
+                        <div class="stat-label">Reflections</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="drawNewCard()" style="width: 100%; margin-top: 20px;">
+                    🎴 Draw New Card
+                </button>
+                
+                <button class="btn btn-secondary" onclick="shareCard()" style="width: 100%; margin-top: 10px;">
+                    📤 Share with Team
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Card databases
+        const cardDatabase = {
+            reflection: [
+                {
+                    question: "What leadership energy are you bringing to your interactions today?",
+                    description: "Consider how your mood, presence, and intentions affect those around you. Are you bringing curiosity, frustration, inspiration, or distraction?",
+                    followUp: "How might you consciously shift your energy to better serve your team?"
+                },
+                {
+                    question: "What assumption are you making about someone on your team that you haven't validated?",
+                    description: "We all create stories about people's motivations, capabilities, or attitudes. What story are you telling yourself that might not be true?",
+                    followUp: "How could you test this assumption with curiosity rather than judgment?"
+                },
+                {
+                    question: "Where did you avoid a difficult conversation yesterday?",
+                    description: "Leadership often requires us to address uncomfortable topics. Reflect on moments where you chose silence over courage.",
+                    followUp: "What would it cost you and others to continue avoiding this conversation?"
+                },
+                {
+                    question: "How are you managing your own emotional reactions in challenging moments?",
+                    description: "Self-regulation is a cornerstone of effective leadership. Notice your triggers and responses.",
+                    followUp: "What practices help you stay centered when tensions rise?"
+                },
+                {
+                    question: "What feedback have you been avoiding giving to someone?",
+                    description: "Often we withhold feedback to avoid discomfort, but this serves no one in the long run.",
+                    followUp: "How might you deliver this feedback with care and specificity?"
+                }
+            ],
+            team: [
+                {
+                    question: "What would help you feel more empowered in your role?",
+                    description: "Use this question in one-on-ones or team meetings to understand what your team needs to thrive.",
+                    followUp: "Listen for systemic issues vs. individual concerns."
+                },
+                {
+                    question: "Where do you see me showing up strongest as a leader?",
+                    description: "Invite your team to give you feedback on your leadership strengths.",
+                    followUp: "What patterns do you notice in their responses?"
+                },
+                {
+                    question: "What's one thing you wish I knew about how you work best?",
+                    description: "Everyone has different styles, preferences, and needs. Get curious about your team members as individuals.",
+                    followUp: "How can you adapt your leadership style to honor these differences?"
+                },
+                {
+                    question: "When do you feel most energized and engaged at work?",
+                    description: "Help your team identify their flow states and peak performance conditions.",
+                    followUp: "How might we create more of these conditions?"
+                },
+                {
+                    question: "What's a challenge you're facing that you haven't shared with me?",
+                    description: "Create psychological safety for team members to surface hidden struggles.",
+                    followUp: "How can we address this together?"
+                }
+            ],
+            scenario: [
+                {
+                    question: "Your top performer is showing signs of disengagement. How do you respond?",
+                    description: "They're still delivering results but seem less enthusiastic in meetings and haven't volunteered for new projects recently.",
+                    followUp: "Consider: What questions would you ask? What assumptions might you be making?"
+                },
+                {
+                    question: "Two team members come to you with a conflict they can't resolve. What's your approach?",
+                    description: "Both are valuable contributors but have fundamentally different working styles that are creating friction.",
+                    followUp: "How do you balance being helpful without taking over their responsibility?"
+                },
+                {
+                    question: "You need to deliver disappointing news about budget cuts affecting your team. How do you prepare?",
+                    description: "The decision came from above, but you need to communicate it in a way that maintains trust and morale.",
+                    followUp: "What's your strategy for transparency while maintaining hope?"
+                },
+                {
+                    question: "A team member consistently misses deadlines but gives great excuses. What do you do?",
+                    description: "Their work quality is good when completed, but the delays are affecting the entire team's momentum.",
+                    followUp: "How do you separate the person from the performance issue?"
+                },
+                {
+                    question: "You realize you made a decision that negatively impacted your team. How do you handle it?",
+                    description: "The consequences are becoming clear, and your team is feeling the effects of your choice.",
+                    followUp: "How do you model accountability and learn from mistakes?"
+                }
+            ],
+            action: [
+                {
+                    question: "Today, have one courageous conversation you've been avoiding.",
+                    description: "Identify someone you need to speak with about a difficult topic. Approach it with curiosity and care.",
+                    followUp: "What would make this conversation safe and productive for both of you?"
+                },
+                {
+                    question: "Ask a team member: 'How can I better support you this week?'",
+                    description: "Choose someone you haven't checked in with recently and genuinely listen to their response.",
+                    followUp: "What concrete action will you take based on their answer?"
+                },
+                {
+                    question: "Practice saying 'I don't know' when you genuinely don't have an answer.",
+                    description: "Instead of pretending or deflecting, model intellectual humility and curiosity.",
+                    followUp: "How does this change the dynamic of conversations?"
+                },
+                {
+                    question: "Give specific, appreciative feedback to someone who deserves recognition.",
+                    description: "Move beyond 'good job' to describe the specific impact of their actions.",
+                    followUp: "How did they respond to receiving detailed positive feedback?"
+                },
+                {
+                    question: "Delegate something you usually do yourself to develop someone else.",
+                    description: "Choose a task that will stretch someone's capabilities while serving the team.",
+                    followUp: "What support do they need to be successful?"
+                }
+            ]
+        };
+
+        // App state
+        let currentCardType = 'reflection';
+        let currentCard = null;
+        let stats = JSON.parse(localStorage.getItem('leadershipCardStats')) || {
+            cardsDrawn: 0,
+            reflectionsSaved: 0
+        };
+
+        // Initialize app
+        function init() {
+            updateStats();
+        }
+
+        function selectCardType(type) {
+            currentCardType = type;
+            
+            // Update UI
+            document.querySelectorAll('.card-type').forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+            
+            // Clear current card
+            document.getElementById('cardContent').innerHTML = `
+                <div class="empty-state">
+                    <h3>Draw a ${type} card!</h3>
+                    <p>Click "Draw New Card" to get your ${type} leadership practice.</p>
+                </div>
+            `;
+        }
+
+        function drawNewCard() {
+            const cards = cardDatabase[currentCardType];
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            currentCard = randomCard;
+            
+            // Update stats
+            stats.cardsDrawn++;
+            localStorage.setItem('leadershipCardStats', JSON.stringify(stats));
+            updateStats();
+            
+            // Display card
+            const cardHTML = `
+                <div class="card-category">${currentCardType.charAt(0).toUpperCase() + currentCardType.slice(1)} Card</div>
+                <div class="card-question">${randomCard.question}</div>
+                <div class="card-description">${randomCard.description}</div>
+                ${randomCard.followUp ? `<div class="card-description"><strong>Reflect:</strong> ${randomCard.followUp}</div>` : ''}
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="drawNewCard()">Draw Another Card</button>
+                    <button class="btn btn-secondary" onclick="shareCard()">Share This Card</button>
+                </div>
+            `;
+            
+            document.getElementById('cardContent').innerHTML = cardHTML;
+            
+            // Clear reflection textarea
+            document.getElementById('reflectionText').value = '';
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflectionText').value.trim();
+            if (!reflection) {
+                alert('Please write a reflection before saving.');
+                return;
+            }
+            
+            // Update stats
+            stats.reflectionsSaved++;
+            localStorage.setItem('leadershipCardStats', JSON.stringify(stats));
+            updateStats();
+            
+            // Save reflection with card (in a real app, this would go to a database)
+            const reflectionData = {
+                card: currentCard,
+                reflection: reflection,
+                date: new Date().toISOString(),
+                type: currentCardType
+            };
+            
+            const reflections = JSON.parse(localStorage.getItem('leadershipReflections')) || [];
+            reflections.push(reflectionData);
+            localStorage.setItem('leadershipReflections', JSON.stringify(reflections));
+            
+            alert('Reflection saved! Your leadership journey is being tracked.');
+            document.getElementById('reflectionText').value = '';
+        }
+
+        function shareCard() {
+            if (!currentCard) {
+                alert('Draw a card first!');
+                return;
+            }
+            
+            const shareText = `Leadership Reflection: ${currentCard.question}\n\n${currentCard.description}\n\nFrom The Positive Leadership Academy by April Sabral`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Leadership Card',
+                    text: shareText
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Card copied to clipboard! Share it with your team.');
+                });
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('cardsDrawn').textContent = stats.cardsDrawn;
+            document.getElementById('reflectionsSaved').textContent = stats.reflectionsSaved;
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

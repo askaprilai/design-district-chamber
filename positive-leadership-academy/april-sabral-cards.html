@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>April Sabral Leadership Cards - Positive Leadership Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .card-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card-type {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .card-type:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-type.active {
+            border-color: #1e40af;
+            transform: translateY(-5px);
+        }
+
+        .card-type-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .card-type h3 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card-type p {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .main-card-area {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .card-display {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-content {
+            max-width: 100%;
+        }
+
+        .card-category {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .card-question {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.3;
+            margin-bottom: 30px;
+        }
+
+        .card-description {
+            color: #64748b;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .card-source {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #1e40af;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #64748b;
+            text-align: left;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8fafc;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            color: #1e293b;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .reflection-area {
+            margin-bottom: 30px;
+        }
+
+        .reflection-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .reflection-textarea:focus {
+            outline: none;
+            border-color: #1e40af;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .act-framework {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .act-framework h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .act-framework p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1e40af;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        @media (max-width: 1024px) {
+            .main-card-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-question {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 April Sabral Leadership Cards</h1>
+        <p>Based on the ACT Framework: ACCEPT • CREATE • TEACH</p>
+    </div>
+
+    <div class="container">
+        <!-- Card Type Selection -->
+        <div class="card-types">
+            <div class="card-type active" data-type="self-awareness" onclick="selectCardType('self-awareness')">
+                <div class="card-type-icon">🧘‍♀️</div>
+                <h3>Self-Awareness</h3>
+                <p>Mindful leadership questions for personal growth and presence</p>
+            </div>
+            
+            <div class="card-type" data-type="accept" onclick="selectCardType('accept')">
+                <div class="card-type-icon">🤝</div>
+                <h3>ACCEPT Practice</h3>
+                <p>No judgment, be supportive - questions from April's ACCEPT methodology</p>
+            </div>
+            
+            <div class="card-type" data-type="team-conversations" onclick="selectCardType('team-conversations')">
+                <div class="card-type-icon">💬</div>
+                <h3>Team Conversations</h3>
+                <p>April's proven questions for building supportive team relationships</p>
+            </div>
+            
+            <div class="card-type" data-type="leadership-scenarios" onclick="selectCardType('leadership-scenarios')">
+                <div class="card-type-icon">⚡</div>
+                <h3>Leadership Scenarios</h3>
+                <p>Real situations from April's retail leadership experience</p>
+            </div>
+        </div>
+
+        <!-- Main Card Display Area -->
+        <div class="main-card-area">
+            <div class="card-display">
+                <div class="card-content" id="cardContent">
+                    <div class="empty-state">
+                        <h3>Draw your first April Sabral leadership card!</h3>
+                        <p>Select a card type above and click "Draw New Card" to begin practicing the ACT Framework.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="act-framework">
+                    <h4>🎯 The ACT Framework</h4>
+                    <p><strong>ACCEPT:</strong> No judgment & Assumptions. BE SUPPORTIVE</p>
+                    <p><strong>CREATE:</strong> Think & envision. BE RESPONSIBLE</p>
+                    <p><strong>TEACH:</strong> Mentor & Coach. BE SELFLESS</p>
+                </div>
+
+                <h3>📝 Your Reflection</h3>
+                <div class="reflection-area">
+                    <textarea 
+                        class="reflection-textarea" 
+                        placeholder="Reflect on April's question using the ACT Framework..."
+                        id="reflectionText"
+                    ></textarea>
+                    <button class="btn btn-primary" onclick="saveReflection()" style="margin-top: 15px; width: 100%;">
+                        Save Reflection
+                    </button>
+                </div>
+
+                <h3>📊 Your Progress</h3>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="cardsDrawn">0</div>
+                        <div class="stat-label">Cards Drawn</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="reflectionsSaved">0</div>
+                        <div class="stat-label">Reflections</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="drawNewCard()" style="width: 100%; margin-top: 20px;">
+                    🎴 Draw New Card
+                </button>
+                
+                <button class="btn btn-secondary" onclick="shareCard()" style="width: 100%; margin-top: 10px;">
+                    📤 Share with Team
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // April Sabral Leadership Cards Database - Based on Chapter 1
+        const aprilSabralCards = {
+            'self-awareness': [
+                {
+                    question: "What leadership energy are you bringing to your interactions today?",
+                    description: "April learned through meditation that being present and aware of your energy affects everyone around you. Practice observing yourself without attachment to the outcome.",
+                    source: "From April's meditation practice: 'When other people were stressed, I was able to disconnect and put myself in the place of an observer.'",
+                    followUp: "How might you consciously shift your energy to better serve your team?"
+                },
+                {
+                    question: "Where are you making assumptions instead of asking questions?",
+                    description: "Leading with awareness means 'we stop assuming and start asking.' April emphasizes the importance of curiosity over assumptions in leadership.",
+                    source: "April's ACT Framework: 'Being in a state of awareness puts us as leaders in a role where we stop assuming and start asking.'",
+                    followUp: "What questions could you ask to replace your current assumptions?"
+                },
+                {
+                    question: "How present are you in this moment with the person in front of you?",
+                    description: "April discovered that true presence means not thinking about dinner or the next five minutes, but being 'fully alive in that moment.' This is the foundation of engaged leadership.",
+                    source: "April's definition: 'This state means that you are not thinking about tonight's dinner... it's the practice of being fully alive in that moment.'",
+                    followUp: "What would change if you gave this person your complete attention?"
+                },
+                {
+                    question: "What are you judging about yourself that you need to accept?",
+                    description: "April openly shares her flaws - not being strategic, struggling with self-worth. She learned that accepting your shortcomings without judgment makes you a better leader.",
+                    source: "April's example: 'Acknowledging my own flaws, such as not being highly strategic, is neither good nor bad. It is what it is.'",
+                    followUp: "How could acknowledging this openly help you lead more effectively?"
+                },
+                {
+                    question: "How are you observing your thoughts without being attached to outcomes?",
+                    description: "Through meditation, April learned that 'everything is impermanent' and developed the mindset of not taking things personally by staying neutral and removed.",
+                    source: "April's Buddhist learning: 'Like waves in the ocean, no two moments will ever be exactly the same. This is the mindset I developed—not to take things personally.'",
+                    followUp: "What would happen if you approached today's challenges as a neutral observer?"
+                }
+            ],
+            
+            'accept': [
+                {
+                    question: "What reality are you resisting that you need to face?",
+                    description: "April emphasizes that accepting current reality requires 'complete neutrality—no assumptions—and only fact finding.' Face the moment for what it is, neither good nor bad.",
+                    source: "April's mentor used to say: 'It is what it is.' April learned that acceptance is the opposite of resistance.",
+                    followUp: "What facts exist that you've been avoiding or reshaping with your feelings?"
+                },
+                {
+                    question: "How are you creating a 'no judgment zone' for your team?",
+                    description: "Inspired by Planet Fitness's concept, April believes in creating environments where people feel accepted. 'We all want to be accepted, It's innate.'",
+                    source: "April references Planet Fitness: 'The No Judgement Zone... was designed to encourage people of all ages and body types... appealing to that innate need within all of us to be accepted.'",
+                    followUp: "What specific actions can you take today to help someone feel more accepted?"
+                },
+                {
+                    question: "What feedback are you avoiding hearing from your team?",
+                    description: "April learned that 'sometimes people will tell you what you need to hear versus what you want to hear' - but only in a safe space where they won't be judged.",
+                    source: "April's experience: 'Just like when a customer reviews you on google and we listen to them, we should give each employee the same respect.'",
+                    followUp: "How can you create safety for your team to share what you need to hear?"
+                },
+                {
+                    question: "Where are you blaming others instead of accepting your part?",
+                    description: "April says 'One of the worst things I have witnessed leaders do is to blame their people when things are not going right.' She emphasizes looking in the mirror first.",
+                    source: "April's lesson: 'Looking in the mirror and accepting our own shortcomings and how these affect your team will help you teach them to do the same.'",
+                    followUp: "What is your contribution to the current situation that needs addressing?"
+                },
+                {
+                    question: "How does your title get in the way of hearing reality?",
+                    description: "April learned that 'my title went before me' and she had to work hard to make people feel safe enough to share their honest reality without fear of judgment.",
+                    source: "April's approach: 'Hi, I am April, a person just like you, and VP is just my job.' This would make people feel at ease.",
+                    followUp: "How can you disarm people from judging you by your title so they feel safe to be honest?"
+                }
+            ],
+            
+            'team-conversations': [
+                {
+                    question: "What helps you feel supported?",
+                    description: "This is one of April's favorite questions to ask managers. She discovered that feeling supported usually stems from feeling heard and not judged by their leader.",
+                    source: "April's experience: 'Whenever I hear managers say they feel unsupported... it usually stems from a lack of feeling heard.'",
+                    followUp: "Listen carefully - what specific actions could you take based on their answer?"
+                },
+                {
+                    question: "What makes you feel least supported?",
+                    description: "April used this question to understand the gap between intention and impact. Often leaders think they're being supportive but the team feels differently.",
+                    source: "April's insight: 'Showing support to your team is a feeling... it all stems back to the leader they work for.'",
+                    followUp: "What patterns do you notice in responses across your team?"
+                },
+                {
+                    question: "How can we support you to achieve what we are asking of you?",
+                    description: "April learned to ask this question to understand realistic expectations. 'If you expect them to work miracles without providing resources... your team will feel unsuccessful.'",
+                    source: "April's lesson: 'Having realistic expectations of what your team can achieve is so important.'",
+                    followUp: "What resources or changes need to happen based on their response?"
+                },
+                {
+                    question: "What does support mean to you?",
+                    description: "April discovered that support means different things to different people. This question helps you understand each individual's definition and needs.",
+                    source: "April found: 'There are many different answers, but in my experience it all stems back to the leader they work for.'",
+                    followUp: "How can you adapt your leadership style to their definition of support?"
+                },
+                {
+                    question: "What's the reality you're experiencing that I might not see?",
+                    description: "April emphasizes that leaders must 'accept the reality of what your team is telling you' even when it's different from your perspective.",
+                    source: "April's wisdom: 'There is another layer to reality: the reality of how your team feels in any given situation. Yes, how they feel.'",
+                    followUp: "How can you validate their experience while working toward solutions together?"
+                }
+            ],
+            
+            'leadership-scenarios': [
+                {
+                    question: "Your team member says you 'always pick on them' - how do you respond?",
+                    description: "April experienced this as an Assistant Manager. Someone felt she gave them more work when closing. Her first reaction was to judge his performance, but she chose acceptance instead.",
+                    source: "April's experience: 'I decided to change the way I talked to him and tailored my approach to help him feel encouraged not discouraged.'",
+                    followUp: "How can you separate your intentions from their experience and focus on their feelings?"
+                },
+                {
+                    question: "You receive feedback that you're 'too competitive and don't listen well' - what's your approach?",
+                    description: "This happened to April twice. The first time she accepted it and made changes. The second time she accepted that the organization wasn't for her.",
+                    source: "April's learning: 'At the end of the day, if someone feels a certain way about my leadership, it is their reality even if it's not mine.'",
+                    followUp: "How do you determine whether to change yourself or change your environment?"
+                },
+                {
+                    question: "Your team is missing operational duties but excelling at customer service - how do you handle it?",
+                    description: "April struggled with this herself. Her manager told her: 'If you want to get promoted... your lack of credibility in this area will hinder your peers respecting you.'",
+                    source: "April's lesson: 'When one gets promoted, everyone is always looking at what you're not doing, not what you are. So, you better ensure you get the simple things right.'",
+                    followUp: "How do you balance acknowledging strengths while addressing critical improvement areas?"
+                },
+                {
+                    question: "You discover a team member playing video games instead of working - what's your response?",
+                    description: "April shares Erik Bolinder's story: his developer appeared to waste time gaming but actually created a revolutionary delivery system that expanded the business ten-fold.",
+                    source: "April's insight: 'Is it possible that what we judge as a flaw is a latent talent or strength that, with the right coaching and mentorship, might blossom into a great asset?'",
+                    followUp: "How can you investigate with curiosity instead of rushing to judgment?"
+                },
+                {
+                    question: "Your field leaders are telling you one thing but company expectations are different - how do you proceed?",
+                    description: "April learned to listen to frontline feedback: 'I believe that the answers are normally in the field.' She created tools like Nudge app to get unfiltered feedback.",
+                    source: "April's approach: 'If you hold a call with a field leadership team, you better listen to what they say.'",
+                    followUp: "How do you balance company directives with frontline reality when they conflict?"
+                }
+            ]
+        };
+
+        // App state
+        let currentCardType = 'self-awareness';
+        let currentCard = null;
+        let stats = JSON.parse(localStorage.getItem('aprilSabralCardStats')) || {
+            cardsDrawn: 0,
+            reflectionsSaved: 0
+        };
+
+        // Initialize app
+        function init() {
+            updateStats();
+        }
+
+        function selectCardType(type) {
+            currentCardType = type;
+            
+            // Update UI
+            document.querySelectorAll('.card-type').forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+            
+            // Clear current card
+            const typeNames = {
+                'self-awareness': 'Self-Awareness',
+                'accept': 'ACCEPT Practice',
+                'team-conversations': 'Team Conversation',
+                'leadership-scenarios': 'Leadership Scenario'
+            };
+            
+            document.getElementById('cardContent').innerHTML = `
+                <div class="empty-state">
+                    <h3>Draw an ${typeNames[type]} card!</h3>
+                    <p>Click "Draw New Card" to get your ${typeNames[type]} practice from April's ACT Framework.</p>
+                </div>
+            `;
+        }
+
+        function drawNewCard() {
+            const cards = aprilSabralCards[currentCardType];
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            currentCard = randomCard;
+            
+            // Update stats
+            stats.cardsDrawn++;
+            localStorage.setItem('aprilSabralCardStats', JSON.stringify(stats));
+            updateStats();
+            
+            // Display card
+            const typeNames = {
+                'self-awareness': 'Self-Awareness',
+                'accept': 'ACCEPT Practice',
+                'team-conversations': 'Team Conversation',
+                'leadership-scenarios': 'Leadership Scenario'
+            };
+            
+            const cardHTML = `
+                <div class="card-category">${typeNames[currentCardType]} • ACT Framework</div>
+                <div class="card-question">${randomCard.question}</div>
+                <div class="card-description">${randomCard.description}</div>
+                <div class="card-source">${randomCard.source}</div>
+                ${randomCard.followUp ? `<div class="card-description"><strong>Reflect:</strong> ${randomCard.followUp}</div>` : ''}
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="drawNewCard()">Draw Another Card</button>
+                    <button class="btn btn-secondary" onclick="shareCard()">Share This Card</button>
+                </div>
+            `;
+            
+            document.getElementById('cardContent').innerHTML = cardHTML;
+            
+            // Clear reflection textarea
+            document.getElementById('reflectionText').value = '';
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflectionText').value.trim();
+            if (!reflection) {
+                alert('Please write a reflection before saving.');
+                return;
+            }
+            
+            // Update stats
+            stats.reflectionsSaved++;
+            localStorage.setItem('aprilSabralCardStats', JSON.stringify(stats));
+            updateStats();
+            
+            // Save reflection with card
+            const reflectionData = {
+                card: currentCard,
+                reflection: reflection,
+                date: new Date().toISOString(),
+                type: currentCardType
+            };
+            
+            const reflections = JSON.parse(localStorage.getItem('aprilSabralReflections')) || [];
+            reflections.push(reflectionData);
+            localStorage.setItem('aprilSabralReflections', JSON.stringify(reflections));
+            
+            alert('Reflection saved! Your ACT Framework journey is being tracked.');
+            document.getElementById('reflectionText').value = '';
+        }
+
+        function shareCard() {
+            if (!currentCard) {
+                alert('Draw a card first!');
+                return;
+            }
+            
+            const shareText = `April Sabral Leadership Card:\n\n${currentCard.question}\n\n${currentCard.description}\n\nFrom The Positive Leadership Academy - ACT Framework by April Sabral`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'April Sabral Leadership Card',
+                    text: shareText
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Card copied to clipboard! Share it with your team.');
+                });
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('cardsDrawn').textContent = stats.cardsDrawn;
+            document.getElementById('reflectionsSaved').textContent = stats.reflectionsSaved;
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

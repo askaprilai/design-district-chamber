@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Smarter Workshop - Expanded Business Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.05) 0%, rgba(30, 41, 59, 0.05) 100%);
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            border-left: 5px solid #8b5cf6;
+        }
+
+        .section-header h2 {
+            color: #1e293b;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .question {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .question h3 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            line-height: 1.5;
+        }
+
+        .question-number {
+            background: #8b5cf6;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-right: 15px;
+        }
+
+        .answer-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .answer-option {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .answer-option:hover {
+            background: #f1f5f9;
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
+        .answer-option.selected {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
+        .answer-option input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .answer-text {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 5px;
+            margin-left: 30px;
+        }
+
+        .answer-description {
+            color: #64748b;
+            font-size: 0.9em;
+            margin-left: 30px;
+        }
+
+        /* Custom Notes Section Styles */
+        .custom-notes-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 30px;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .custom-notes-section h4 {
+            color: #6b46c1;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .custom-notes-section p {
+            color: #64748b;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .custom-text-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1em;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .custom-text-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .custom-text-input::placeholder {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Progress and Navigation */
+        .progress-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: none;
+        }
+
+        .progress-bar {
+            background: #f1f5f9;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .navigation {
+            background: white;
+            padding: 25px 30px;
+            border-top: 1px solid #e2e8f0;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-button:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-button.secondary {
+            background: #f8fafc;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .start-quiz-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .start-quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Results Styles */
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .email-capture {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            padding: 30px;
+            border-radius: 18px;
+            margin: 30px 0;
+            border-left: 5px solid #8b5cf6;
+        }
+
+        .email-form {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .email-form input {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .email-form input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .email-form button {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .email-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Start Smarter Workshop Assessment</h1>
+            <p class="subtitle">Comprehensive Business Evaluation with Expert Implementation Support</p>
+        </div>
+
+        <div class="content">
+            <!-- Intro Section -->
+            <div id="introSection">
+                <div style="text-align: center; padding: 40px 20px;">
+                    <h2 style="color: #1e293b; margin-bottom: 25px;">Discover What Your Business Really Needs</h2>
+                    <p style="color: #64748b; font-size: 1.2em; line-height: 1.8; margin-bottom: 30px;">
+                        This comprehensive assessment evaluates 6 critical areas of your business. You'll receive personalized recommendations and see exactly where our certified coaches can help you implement lasting changes.
+                    </p>
+                    <div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 15px; margin-bottom: 30px;">
+                        <p style="color: #6b46c1; font-weight: 600; margin-bottom: 10px;">📝 Assessment Features:</p>
+                        <ul style="text-align: left; color: #64748b; max-width: 500px; margin: 0 auto;">
+                            <li>30+ detailed questions across 6 business areas</li>
+                            <li>Custom notes sections for your specific challenges</li>
+                            <li>Personalized coach-guided action plan</li>
+                            <li>Implementation roadmap with expert support</li>
+                        </ul>
+                    </div>
+                    <button class="start-quiz-btn" onclick="startAssessment()">Start Your Comprehensive Assessment</button>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section" id="progressSection">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progressText">0%</span> Complete - <span id="sectionCounter">Section 1 of 6</span>
+                </div>
+            </div>
+
+            <!-- Operations Section -->
+            <div class="section" id="operations">
+                <div class="section-header">
+                    <h2>⚙️ Operations & Systems</h2>
+                    <p>How efficiently do your core business operations run? Let's evaluate your systems, processes, and operational maturity.</p>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">1</span>How often do you encounter operational bottlenecks or delays?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="ops1" value="0">
+                            <div class="answer-text">Daily - constant firefighting mode</div>
+                            <div class="answer-description">Always dealing with urgent operational issues</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops1" value="1">
+                            <div class="answer-text">Weekly - regular disruptions to workflow</div>
+                            <div class="answer-description">Frequent but manageable operational hiccups</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops1" value="2">
+                            <div class="answer-text">Monthly - occasional issues arise</div>
+                            <div class="answer-description">Generally smooth with periodic challenges</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops1" value="3">
+                            <div class="answer-text">Rarely - systems run smoothly</div>
+                            <div class="answer-description">Well-oiled operational machine</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">2</span>What best describes your process documentation?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="ops2" value="0">
+                            <div class="answer-text">No documentation - everything is in people's heads</div>
+                            <div class="answer-description">Processes rely entirely on tribal knowledge</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops2" value="1">
+                            <div class="answer-text">Basic notes and scattered documents</div>
+                            <div class="answer-description">Some documentation but inconsistent and outdated</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops2" value="2">
+                            <div class="answer-text">Good documentation for key processes</div>
+                            <div class="answer-description">Major processes are documented but could be more comprehensive</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops2" value="3">
+                            <div class="answer-text">Comprehensive, up-to-date process documentation</div>
+                            <div class="answer-description">Detailed SOPs that are regularly maintained</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">3</span>How integrated are your business systems and tools?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="ops3" value="0">
+                            <div class="answer-text">Mostly email, spreadsheets, and sticky notes</div>
+                            <div class="answer-description">Basic tools with no integration</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops3" value="1">
+                            <div class="answer-text">Multiple specialized tools but they don't communicate</div>
+                            <div class="answer-description">Good tools but data silos everywhere</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops3" value="2">
+                            <div class="answer-text">Some integration between major systems</div>
+                            <div class="answer-description">Key systems work together with minor gaps</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops3" value="3">
+                            <div class="answer-text">Fully integrated, automated workflows</div>
+                            <div class="answer-description">Seamless data flow and minimal manual work</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">4</span>How do you handle quality control and error prevention?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="ops4" value="0">
+                            <div class="answer-text">Fix problems as they arise - reactive approach</div>
+                            <div class="answer-description">No systematic quality control measures</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops4" value="1">
+                            <div class="answer-text">Basic checklists and spot checks</div>
+                            <div class="answer-description">Some quality measures but inconsistent</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops4" value="2">
+                            <div class="answer-text">Regular quality reviews and improvement processes</div>
+                            <div class="answer-description">Proactive quality management with room for improvement</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops4" value="3">
+                            <div class="answer-text">Systematic quality management with continuous improvement</div>
+                            <div class="answer-description">Built-in quality controls and regular optimization</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">5</span>How well can your business operate when you're not there?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="ops5" value="0">
+                            <div class="answer-text">Everything stops - I'm essential for all decisions</div>
+                            <div class="answer-description">Business can't function without owner involvement</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops5" value="1">
+                            <div class="answer-text">Limited operation - team can handle routine tasks only</div>
+                            <div class="answer-description">Basic functions continue but no major decisions</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops5" value="2">
+                            <div class="answer-text">Good operation - team handles most day-to-day activities</div>
+                            <div class="answer-description">Business runs well with occasional check-ins needed</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="ops5" value="3">
+                            <div class="answer-text">Full operation - business runs independently</div>
+                            <div class="answer-description">Systems and team enable complete autonomy</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Custom Notes for Operations -->
+                <div class="custom-notes-section">
+                    <h4>💭 Your Operations Challenges</h4>
+                    <p>Tell us more about your specific operational pain points. What processes or systems are causing you the most frustration right now?</p>
+                    <textarea 
+                        class="custom-text-input" 
+                        id="ops_notes" 
+                        placeholder="Example: We're using 5 different tools that don't integrate, our approval process takes forever, or I have to manually do tasks that should be automated. Be specific about your biggest operational headaches..."
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- People Section -->
+            <div class="section" id="people">
+                <div class="section-header">
+                    <h2>👥 People & Culture</h2>
+                    <p>Your team is your greatest asset. Let's evaluate your hiring, retention, and culture strategies.</p>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">6</span>How structured is your hiring process?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="people1" value="0">
+                            <div class="answer-text">No formal process - hire based on gut feeling</div>
+                            <div class="answer-description">Informal interviews and quick decisions</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people1" value="1">
+                            <div class="answer-text">Basic screening but inconsistent approach</div>
+                            <div class="answer-description">Some structure but varies by position</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people1" value="2">
+                            <div class="answer-text">Structured process with defined stages</div>
+                            <div class="answer-description">Clear steps but could be more comprehensive</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people1" value="3">
+                            <div class="answer-text">Comprehensive hiring system with assessments</div>
+                            <div class="answer-description">Multi-stage process with behavioral and skills testing</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">7</span>How well do your team members understand your company values and mission?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="people2" value="0">
+                            <div class="answer-text">Values aren't clearly defined or communicated</div>
+                            <div class="answer-description">Team works without clear cultural foundation</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people2" value="1">
+                            <div class="answer-text">Values exist but aren't actively reinforced</div>
+                            <div class="answer-description">Written somewhere but not part of daily culture</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people2" value="2">
+                            <div class="answer-text">Most team members know and understand them</div>
+                            <div class="answer-description">Values are communicated and mostly followed</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people2" value="3">
+                            <div class="answer-text">Everyone can articulate and lives our values daily</div>
+                            <div class="answer-description">Values drive behavior and decision-making</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">8</span>How do you handle performance management and feedback?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="people3" value="0">
+                            <div class="answer-text">No formal performance reviews or feedback</div>
+                            <div class="answer-description">Feedback happens only when problems arise</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people3" value="1">
+                            <div class="answer-text">Annual reviews but limited ongoing feedback</div>
+                            <div class="answer-description">Formal once-a-year process with minimal follow-up</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people3" value="2">
+                            <div class="answer-text">Regular check-ins and quarterly reviews</div>
+                            <div class="answer-description">Consistent performance conversations</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people3" value="3">
+                            <div class="answer-text">Continuous feedback culture with growth planning</div>
+                            <div class="answer-description">Regular coaching and development discussions</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">9</span>What's your employee turnover rate in the past year?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="people4" value="0">
+                            <div class="answer-text">High turnover - over 30% annually</div>
+                            <div class="answer-description">Constant hiring and training cycle</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people4" value="1">
+                            <div class="answer-text">Moderate turnover - 15-30% annually</div>
+                            <div class="answer-description">Some positions have retention challenges</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people4" value="2">
+                            <div class="answer-text">Low turnover - 5-15% annually</div>
+                            <div class="answer-description">Most team members stay long-term</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people4" value="3">
+                            <div class="answer-text">Very low turnover - under 5% annually</div>
+                            <div class="answer-description">Exceptional retention and employee satisfaction</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3><span class="question-number">10</span>How effectively do you delegate tasks and responsibilities?</h3>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="people5" value="0">
+                            <div class="answer-text">I do most tasks myself - hard to trust others</div>
+                            <div class="answer-description">Micromanagement and owner bottleneck</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people5" value="1">
+                            <div class="answer-text">Delegate simple tasks but keep complex ones</div>
+                            <div class="answer-description">Some delegation but limited scope</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people5" value="2">
+                            <div class="answer-text">Good delegation with clear expectations</div>
+                            <div class="answer-description">Team handles most day-to-day responsibilities</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="people5" value="3">
+                            <div class="answer-text">Excellent delegation and empowerment</div>
+                            <div class="answer-description">Team makes decisions and owns outcomes</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Custom Notes for People -->
+                <div class="custom-notes-section">
+                    <h4>💭 Your People Challenges</h4>
+                    <p>What specific challenges do you face with hiring, managing, or retaining team members? What people-related issues keep you up at night?</p>
+                    <textarea 
+                        class="custom-text-input" 
+                        id="people_notes" 
+                        placeholder="Example: Hard to find good candidates, high turnover in specific roles, team conflicts, difficulty delegating, or performance management issues. What are your biggest people challenges?"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation" id="navigation">
+                <button type="button" class="nav-button secondary" id="prevButton" onclick="previousSection()" disabled>← Previous</button>
+                <span id="sectionCounter" style="color: #64748b; font-weight: 500;">Section 1 of 6</span>
+                <button type="button" class="nav-button" id="nextButton" onclick="nextSection()" disabled>Next →</button>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results" id="results">
+                <div style="text-align: center; padding: 40px 20px;">
+                    <h2 style="color: #1e293b; margin-bottom: 30px;">🎯 Your Comprehensive Business Assessment Results</h2>
+                    
+                    <div id="detailedResults"></div>
+
+                    <!-- Email Capture -->
+                    <div class="email-capture" id="emailCapture">
+                        <h3>Get Your Expert-Guided Transformation Proposal</h3>
+                        <p>Based on your assessment results, we'll create a customized coaching proposal including personalized implementation support, accountability systems, and investment options.</p>
+                        <form class="email-form" id="emailForm">
+                            <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                            <input type="email" id="email" name="email" placeholder="Email Address" required>
+                            <input type="text" id="company" name="company" placeholder="Company Name" required>
+                            <input type="text" id="phone" name="phone" placeholder="Phone Number" required>
+                            <button type="submit">Get My Expert Coaching Proposal</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        emailjs.init("SAU17WFhPmeQLrng7");
+
+        let currentSection = 0;
+        const sections = ['operations', 'people'];  // Starting with 2 sections for now
+        let assessmentData = {};
+        let customNotes = {};
+
+        function startAssessment() {
+            window.scrollTo(0, 0);
+            document.getElementById('introSection').classList.add('hidden');
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('navigation').style.display = 'flex';
+            showSection(0);
+            updateProgress();
+            updateNavigation();
+        }
+
+        function showSection(index) {
+            window.scrollTo(0, 0);
+            // Hide all sections
+            sections.forEach(section => {
+                document.getElementById(section).classList.remove('active');
+            });
+            
+            // Show current section
+            if (index < sections.length) {
+                document.getElementById(sections[index]).classList.add('active');
+            } else {
+                showResults();
+            }
+        }
+
+        function nextSection() {
+            window.scrollTo(0, 0);
+            // Save current section's custom notes
+            if (currentSection < sections.length) {
+                saveCustomNotes();
+            }
+            
+            if (currentSection < sections.length - 1) {
+                currentSection++;
+                showSection(currentSection);
+                updateProgress();
+                updateNavigation();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousSection() {
+            window.scrollTo(0, 0);
+            if (currentSection > 0) {
+                saveCustomNotes();
+                currentSection--;
+                showSection(currentSection);
+                updateProgress();
+                updateNavigation();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentSection + 1) / sections.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${Math.round(progress)}%`;
+        }
+
+        function updateNavigation() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            const sectionCounter = document.getElementById('sectionCounter');
+
+            prevButton.disabled = currentSection === 0;
+            
+            // Check if current section is completed
+            const currentSectionAnswered = isSectionCompleted(currentSection);
+            nextButton.disabled = !currentSectionAnswered;
+            
+            if (currentSection === sections.length - 1 && currentSectionAnswered) {
+                nextButton.textContent = 'Get Results →';
+            } else {
+                nextButton.textContent = 'Next →';
+            }
+
+            sectionCounter.textContent = `Section ${currentSection + 1} of ${sections.length}`;
+        }
+
+        function isSectionCompleted(sectionIndex) {
+            const sectionName = sections[sectionIndex];
+            const questions = document.querySelectorAll(`#${sectionName} input[type="radio"]`);
+            const questionNames = [...new Set([...questions].map(q => q.name))];
+            
+            return questionNames.every(name => {
+                return document.querySelector(`input[name="${name}"]:checked`);
+            });
+        }
+
+        function saveCustomNotes() {
+            const noteFields = ['ops_notes', 'people_notes'];
+            noteFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element) {
+                    customNotes[field] = element.value.trim();
+                }
+            });
+        }
+
+        function showResults() {
+            window.scrollTo(0, 0);
+            saveCustomNotes();
+            
+            // Hide all sections
+            sections.forEach(section => {
+                document.getElementById(section).classList.remove('active');
+            });
+            document.getElementById('navigation').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+            
+            // Calculate results
+            calculateAndDisplayResults();
+            
+            // Show results
+            document.getElementById('results').classList.add('active');
+        }
+
+        function calculateAndDisplayResults() {
+            const results = {
+                operations: {
+                    name: 'Operations & Systems',
+                    scores: [assessmentData.ops1, assessmentData.ops2, assessmentData.ops3, assessmentData.ops4, assessmentData.ops5],
+                    maxScore: 15
+                },
+                people: {
+                    name: 'People & Culture',
+                    scores: [assessmentData.people1, assessmentData.people2, assessmentData.people3, assessmentData.people4, assessmentData.people5],
+                    maxScore: 15
+                }
+            };
+
+            let resultsHTML = '<div style="display: grid; gap: 25px; margin-bottom: 40px;">';
+            let totalScore = 0;
+            let totalMaxScore = 0;
+
+            Object.entries(results).forEach(([key, data]) => {
+                const sectionScore = data.scores.reduce((sum, score) => sum + (score || 0), 0);
+                const percentage = Math.round((sectionScore / data.maxScore) * 100);
+                totalScore += sectionScore;
+                totalMaxScore += data.maxScore;
+
+                let level, color, recommendation;
+                if (percentage >= 80) {
+                    level = 'Excellent';
+                    color = '#10b981';
+                    recommendation = 'Work with your coach to fine-tune and optimize';
+                } else if (percentage >= 60) {
+                    level = 'Good';
+                    color = '#f59e0b';
+                    recommendation = 'Partner with a trainer to implement key improvements';
+                } else if (percentage >= 40) {
+                    level = 'Needs Attention';
+                    color = '#ef4444';
+                    recommendation = 'Requires expert guidance to execute significant changes';
+                } else {
+                    level = 'Critical';
+                    color = '#dc2626';
+                    recommendation = 'Immediate coaching support needed for strategic turnaround';
+                }
+
+                resultsHTML += `
+                    <div style="background: white; padding: 25px; border-radius: 15px; border-left: 5px solid ${color}; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="color: #1e293b; font-size: 1.2em;">${data.name}</h3>
+                            <div style="background: ${color}; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600;">
+                                ${percentage}%
+                            </div>
+                        </div>
+                        <div style="background: #f1f5f9; height: 8px; border-radius: 4px; margin-bottom: 15px;">
+                            <div style="background: ${color}; height: 100%; width: ${percentage}%; border-radius: 4px; transition: width 0.5s ease;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 600; color: ${color};">${level}</span>
+                            <span style="color: #64748b; font-size: 0.9em;">${recommendation}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const overallPercentage = Math.round((totalScore / totalMaxScore) * 100);
+            let overallLevel, overallColor, workshopRecommendation;
+            
+            if (overallPercentage >= 80) {
+                overallLevel = 'Advanced Optimization';
+                overallColor = '#10b981';
+                workshopRecommendation = 'Partner with our coaches to fine-tune scaling strategies and unlock your next growth phase';
+            } else if (overallPercentage >= 60) {
+                overallLevel = 'Intermediate Development';
+                overallColor = '#f59e0b';
+                workshopRecommendation = 'Work with our expert trainers to address key gaps and strengthen your operational foundations';
+            } else if (overallPercentage >= 40) {
+                overallLevel = 'Foundational Rebuilding';
+                overallColor = '#ef4444';
+                workshopRecommendation = 'Requires intensive coaching support to execute comprehensive system transformation';
+            } else {
+                overallLevel = 'Critical Intervention';
+                overallColor = '#dc2626';
+                workshopRecommendation = 'Immediate expert intervention needed - our coaches will guide you through intensive business recovery';
+            }
+
+            resultsHTML += `</div>
+                <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.05) 0%, rgba(30, 41, 59, 0.05) 100%); padding: 30px; border-radius: 18px; margin-bottom: 30px; border: 2px solid ${overallColor};">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h3 style="color: #1e293b; font-size: 1.5em; margin-bottom: 10px;">Overall Business Maturity Score</h3>
+                        <div style="font-size: 3em; font-weight: 700; color: ${overallColor}; margin-bottom: 10px;">${overallPercentage}%</div>
+                        <div style="background: ${overallColor}; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; font-weight: 600;">
+                            ${overallLevel}
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid ${overallColor};">
+                        <h4 style="color: #1e293b; margin-bottom: 15px;">🎯 Your Expert-Guided Action Plan:</h4>
+                        <p style="color: #64748b; line-height: 1.6; margin-bottom: 15px;">${workshopRecommendation}</p>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #8b5cf6;">
+                            <p style="color: #6b46c1; font-weight: 600; margin: 0;">💡 Implementation Reality: While you now know WHAT needs to change, successfully executing the HOW requires expert guidance. Our certified coaches and trainers will work alongside you to ensure these strategies actually get implemented and deliver results.</p>
+                        </div>
+                    </div>
+                </div>`;
+
+            // Show custom notes if provided
+            if (customNotes.ops_notes || customNotes.people_notes) {
+                resultsHTML += `
+                    <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%); padding: 25px; border-radius: 16px; margin-bottom: 30px; border-left: 4px solid #8b5cf6;">
+                        <h4 style="color: #6b46c1; margin-bottom: 15px;">📝 Your Specific Challenges</h4>
+                `;
+                
+                if (customNotes.ops_notes) {
+                    resultsHTML += `<p style="color: #64748b; margin-bottom: 10px;"><strong>Operations:</strong> ${customNotes.ops_notes}</p>`;
+                }
+                if (customNotes.people_notes) {
+                    resultsHTML += `<p style="color: #64748b; margin-bottom: 10px;"><strong>People:</strong> ${customNotes.people_notes}</p>`;
+                }
+                
+                resultsHTML += `
+                        <p style="color: #6b46c1; font-weight: 600; margin-top: 15px;">Our coaches will address these specific challenges in your personalized action plan.</p>
+                    </div>
+                `;
+            }
+
+            document.getElementById('detailedResults').innerHTML = resultsHTML;
+        }
+
+        // Answer option handling
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                // Remove selected class from all options in this question
+                const questionDiv = e.target.closest('.question');
+                questionDiv.querySelectorAll('.answer-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Add selected class to chosen option
+                e.target.closest('.answer-option').classList.add('selected');
+                
+                // Store answer
+                assessmentData[e.target.name] = parseInt(e.target.value);
+                
+                // Update navigation
+                updateNavigation();
+            }
+        });
+
+        // Email form submission (simplified for demo)
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailForm = document.getElementById('emailForm');
+            if (emailForm) {
+                emailForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you! Your assessment results and custom challenges have been submitted. A business coach will contact you within 24 hours with your personalized implementation plan.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

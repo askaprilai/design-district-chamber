@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz for Profits - Create Lead-Generating Quizzes</title>
+    <style>
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .language-dropdown {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(30, 58, 138, 0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #1e3a8a;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .language-dropdown:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: #1e3a8a;
+        }
+
+        .language-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            display: none;
+            min-width: 120px;
+            overflow: hidden;
+        }
+
+        .language-options.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .language-option:hover {
+            background: #f8fafc;
+        }
+
+        .language-option.active {
+            background: #eff6ff;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(-45deg, #0c0c2e, #1a0d2e, #2d1b4e, #0f0530, #1e0a3e, #3c1a5b, #0a051f, #4a1a6b);
+            background-size: 600% 600%;
+            animation: dramaticGradientShift 12s ease infinite;
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #333;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 60% 90%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes dramaticGradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 20% 70%, rgba(147, 51, 234, 0.4) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 30%, rgba(59, 130, 246, 0.5) 0%, transparent 50%),
+                        radial-gradient(ellipse at 40% 90%, rgba(236, 72, 153, 0.4) 0%, transparent 50%),
+                        radial-gradient(ellipse at 90% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            animation: floatingOrbs 20s ease-in-out infinite;
+        }
+
+        @keyframes floatingOrbs {
+            0%, 100% { 
+                background: radial-gradient(ellipse at 20% 70%, rgba(147, 51, 234, 0.4) 0%, transparent 50%),
+                           radial-gradient(ellipse at 80% 30%, rgba(59, 130, 246, 0.5) 0%, transparent 50%),
+                           radial-gradient(ellipse at 40% 90%, rgba(236, 72, 153, 0.4) 0%, transparent 50%),
+                           radial-gradient(ellipse at 90% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 50%);
+            }
+            33% { 
+                background: radial-gradient(ellipse at 80% 20%, rgba(147, 51, 234, 0.5) 0%, transparent 50%),
+                           radial-gradient(ellipse at 30% 80%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+                           radial-gradient(ellipse at 90% 40%, rgba(236, 72, 153, 0.5) 0%, transparent 50%),
+                           radial-gradient(ellipse at 10% 60%, rgba(139, 92, 246, 0.4) 0%, transparent 50%);
+            }
+            66% { 
+                background: radial-gradient(ellipse at 60% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+                           radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.6) 0%, transparent 50%),
+                           radial-gradient(ellipse at 80% 70%, rgba(236, 72, 153, 0.4) 0%, transparent 50%),
+                           radial-gradient(ellipse at 40% 30%, rgba(139, 92, 246, 0.5) 0%, transparent 50%);
+            }
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            padding: 60px 40px;
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #9333ea 0%, #3b82f6 30%, #ec4899 60%, #8b5cf6 100%);
+            background-size: 300% 300%;
+            animation: dramaticTextShift 6s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            filter: drop-shadow(0 0 10px rgba(147, 51, 234, 0.3));
+        }
+
+        @keyframes dramaticTextShift {
+            0%, 100% { background-position: 0% 50%; }
+            33% { background-position: 100% 0%; }
+            66% { background-position: 100% 100%; }
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            color: #64748b;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .hero .description {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #475569;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #9333ea 0%, #3b82f6 30%, #ec4899 60%, #8b5cf6 100%);
+            background-size: 300% 300%;
+            animation: dramaticButtonShift 8s ease infinite;
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 30px rgba(147, 51, 234, 0.5), 0 0 20px rgba(147, 51, 234, 0.2);
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes dramaticButtonShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(147, 51, 234, 0.6), 0 0 30px rgba(147, 51, 234, 0.4);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(55, 48, 163, 0.05) 100%);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(30, 58, 138, 0.1);
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: rgba(30, 58, 138, 0.2);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease infinite;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .pricing-section {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.98) 50%, rgba(51, 65, 85, 0.98) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 20s ease infinite;
+            color: white;
+            padding: 80px 40px;
+            margin-top: 80px;
+            border-radius: 24px 24px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.1) 50%, transparent 70%);
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .pricing-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .pricing-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 50px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.98);
+            color: #333;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: #3730a3;
+        }
+
+        .pricing-card.featured {
+            border-color: #1e3a8a;
+            transform: scale(1.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .pricing-plan {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .pricing-period {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            color: #475569;
+        }
+
+        .pricing-features li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .pricing-button {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .pricing-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #cbd5e1;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.5), transparent);
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 40px 30px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector">
+        <div class="language-dropdown" onclick="toggleLanguageMenu()">
+            🌐 <span id="currentLang">English</span> ▼
+        </div>
+        <div class="language-options" id="languageOptions">
+            <div class="language-option active" onclick="changeLanguage('en')">🇺🇸 English</div>
+            <div class="language-option" onclick="changeLanguage('es')">🇪🇸 Español</div>
+            <div class="language-option" onclick="changeLanguage('fr')">🇫🇷 Français</div>
+            <div class="language-option" onclick="changeLanguage('de')">🇩🇪 Deutsch</div>
+            <div class="language-option" onclick="changeLanguage('pt')">🇧🇷 Português</div>
+            <div class="language-option" onclick="changeLanguage('it')">🇮🇹 Italiano</div>
+            <div class="language-option" onclick="changeLanguage('ja')">🇯🇵 日本語</div>
+            <div class="language-option" onclick="changeLanguage('ko')">🇰🇷 한국어</div>
+            <div class="language-option" onclick="changeLanguage('zh')">🇨🇳 中文</div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-translate="hero_title">Quiz for Profits</h1>
+            <p class="subtitle" data-translate="hero_subtitle">Turn Your Expertise Into High-Converting Lead Magnets</p>
+            <p class="description" data-translate="hero_description">
+                Create professional, branded quizzes that capture leads, segment your audience, and drive sales. 
+                Join successful entrepreneurs who use our platform to generate thousands of qualified leads monthly.
+            </p>
+            <button class="cta-button" onclick="startFreeTrial()" data-translate="hero_cta">Create Your First Quiz FREE</button>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 data-translate="feature_1_title">Lead Generation Powerhouse</h3>
+                    <p data-translate="feature_1_desc">Convert visitors into qualified leads with engaging, interactive quizzes that people actually want to complete.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 data-translate="feature_2_title">No-Code Quiz Builder</h3>
+                    <p data-translate="feature_2_desc">Drag-and-drop interface makes it easy to create professional quizzes in minutes, not hours.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3 data-translate="feature_3_title">Automated Email Integration</h3>
+                    <p data-translate="feature_3_desc">Instantly send personalized results and follow-up sequences to nurture leads into customers.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-translate="feature_4_title">Advanced Analytics</h3>
+                    <p data-translate="feature_4_desc">Track completion rates, lead quality, and conversion metrics to optimize your quiz performance.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 data-translate="feature_5_title">Fully Customizable</h3>
+                    <p data-translate="feature_5_desc">Brand your quizzes with custom colors, fonts, and logos to match your business perfectly.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 data-translate="feature_6_title">Proven Templates</h3>
+                    <p data-translate="feature_6_desc">Start with high-converting quiz templates used by successful businesses in your industry.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section" id="pricing">
+        <h2 class="pricing-title">Simple Pricing</h2>
+        <p class="pricing-subtitle">Start with 2 free quizzes, then choose your plan</p>
+        
+        <div style="background: rgba(255, 255, 255, 0.98); border-radius: 20px; padding: 40px; max-width: 900px; margin: 0 auto;">
+            <!-- Free Tier -->
+            <div style="text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; color: white;">
+                <h3 style="font-size: 2rem; margin-bottom: 15px;">🎉 Start FREE</h3>
+                <p style="font-size: 1.3rem; margin-bottom: 20px;">Create 2 complete quizzes with full features</p>
+                <ul style="list-style: none; font-size: 1.1rem; line-height: 1.8;">
+                    <li>✅ 2 professional quizzes</li>
+                    <li>✅ Unlimited responses</li>
+                    <li>✅ AI quiz generation</li>
+                    <li>✅ Email capture</li>
+                    <li>✅ Custom branding</li>
+                </ul>
+                <button style="background: white; color: #059669; border: none; padding: 15px 40px; border-radius: 12px; font-size: 1.2rem; font-weight: 600; margin-top: 20px; cursor: pointer;" onclick="startFreeTrial()">
+                    Create Your First Quiz FREE
+                </button>
+            </div>
+
+            <!-- Paid Plans in One Row -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <div style="text-align: center; padding: 30px; border: 2px solid #e2e8f0; border-radius: 16px;">
+                    <h4 style="font-size: 1.5rem; margin-bottom: 10px; color: #1e3a8a;">Starter</h4>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #1e3a8a; margin-bottom: 5px;">$29</div>
+                    <div style="color: #64748b; margin-bottom: 20px;">per month</div>
+                    <ul style="list-style: none; text-align: left; margin-bottom: 25px; color: #475569;">
+                        <li style="padding: 5px 0;">✓ 10 active quizzes</li>
+                        <li style="padding: 5px 0;">✓ 5,000 responses/month</li>
+                        <li style="padding: 5px 0;">✓ Email automation</li>
+                        <li style="padding: 5px 0;">✓ Analytics dashboard</li>
+                    </ul>
+                    <button style="background: #1e3a8a; color: white; border: none; padding: 12px 25px; border-radius: 8px; width: 100%; cursor: pointer;" onclick="selectPlan('starter')">
+                        Get Started
+                    </button>
+                </div>
+
+                <div style="text-align: center; padding: 30px; border: 2px solid #1e3a8a; border-radius: 16px; position: relative; transform: scale(1.05);">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #1e3a8a; color: white; padding: 6px 20px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                        Most Popular
+                    </div>
+                    <h4 style="font-size: 1.5rem; margin-bottom: 10px; color: #1e3a8a;">Professional</h4>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #1e3a8a; margin-bottom: 5px;">$79</div>
+                    <div style="color: #64748b; margin-bottom: 20px;">per month</div>
+                    <ul style="list-style: none; text-align: left; margin-bottom: 25px; color: #475569;">
+                        <li style="padding: 5px 0;">✓ Unlimited quizzes</li>
+                        <li style="padding: 5px 0;">✓ 25,000 responses/month</li>
+                        <li style="padding: 5px 0;">✓ Advanced automation</li>
+                        <li style="padding: 5px 0;">✓ A/B testing</li>
+                        <li style="padding: 5px 0;">✓ Priority support</li>
+                    </ul>
+                    <button style="background: #1e3a8a; color: white; border: none; padding: 12px 25px; border-radius: 8px; width: 100%; cursor: pointer;" onclick="selectPlan('professional')">
+                        Get Started
+                    </button>
+                </div>
+
+                <div style="text-align: center; padding: 30px; border: 2px solid #e2e8f0; border-radius: 16px;">
+                    <h4 style="font-size: 1.5rem; margin-bottom: 10px; color: #1e3a8a;">Agency</h4>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #1e3a8a; margin-bottom: 5px;">$199</div>
+                    <div style="color: #64748b; margin-bottom: 20px;">per month</div>
+                    <ul style="list-style: none; text-align: left; margin-bottom: 25px; color: #475569;">
+                        <li style="padding: 5px 0;">✓ Unlimited everything</li>
+                        <li style="padding: 5px 0;">✓ White-label solution</li>
+                        <li style="padding: 5px 0;">✓ Client management</li>
+                        <li style="padding: 5px 0;">✓ API access</li>
+                        <li style="padding: 5px 0;">✓ Dedicated support</li>
+                    </ul>
+                    <button style="background: #1e3a8a; color: white; border: none; padding: 12px 25px; border-radius: 8px; width: 100%; cursor: pointer;" onclick="selectPlan('agency')">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; color: #64748b;">
+                <p>💳 No credit card required for your 2 free quizzes</p>
+                <p>⭐ Cancel anytime • 30-day money-back guarantee on paid plans</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2024 Quiz for Profits. All rights reserved. | <a href="mailto:hello@quizforprofits.com" style="color: #cbd5e1;">Contact Us</a></p>
+    </footer>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function startFreeTrial() {
+            // Redirect to the simple quiz creator for free users
+            window.location.href = 'simple-quiz-creator.html';
+        }
+
+        function selectPlan(planName) {
+            if (planName === 'agency') {
+                window.open('mailto:hello@quizforprofits.com?subject=Agency Plan Inquiry', '_blank');
+            } else if (planName === 'starter') {
+                // Redirect to PayPal for Starter plan
+                window.open('https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-STARTER29', '_blank');
+            } else if (planName === 'professional') {
+                // Redirect to PayPal for Professional plan  
+                window.open('https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-PROFESSIONAL79', '_blank');
+            }
+        }
+
+        // Translation system
+        const translations = {
+            en: {
+                hero_title: "Quiz for Profits",
+                hero_subtitle: "Turn Your Expertise Into High-Converting Lead Magnets",
+                hero_description: "Create professional, branded quizzes that capture leads, segment your audience, and drive sales. Join successful entrepreneurs who use our platform to generate thousands of qualified leads monthly.",
+                hero_cta: "Start Building Your Quiz",
+                feature_1_title: "Lead Generation Powerhouse",
+                feature_1_desc: "Convert visitors into qualified leads with engaging, interactive quizzes that people actually want to complete.",
+                feature_2_title: "No-Code Quiz Builder",
+                feature_2_desc: "Drag-and-drop interface makes it easy to create professional quizzes in minutes, not hours.",
+                feature_3_title: "Automated Email Integration",
+                feature_3_desc: "Instantly send personalized results and follow-up sequences to nurture leads into customers.",
+                feature_4_title: "Advanced Analytics",
+                feature_4_desc: "Track completion rates, lead quality, and conversion metrics to optimize your quiz performance.",
+                feature_5_title: "Fully Customizable",
+                feature_5_desc: "Brand your quizzes with custom colors, fonts, and logos to match your business perfectly.",
+                feature_6_title: "Proven Templates",
+                feature_6_desc: "Start with high-converting quiz templates used by successful businesses in your industry."
+            },
+            es: {
+                hero_title: "Quiz para Ganancias",
+                hero_subtitle: "Convierte tu Experiencia en Imanes de Leads de Alta Conversión",
+                hero_description: "Crea cuestionarios profesionales y con marca que capturen leads, segmenten tu audiencia e impulsen las ventas. Únete a emprendedores exitosos que usan nuestra plataforma para generar miles de leads calificados mensualmente.",
+                hero_cta: "Comenzar a Crear tu Quiz",
+                feature_1_title: "Potencia de Generación de Leads",
+                feature_1_desc: "Convierte visitantes en leads calificados con cuestionarios interactivos y atractivos que la gente realmente quiere completar.",
+                feature_2_title: "Constructor Sin Código",
+                feature_2_desc: "La interfaz de arrastrar y soltar hace fácil crear cuestionarios profesionales en minutos, no horas.",
+                feature_3_title: "Integración Automática de Email",
+                feature_3_desc: "Envía instantáneamente resultados personalizados y secuencias de seguimiento para nutrir leads hacia clientes.",
+                feature_4_title: "Análisis Avanzados",
+                feature_4_desc: "Rastrea tasas de finalización, calidad de leads y métricas de conversión para optimizar el rendimiento de tu quiz.",
+                feature_5_title: "Completamente Personalizable",
+                feature_5_desc: "Marca tus cuestionarios con colores, fuentes y logos personalizados que combinen perfectamente con tu negocio.",
+                feature_6_title: "Plantillas Probadas",
+                feature_6_desc: "Comienza con plantillas de cuestionarios de alta conversión usadas por negocios exitosos en tu industria."
+            },
+            fr: {
+                hero_title: "Quiz pour Profits",
+                hero_subtitle: "Transformez Votre Expertise en Aimants à Leads à Haute Conversion",
+                hero_description: "Créez des quiz professionnels et de marque qui capturent les leads, segmentent votre audience et stimulent les ventes. Rejoignez les entrepreneurs prospères qui utilisent notre plateforme pour générer des milliers de leads qualifiés chaque mois.",
+                hero_cta: "Commencer à Créer Votre Quiz",
+                feature_1_title: "Puissance de Génération de Leads",
+                feature_1_desc: "Convertissez les visiteurs en leads qualifiés avec des quiz interactifs et engageants que les gens veulent vraiment compléter.",
+                feature_2_title: "Constructeur Sans Code",
+                feature_2_desc: "L'interface glisser-déposer facilite la création de quiz professionnels en minutes, pas en heures.",
+                feature_3_title: "Intégration Email Automatisée",
+                feature_3_desc: "Envoyez instantanément des résultats personnalisés et des séquences de suivi pour nourrir les leads vers des clients.",
+                feature_4_title: "Analyses Avancées",
+                feature_4_desc: "Suivez les taux de completion, la qualité des leads et les métriques de conversion pour optimiser les performances de votre quiz.",
+                feature_5_title: "Entièrement Personnalisable",
+                feature_5_desc: "Personnalisez vos quiz avec des couleurs, polices et logos personnalisés qui correspondent parfaitement à votre entreprise.",
+                feature_6_title: "Modèles Éprouvés",
+                feature_6_desc: "Commencez avec des modèles de quiz à haute conversion utilisés par des entreprises prospères de votre secteur."
+            },
+            de: {
+                hero_title: "Quiz für Gewinne",
+                hero_subtitle: "Verwandeln Sie Ihr Fachwissen in Hochkonvertierende Lead-Magnete",
+                hero_description: "Erstellen Sie professionelle, gebrandete Quiz, die Leads erfassen, Ihre Zielgruppe segmentieren und den Umsatz steigern. Schließen Sie sich erfolgreichen Unternehmern an, die unsere Plattform nutzen, um monatlich Tausende qualifizierter Leads zu generieren.",
+                hero_cta: "Quiz Erstellen Beginnen",
+                feature_1_title: "Lead-Generierungs-Kraftpaket",
+                feature_1_desc: "Verwandeln Sie Besucher in qualifizierte Leads mit ansprechenden, interaktiven Quiz, die Menschen tatsächlich vervollständigen möchten.",
+                feature_2_title: "No-Code Quiz-Builder",
+                feature_2_desc: "Die Drag-and-Drop-Oberfläche macht es einfach, professionelle Quiz in Minuten, nicht Stunden zu erstellen.",
+                feature_3_title: "Automatisierte E-Mail-Integration",
+                feature_3_desc: "Senden Sie sofort personalisierte Ergebnisse und Follow-up-Sequenzen, um Leads zu Kunden zu entwickeln.",
+                feature_4_title: "Erweiterte Analytik",
+                feature_4_desc: "Verfolgen Sie Abschlussraten, Lead-Qualität und Conversion-Metriken zur Optimierung Ihrer Quiz-Performance.",
+                feature_5_title: "Vollständig Anpassbar",
+                feature_5_desc: "Branden Sie Ihre Quiz mit benutzerdefinierten Farben, Schriftarten und Logos, die perfekt zu Ihrem Unternehmen passen.",
+                feature_6_title: "Bewährte Vorlagen",
+                feature_6_desc: "Beginnen Sie mit hochkonvertierenden Quiz-Vorlagen, die von erfolgreichen Unternehmen in Ihrer Branche verwendet werden."
+            },
+            pt: {
+                hero_title: "Quiz para Lucros",
+                hero_subtitle: "Transforme sua Expertise em Ímãs de Leads de Alta Conversão",
+                hero_description: "Crie questionários profissionais e com marca que capturam leads, segmentam seu público e impulsionam vendas. Junte-se a empreendedores bem-sucedidos que usam nossa plataforma para gerar milhares de leads qualificados mensalmente.",
+                hero_cta: "Começar a Criar seu Quiz",
+                feature_1_title: "Potência de Geração de Leads",
+                feature_1_desc: "Converta visitantes em leads qualificados com questionários interativos e envolventes que as pessoas realmente querem completar.",
+                feature_2_title: "Construtor Sem Código",
+                feature_2_desc: "A interface de arrastar e soltar facilita a criação de questionários profissionais em minutos, não horas.",
+                feature_3_title: "Integração Automática de Email",
+                feature_3_desc: "Envie instantaneamente resultados personalizados e sequências de acompanhamento para nutrir leads em clientes.",
+                feature_4_title: "Análises Avançadas",
+                feature_4_desc: "Acompanhe taxas de conclusão, qualidade de leads e métricas de conversão para otimizar o desempenho do seu quiz.",
+                feature_5_title: "Totalmente Personalizável",
+                feature_5_desc: "Marque seus questionários com cores, fontes e logos personalizados que combinam perfeitamente com seu negócio.",
+                feature_6_title: "Modelos Comprovados",
+                feature_6_desc: "Comece com modelos de questionários de alta conversão usados por negócios bem-sucedidos em sua indústria."
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function toggleLanguageMenu() {
+            const menu = document.getElementById('languageOptions');
+            menu.classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            if (!translations[lang]) return;
+
+            currentLanguage = lang;
+            const langNames = {
+                'en': 'English',
+                'es': 'Español', 
+                'fr': 'Français',
+                'de': 'Deutsch',
+                'pt': 'Português',
+                'it': 'Italiano',
+                'ja': '日本語',
+                'ko': '한국어',
+                'zh': '中文'
+            };
+
+            document.getElementById('currentLang').textContent = langNames[lang];
+            
+            // Update active language option
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.querySelector(`[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+            // Translate all elements with data-translate attribute
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Close language menu
+            document.getElementById('languageOptions').classList.remove('show');
+
+            // Update page language attribute
+            document.documentElement.lang = lang;
+        }
+
+        // Close language menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.language-selector')) {
+                document.getElementById('languageOptions').classList.remove('show');
+            }
+        });
+
+        // Add smooth scrolling animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            const cards = document.querySelectorAll('.feature-card, .pricing-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

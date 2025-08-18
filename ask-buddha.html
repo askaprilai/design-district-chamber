@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Buddha - AI Life Coach</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .buddha-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h1 {
+            color: #4a5568;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .chat-container {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .message.buddha .message-avatar {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message-content {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 70%;
+            line-height: 1.6;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        #questionInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        #questionInput:focus {
+            border-color: #667eea;
+        }
+
+        #askButton {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+            min-width: 100px;
+        }
+
+        #askButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        #askButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            margin: 40px 0;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            color: #718096;
+            font-style: italic;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #718096;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .quote-of-the-day {
+            background: linear-gradient(135deg, rgba(255, 216, 155, 0.2) 0%, rgba(25, 84, 123, 0.2) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-left: 4px solid #ffd89b;
+        }
+
+        .quote-text {
+            font-style: italic;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .quote-author {
+            color: #718096;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #askButton {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="buddha-icon">🧘‍♂️</span>
+            <h1>Ask Buddha</h1>
+            <p class="subtitle">Your AI Life Coach for Wisdom and Inner Peace</p>
+        </div>
+
+        <div class="quote-of-the-day">
+            <div class="quote-text">"The mind is everything. What you think you become."</div>
+            <div class="quote-author">- Buddha</div>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-message">
+                Welcome, seeker of wisdom. I am here to guide you with ancient Buddhist teachings and modern insights. What weighs on your mind today?
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="message-avatar" style="background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); color: white;">🧘‍♂️</div>
+            <div>Buddha is reflecting...</div>
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <textarea id="questionInput" placeholder="Ask about life, relationships, work stress, mindfulness, or any challenge you're facing..." rows="1"></textarea>
+            <button id="askButton" onclick="askBuddha()">Ask Buddha</button>
+        </div>
+    </div>
+
+    <script>
+        const wisdomDatabase = {
+            stress: [
+                "Stress arises from attachment to outcomes. Focus on your effort, not the result. Like a river flowing around rocks, adapt to circumstances rather than resist them.",
+                "When stress overwhelms you, return to your breath. Each inhale brings calm, each exhale releases tension. The present moment is your sanctuary.",
+                "Stress is often fear of the future or regret of the past. Root yourself in now - this moment is the only reality you can truly influence."
+            ],
+            relationships: [
+                "In relationships, seek first to understand, then to be understood. Love without expectation, like the sun that shines on all equally.",
+                "Anger in relationships is like grasping a hot coal - you are the one who gets burned. Practice compassion, even when it's difficult.",
+                "True intimacy comes from accepting others as they are, not as you wish them to be. Release the need to change others; change yourself."
+            ],
+            work: [
+                "Approach your work as meditation in action. Each task, done with mindfulness and care, becomes a spiritual practice.",
+                "Success at work comes not from ambition alone, but from finding purpose in service to others. Make your work a gift to the world.",
+                "When work feels overwhelming, remember: you are not your job. You are consciousness experiencing work. This perspective brings freedom."
+            ],
+            anxiety: [
+                "Anxiety is the mind's attempt to control the uncontrollable. Practice letting go, like leaves falling naturally from a tree.",
+                "When anxiety arises, observe it with gentle curiosity. It is a cloud passing through the sky of your consciousness - temporary and not you.",
+                "Ground yourself in your senses: What do you see, hear, feel right now? Anxiety lives in imagination; peace lives in presence."
+            ],
+            purpose: [
+                "Your purpose is not a destination to reach, but a path to walk. Each step taken with awareness and compassion fulfills your purpose.",
+                "Purpose emerges when you align your unique gifts with the world's needs. Look for where your joy meets others' suffering.",
+                "You are already whole and complete. Purpose is not about becoming someone else, but about expressing who you truly are."
+            ],
+            mindfulness: [
+                "Mindfulness is not about stopping thoughts, but about changing your relationship with them. Observe without judgment, like a scientist studying clouds.",
+                "Each moment of mindfulness is a seed of awakening. Water these seeds daily through meditation, breath awareness, and present-moment attention.",
+                "Mindfulness transforms ordinary activities into sacred rituals. Washing dishes becomes meditation, walking becomes prayer."
+            ],
+            fear: [
+                "Fear is often excitement without breath. When fear arises, breathe deeply and ask: 'What would I do if I knew I could not fail?'",
+                "Fear keeps you small, but you are vast like the sky. Clouds of fear will pass; your essential nature remains unchanging.",
+                "Courage is not the absence of fear, but action in the presence of fear. Take one small step despite the trembling."
+            ],
+            happiness: [
+                "Happiness is not a destination but a way of traveling. It comes not from getting what you want, but from appreciating what you have.",
+                "True happiness arises from within, like a spring that never runs dry. External circumstances are just weather passing through your sky.",
+                "Happiness shared is happiness doubled. Practice loving-kindness: may all beings be happy, may all beings be free from suffering."
+            ]
+        };
+
+        const generalWisdom = [
+            "Life is like a river - sometimes calm, sometimes turbulent. Your peace comes not from controlling the current, but from learning to flow with it.",
+            "Every challenge is a teacher in disguise. Ask not 'Why is this happening to me?' but 'What is this here to teach me?'",
+            "You are not your thoughts, emotions, or circumstances. You are the awareness experiencing them. This recognition is liberation.",
+            "Compassion begins with yourself. Treat yourself with the same kindness you would show a dear friend facing your struggles.",
+            "The present moment is the only moment where life exists. Past is memory, future is imagination. Reality is now.",
+            "Peace is not the absence of conflict, but the presence of awareness. In awareness, all conflicts can be resolved with wisdom.",
+            "Your suffering decreases when you realize that everything is impermanent. This too shall pass, whether pleasant or unpleasant.",
+            "True strength lies not in resistance but in acceptance. Like bamboo, bend with the wind and you will not break."
+        ];
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function findRelevantWisdom(question) {
+            const lowerQuestion = question.toLowerCase();
+            
+            for (const [category, wisdom] of Object.entries(wisdomDatabase)) {
+                if (lowerQuestion.includes(category) || 
+                    (category === 'relationships' && (lowerQuestion.includes('partner') || lowerQuestion.includes('friend') || lowerQuestion.includes('family'))) ||
+                    (category === 'work' && (lowerQuestion.includes('job') || lowerQuestion.includes('career') || lowerQuestion.includes('boss'))) ||
+                    (category === 'anxiety' && (lowerQuestion.includes('worried') || lowerQuestion.includes('nervous'))) ||
+                    (category === 'happiness' && (lowerQuestion.includes('joy') || lowerQuestion.includes('content'))) ||
+                    (category === 'fear' && (lowerQuestion.includes('afraid') || lowerQuestion.includes('scared')))) {
+                    return getRandomElement(wisdom);
+                }
+            }
+            
+            return getRandomElement(generalWisdom);
+        }
+
+        function addMessage(content, isUser = false) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'buddha'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? '🙋‍♂️' : '🧘‍♂️'}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Remove welcome message if it exists
+            const welcomeMessage = chatContainer.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.remove();
+            }
+        }
+
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'flex';
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        async function askBuddha() {
+            const input = document.getElementById('questionInput');
+            const button = document.getElementById('askButton');
+            const question = input.value.trim();
+            
+            if (!question) return;
+            
+            // Disable input and button
+            input.disabled = true;
+            button.disabled = true;
+            
+            // Add user message
+            addMessage(question, true);
+            
+            // Clear input
+            input.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate thinking time
+            await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 2000));
+            
+            // Hide typing indicator
+            hideTypingIndicator();
+            
+            // Get wisdom response
+            const wisdom = findRelevantWisdom(question);
+            addMessage(wisdom);
+            
+            // Re-enable input and button
+            input.disabled = false;
+            button.disabled = false;
+            input.focus();
+        }
+
+        // Auto-resize textarea
+        document.getElementById('questionInput').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Enter key to submit (Shift+Enter for new line)
+        document.getElementById('questionInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                askBuddha();
+            }
+        });
+
+        // Focus on input when page loads
+        window.addEventListener('load', function() {
+            document.getElementById('questionInput').focus();
+        });
+    </script>
+</body>
+</html>

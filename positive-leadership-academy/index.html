@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Positive Leadership Academy - Interactive Leadership Development Platform</title>
+    <meta name="description" content="Transform your leadership through daily self-awareness cards and interactive team games. Created by April Sabral.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(147, 197, 253, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            color: white;
+        }
+
+        .hero-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            opacity: 0.95;
+            margin-bottom: 35px;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            color: #1e40af;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-demo {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            max-width: 300px;
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .card-demo:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #1e40af;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 100px 0;
+            background: #f8fafc;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .demo-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .sample-card {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .sample-card:hover {
+            transform: scale(1.05);
+        }
+
+        .sample-card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .sample-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .sample-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            padding: 100px 0;
+            background: #f8fafc;
+        }
+
+        .pricing-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border: 3px solid #1e40af;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: "Most Popular";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e40af;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .price-period {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            color: #64748b;
+        }
+
+        .pricing-features li:before {
+            content: "✓ ";
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">🎯 Positive Leadership Academy</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">✨ Created by April Sabral</div>
+                <h1>Transform Your Leadership Through Daily Practice</h1>
+                <p class="hero-subtitle">
+                    Interactive leadership cards for personal growth and team building. Develop self-awareness, spark meaningful conversations, and build stronger teams through gamified leadership development.
+                </p>
+                <a href="#demo" class="cta-button">🚀 Start Your Leadership Journey</a>
+                <p style="margin-top: 20px; opacity: 0.8; font-size: 0.9rem;">✅ Daily reflection cards • ✅ Team conversation starters • ✅ Progress tracking</p>
+            </div>
+            <div class="hero-visual">
+                <div class="card-demo">
+                    <div class="card-icon">🎯</div>
+                    <h3 style="margin-bottom: 15px;">Today's Leadership Card</h3>
+                    <p style="font-size: 0.95rem; opacity: 0.9;">
+                        "What leadership energy are you bringing to your team today?"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <h2>Everything You Need for Leadership Growth</h2>
+                <p>A comprehensive platform designed for both personal development and team building</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎴</span>
+                    <h3>Daily Leadership Cards</h3>
+                    <p>Start each day with a powerful self-awareness prompt designed to deepen your leadership consciousness and intentional action.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">👥</span>
+                    <h3>Team Conversation Starters</h3>
+                    <p>Interactive cards that spark meaningful discussions in team meetings, one-on-ones, and leadership development sessions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Scenario-Based Challenges</h3>
+                    <p>Real leadership scenarios that help you practice decision-making and develop your leadership toolkit.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3>Progress Tracking</h3>
+                    <p>Monitor your leadership growth journey with insights, reflection logs, and development milestones.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🤝</span>
+                    <h3>Team Building Games</h3>
+                    <p>Facilitate powerful team experiences with guided exercises that build trust, communication, and collaboration.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">💡</span>
+                    <h3>Leadership Insights</h3>
+                    <p>Access curated content, best practices, and wisdom from leadership experts to accelerate your development.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="demo-container">
+            <div class="demo-grid">
+                <div>
+                    <h2 style="font-size: 2.5rem; font-weight: 800; color: #1e293b; margin-bottom: 30px;">
+                        Experience Leadership Cards in Action
+                    </h2>
+                    <p style="font-size: 1.2rem; color: #64748b; margin-bottom: 30px;">
+                        Each card is carefully crafted to create breakthrough moments and meaningful conversations that drive real leadership growth.
+                    </p>
+                    <a href="#" class="cta-button" style="color: #1e40af;">Try Interactive Demo</a>
+                </div>
+                
+                <div class="demo-cards">
+                    <div class="sample-card">
+                        <div class="sample-card-icon">🔍</div>
+                        <h4>Self-Reflection</h4>
+                        <p>"What assumption am I making about my team that I haven't validated?"</p>
+                    </div>
+                    
+                    <div class="sample-card">
+                        <div class="sample-card-icon">💬</div>
+                        <h4>Team Discussion</h4>
+                        <p>"What would help you feel more empowered in your role?"</p>
+                    </div>
+                    
+                    <div class="sample-card">
+                        <div class="sample-card-icon">⚡</div>
+                        <h4>Action Challenge</h4>
+                        <p>"Today, have one courageous conversation you've been avoiding."</p>
+                    </div>
+                    
+                    <div class="sample-card">
+                        <div class="sample-card-icon">🎯</div>
+                        <h4>Leadership Scenario</h4>
+                        <p>"Your top performer is disengaging. How do you respond?"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="pricing-container">
+            <div class="section-header">
+                <h2>Choose Your Leadership Journey</h2>
+                <p>Flexible plans for individual leaders and teams</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 style="color: #1e293b; margin-bottom: 20px;">Individual Leader</h3>
+                    <div class="price">$29</div>
+                    <div class="price-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Daily leadership cards</li>
+                        <li>Personal reflection journal</li>
+                        <li>Progress tracking</li>
+                        <li>Leadership insights library</li>
+                        <li>Mobile app access</li>
+                    </ul>
+                    <a href="#" class="cta-button" style="color: #1e40af; width: 100%;">Start Individual Plan</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3 style="color: #1e293b; margin-bottom: 20px;">Team License</h3>
+                    <div class="price">$99</div>
+                    <div class="price-period">per month (up to 10 team members)</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Individual plan</li>
+                        <li>Team conversation cards</li>
+                        <li>Group session facilitation</li>
+                        <li>Team progress analytics</li>
+                        <li>Custom team challenges</li>
+                        <li>Leadership coaching resources</li>
+                    </ul>
+                    <a href="#" class="cta-button" style="color: #1e40af; width: 100%;">Start Team Plan</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div style="margin-bottom: 30px;">
+                <div class="logo" style="color: white; font-size: 1.5rem;">🎯 Positive Leadership Academy</div>
+                <p style="margin-top: 15px; opacity: 0.8;">Created by April Sabral</p>
+            </div>
+            <p>&copy; 2024 April Sabral Leadership. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>

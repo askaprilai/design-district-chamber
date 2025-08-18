@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Leak Quiz - Stop Losing Profits in Your Business</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            min-height: 100vh;
+            padding: 10px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .header .subtitle {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .value-prop {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .value-prop-text {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 500;
+        }
+
+        .quiz-content {
+            padding: 20px;
+        }
+
+        .start-quiz-btn {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+        }
+
+        .start-quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.4);
+        }
+
+        .quiz-start {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 48, 163, 0.1) 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .quiz-start h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+        }
+
+        .quiz-start p {
+            color: #718096;
+            margin-bottom: 25px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .quiz-start button {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .quiz-start button:hover {
+            transform: translateY(-2px);
+        }
+
+        .question {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .question.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .question h3 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .question-number {
+            background: #1e3a8a;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+
+        .question-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer-option {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .answer-option:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+        }
+
+        .answer-option.selected {
+            border-color: #1e3a8a;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 48, 163, 0.1) 100%);
+        }
+
+        .answer-option input[type="radio"] {
+            display: none;
+        }
+
+        .answer-text {
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .answer-description {
+            color: #718096;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            line-height: 1.4;
+        }
+
+        /* NEW: Custom notes section */
+        .custom-notes-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .custom-notes-section h4 {
+            color: #7c3aed;
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-notes-section p {
+            color: #6b7280;
+            margin-bottom: 15px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .custom-text-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .custom-text-input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .custom-text-input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Wish List Section */
+        .wish-list-section {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .wish-list-section.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .wish-list-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .wish-list-section h3 {
+            color: #059669;
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 4vw, 1.6rem);
+        }
+
+        .wish-list-section p {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        .wish-list-categories {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .wish-category {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .wish-category h4 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wish-category textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            line-height: 1.4;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .wish-category textarea:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-weight: 600;
+            transition: transform 0.2s ease;
+            min-width: 120px;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-button.secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        #questionCounter {
+            color: #4a5568;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 6px;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .results.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .score-number {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            opacity: 0.9;
+        }
+
+        .leak-category {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #e53e3e;
+            text-align: left;
+        }
+
+        .leak-category.medium {
+            border-left-color: #f6ad55;
+        }
+
+        .leak-category.low {
+            border-left-color: #48bb78;
+        }
+
+        .leak-category h4 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+        }
+
+        .leak-category p {
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .recommendation {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 178, 172, 0.1) 100%);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #48bb78;
+        }
+
+        .recommendation h5 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .recommendation p {
+            color: #4a5568;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            line-height: 1.5;
+        }
+
+        /* NEW: Custom insights in results */
+        .custom-insights-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .custom-insights-section h3 {
+            color: #7c3aed;
+            margin-bottom: 20px;
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
+            text-align: center;
+        }
+
+        .insight-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .insight-item h4 {
+            color: #374151;
+            margin-bottom: 10px;
+            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+        }
+
+        .insight-item p {
+            color: #6b7280;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 1.5;
+        }
+
+        .email-capture {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 48, 163, 0.1) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .email-capture h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .email-form input {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+
+        .email-form input:focus {
+            border-color: #1e3a8a;
+        }
+
+        .email-form button {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+            align-self: stretch;
+        }
+
+        .email-form button:hover {
+            transform: translateY(-2px);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .cta-section h3 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .cta-section p {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .cta-button {
+            background: white;
+            color: #1e3a8a;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .error-message {
+            background: #fed7d7;
+            color: #9b2c2c;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .success-message {
+            background: #c6f6d5;
+            color: #276749;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        /* Mobile specific improvements */
+        @media (max-width: 480px) {
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-button {
+                width: 100%;
+                padding: 15px;
+            }
+
+            #questionCounter {
+                order: -1;
+                margin-bottom: 10px;
+            }
+
+            .question h3 {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+
+            .question-number {
+                align-self: flex-start;
+            }
+
+            .email-form {
+                gap: 12px;
+            }
+
+            .answer-option {
+                padding: 18px 15px;
+            }
+
+            .results {
+                padding: 0;
+            }
+
+            .score-display,
+            .cta-section {
+                margin: 20px 0;
+                padding: 25px 15px;
+            }
+
+            .leak-category {
+                margin: 15px 0;
+                padding: 15px;
+            }
+        }
+
+        /* Medium screens */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .quiz-content {
+                padding: 30px 25px;
+            }
+            
+            .email-form {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: stretch;
+            }
+
+            .email-form input {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .email-form button {
+                flex: 0 0 auto;
+                min-width: 150px;
+            }
+        }
+
+        /* Large screens */
+        @media (min-width: 769px) {
+            .quiz-content {
+                padding: 40px;
+            }
+            
+            .email-form {
+                flex-direction: row;
+                align-items: stretch;
+            }
+
+            .email-form input {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .email-form button {
+                flex: 0 0 auto;
+            }
+        }
+    </style>
+    <script src="https://cdn.emailjs.com/v3/dist/email.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Money Leak Quiz</h1>
+            <p class="subtitle">Discover How Much Money Your Business Is Losing</p>
+            <div class="value-prop">
+                <div class="value-prop-text">
+                    Take this 5-minute assessment to uncover hidden profit leaks and get a personalized roadmap to become an owner, not an operator.
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-content">
+            <!-- Quiz Start Button -->
+            <div class="quiz-start" id="quizStart">
+                <h3>Ready to Discover Your Money Leaks?</h3>
+                <p>Take this quick 5-minute assessment to identify where your business is losing profits through people management issues.</p>
+                <button onclick="startQuiz()" class="start-quiz-btn">Start Quiz →</button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar hidden" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Quiz Questions -->
+            <div id="quizQuestions" class="hidden">
+                
+                <!-- Question 1: Accountability -->
+                <div class="question active" data-question="1">
+                    <h3>
+                        <span class="question-number">1</span>
+                        <span class="question-text">How often do your team members follow through on commitments without you having to check up on them?</span>
+                    </h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="0">
+                            <div class="answer-text">Rarely or Never (0-20% of the time)</div>
+                            <div class="answer-description">I'm constantly having to follow up and micromanage to get things done</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="1">
+                            <div class="answer-text">Sometimes (30-50% of the time)</div>
+                            <div class="answer-description">Some team members are reliable, but many need constant reminders</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="2">
+                            <div class="answer-text">Usually (60-80% of the time)</div>
+                            <div class="answer-description">Most of my team follows through, but I still need to check in regularly</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="3">
+                            <div class="answer-text">Almost Always (80-100% of the time)</div>
+                            <div class="answer-description">My team consistently delivers without me having to manage every detail</div>
+                        </label>
+                    </div>
+
+                    <!-- NEW: Custom notes section -->
+                    <div class="custom-notes-section">
+                        <h4>💭 Your Specific Challenges</h4>
+                        <p>Tell us more about your accountability challenges. What specific situations frustrate you most?</p>
+                        <textarea 
+                            class="custom-text-input" 
+                            id="q1_notes" 
+                            placeholder="Example: My team often misses deadlines, I have to remind them multiple times to complete tasks, or they make commitments in meetings but don't follow through..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Question 2: Clear Expectations -->
+                <div class="question" data-question="2">
+                    <h3>
+                        <span class="question-number">2</span>
+                        <span class="question-text">How clear are your team members about their specific roles, responsibilities, and performance standards?</span>
+                    </h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="0">
+                            <div class="answer-text">Very Unclear</div>
+                            <div class="answer-description">People often ask "What should I be doing?" or work on the wrong priorities</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="1">
+                            <div class="answer-text">Somewhat Unclear</div>
+                            <div class="answer-description">Job descriptions exist but people are confused about daily priorities and standards</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="2">
+                            <div class="answer-text">Mostly Clear</div>
+                            <div class="answer-description">Expectations are documented but not always communicated or updated regularly</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="3">
+                            <div class="answer-text">Crystal Clear</div>
+                            <div class="answer-description">Everyone knows exactly what's expected, when, and how success is measured</div>
+                        </label>
+                    </div>
+
+                    <div class="custom-notes-section">
+                        <h4>💭 Clarity Issues You Face</h4>
+                        <p>What areas of role clarity cause the most confusion or problems in your business?</p>
+                        <textarea 
+                            class="custom-text-input" 
+                            id="q2_notes" 
+                            placeholder="Example: People don't know who makes final decisions, roles overlap and cause conflicts, or performance standards aren't clear..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Question 3: Decision Making -->
+                <div class="question" data-question="3">
+                    <h3>
+                        <span class="question-number">3</span>
+                        <span class="question-text">How often can your business operate and make important decisions when you're not there?</span>
+                    </h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="0">
+                            <div class="answer-text">Never</div>
+                            <div class="answer-description">Everything stops when I'm not there - I get calls/texts constantly</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="1">
+                            <div class="answer-text">Rarely</div>
+                            <div class="answer-description">Basic operations continue but any decision needs my approval</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="2">
+                            <div class="answer-text">Sometimes</div>
+                            <div class="answer-description">Team can handle routine decisions but needs me for anything important</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="3">
+                            <div class="answer-text">Always</div>
+                            <div class="answer-description">My team is empowered to make decisions within clear guidelines</div>
+                        </label>
+                    </div>
+
+                    <div class="custom-notes-section">
+                        <h4>💭 Decision-Making Bottlenecks</h4>
+                        <p>What types of decisions does your team struggle with when you're not available?</p>
+                        <textarea 
+                            class="custom-text-input" 
+                            id="q3_notes" 
+                            placeholder="Example: Customer complaints, pricing decisions, scheduling changes, or vendor issues that require my input..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Question 4: Performance Management -->
+                <div class="question" data-question="4">
+                    <h3>
+                        <span class="question-number">4</span>
+                        <span class="question-text">How effectively do you address performance issues and underperforming team members?</span>
+                    </h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="0">
+                            <div class="answer-text">I avoid difficult conversations</div>
+                            <div class="answer-description">I hope problems will fix themselves or I work around poor performers</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="1">
+                            <div class="answer-text">I address issues only when they become critical</div>
+                            <div class="answer-description">I wait until problems are too big to ignore before having tough conversations</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="2">
+                            <div class="answer-text">I address issues but inconsistently</div>
+                            <div class="answer-description">I have performance conversations but don't always follow through with consequences</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="3">
+                            <div class="answer-text">I address issues quickly and consistently</div>
+                            <div class="answer-description">I have regular performance conversations and take action when needed</div>
+                        </label>
+                    </div>
+
+                    <div class="custom-notes-section">
+                        <h4>💭 Performance Challenges</h4>
+                        <p>What specific performance issues are you currently struggling to address?</p>
+                        <textarea 
+                            class="custom-text-input" 
+                            id="q4_notes" 
+                            placeholder="Example: Team member who misses deadlines consistently, someone with attitude problems, or difficulty having tough conversations about performance..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Question 5: Systems & Processes -->
+                <div class="question" data-question="5">
+                    <h3>
+                        <span class="question-number">5</span>
+                        <span class="question-text">How well-documented and followed are your business processes and systems?</span>
+                    </h3>
+                    <div class="answers">
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="0">
+                            <div class="answer-text">Everything is in my head</div>
+                            <div class="answer-description">Processes aren't written down - people have to ask me how to do things</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="1">
+                            <div class="answer-text">Some processes documented but not followed</div>
+                            <div class="answer-description">We have some procedures written down but people don't consistently use them</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="2">
+                            <div class="answer-text">Most processes documented and usually followed</div>
+                            <div class="answer-description">We have good systems but they need updating and better enforcement</div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="3">
+                            <div class="answer-text">Comprehensive systems that everyone follows</div>
+                            <div class="answer-description">Clear, updated processes that the team consistently follows and improves</div>
+                        </label>
+                    </div>
+
+                    <div class="custom-notes-section">
+                        <h4>💭 Systems & Process Gaps</h4>
+                        <p>What processes or systems do you wish you had documented or improved?</p>
+                        <textarea 
+                            class="custom-text-input" 
+                            id="q5_notes" 
+                            placeholder="Example: Customer onboarding process, quality control checklists, or training procedures that need to be written down..."
+                        ></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- NEW: Wish List Section -->
+            <div class="wish-list-section" id="wishListSection">
+                <h3>🎯 Your Business Improvement Wish List</h3>
+                <p>Before we show your results, tell us what you'd most like to fix or focus on in your business. This will help us give you more targeted recommendations.</p>
+                
+                <div class="wish-list-categories">
+                    <div class="wish-category">
+                        <h4>🎯 Top 3 Priorities</h4>
+                        <textarea 
+                            id="top_priorities" 
+                            placeholder="What are the 3 most important things you want to fix or improve in your business? (e.g., reduce micromanaging, improve team accountability, better systems)"
+                        ></textarea>
+                    </div>
+
+                    <div class="wish-category">
+                        <h4>😤 Biggest Frustrations</h4>
+                        <textarea 
+                            id="biggest_frustrations" 
+                            placeholder="What frustrates you most about running your business day-to-day? What keeps you up at night?"
+                        ></textarea>
+                    </div>
+
+                    <div class="wish-category">
+                        <h4>🏆 Dream Scenario</h4>
+                        <textarea 
+                            id="dream_scenario" 
+                            placeholder="If you could wave a magic wand, how would your business operate differently? What would your ideal day look like as the owner?"
+                        ></textarea>
+                    </div>
+
+                    <div class="wish-category">
+                        <h4>⚡ Quick Wins</h4>
+                        <textarea 
+                            id="quick_wins" 
+                            placeholder="What small changes could make a big impact right away? What would give you immediate relief?"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation hidden" id="navigation">
+                <button type="button" class="nav-button secondary" id="prevButton" onclick="previousQuestion()" disabled>← Previous</button>
+                <span id="questionCounter">Question 1 of 5</span>
+                <button type="button" class="nav-button" id="nextButton" onclick="nextQuestion()" disabled>Next →</button>
+            </div>
+
+            <!-- Results -->
+            <div class="results" id="results">
+                <h2 style="color: #4a5568; margin-bottom: 20px;">Your Personalized Money Leak Report</h2>
+                
+                <div class="score-display">
+                    <div class="score-number" id="totalScore">0</div>
+                    <div class="score-label">Money Leak Risk Score</div>
+                    <p style="margin-top: 15px; font-size: 1em;" id="scoreDescription"></p>
+                </div>
+
+                <div id="leakCategories"></div>
+
+                <!-- NEW: Custom insights section -->
+                <div class="custom-insights-section" id="customInsights">
+                    <h3>🎯 Your Personal Action Plan</h3>
+                    <p style="text-align: center; margin-bottom: 20px; color: #6b7280;">Based on your specific challenges and goals, here's what April recommends you focus on first:</p>
+                    <div id="personalInsights"></div>
+                </div>
+
+                <!-- Green Checklist Box -->
+                <div style="margin: 30px 0; padding: 25px; background: white; border-radius: 15px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+                    <h3 style="color: #2d3748; margin-bottom: 20px; font-size: 1.4em;">Ready to Transform From Operator to Owner?</h3>
+                    <p style="font-size: 1.1em; margin-bottom: 25px; color: #4a5568;">Now let April help you plug these profit leaks and build the business you dreamed of.</p>
+                    
+                    <div style="margin: 25px 0;">
+                        <p style="font-size: 1.1em; margin-bottom: 20px; font-weight: 600; color: #2d3748;">Get your step-by-step roadmap to move from operator to owner:</p>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 10px 0; display: flex; align-items: flex-start; gap: 12px;">
+                                <span style="color: #10b981; font-size: 1.1em; line-height: 1; margin-top: 2px;">✅</span>
+                                <span><strong>Detailed implementation roadmap</strong> - Exact steps to fix each money leak in your business</span>
+                            </li>
+                            <li style="margin: 10px 0; display: flex; align-items: flex-start; gap: 12px;">
+                                <span style="color: #10b981; font-size: 1.1em; line-height: 1; margin-top: 2px;">✅</span>
+                                <span><strong>People management templates</strong> - Ready-to-use systems for accountability and performance</span>
+                            </li>
+                            <li style="margin: 10px 0; display: flex; align-items: flex-start; gap: 12px;">
+                                <span style="color: #10b981; font-size: 1.1em; line-height: 1; margin-top: 2px;">✅</span>
+                                <span><strong>30-day free trial to AskApril AI</strong> - Full access to all resources and tools</span>
+                            </li>
+                            <li style="margin: 10px 0; display: flex; align-items: flex-start; gap: 12px;">
+                                <span style="color: #10b981; font-size: 1.1em; line-height: 1; margin-top: 2px;">✅</span>
+                                <span><strong>Weekly office hours with April</strong> - Get personalized guidance and ask your specific questions</span>
+                            </li>
+                            <li style="margin: 10px 0; display: flex; align-items: flex-start; gap: 12px;">
+                                <span style="color: #10b981; font-size: 1.1em; line-height: 1; margin-top: 2px;">✅</span>
+                                <span><strong>From operator to owner guide</strong> - Complete transformation blueprint with timelines</span>
+                            </li>
+                            <li style="margin: 10px 0; display: flex; align-items: flex-start; gap: 12px;">
+                                <span style="color: #10b981; font-size: 1.1em; line-height: 1; margin-top: 2px;">✅</span>
+                                <span><strong>Personal help to plug your leaks</strong> - April's proven strategies to stop profit drain immediately</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Email Capture for Results -->
+                <div class="email-capture" id="emailCapture">
+                    <form class="email-form" id="emailForm">
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                        <input type="email" id="email" name="email" placeholder="Email Address" required>
+                        <button type="submit">Get April's Profit Plugging Strategies →</button>
+                    </form>
+                    <div id="emailError" class="error-message" style="display: none; color: #e53e3e; margin-top: 10px; font-size: 0.9em;"></div>
+                </div>
+
+                <!-- Final CTA Section (hidden until email submitted) -->
+                <div class="cta-section" id="ctaSection" style="display: none;">
+                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); padding: 25px; border-radius: 15px; margin: 25px 0; border-left: 4px solid #10b981; text-align: center;">
+                        <h3 style="color: white; margin-bottom: 15px;">🎯 Ready to Start Your Transformation?</h3>
+                        <p style="font-size: 1em; color: white; line-height: 1.5; margin-bottom: 20px;">Your personalized money leak report has been sent to your email! Now get immediate access to April's complete profit-plugging system.</p>
+                        
+                        <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" class="cta-button" style="font-size: 1.1em; padding: 18px 35px;">Start My 30-Day Free Trial + Get Action Plan</a>
+                        <p style="font-size: 0.9em; opacity: 0.8; margin-top: 15px; color: white;">Instant access • 30-day free trial • Cancel anytime • Weekly office hours with April</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        (function(){
+            emailjs.init({
+                publicKey: "SAU17WFhPmeQLrng7",
+            });
+        })();
+
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+        let userAnswers = {};
+        let userData = {};
+        let customNotes = {}; // NEW: Store custom notes
+        let wishListData = {}; // NEW: Store wish list data
+
+        function startQuiz() {
+            document.getElementById('quizStart').classList.add('hidden');
+            document.querySelector('.header').style.display = 'none';
+            document.getElementById('quizQuestions').classList.remove('hidden');
+            document.getElementById('navigation').classList.remove('hidden');
+            document.getElementById('progressBar').classList.remove('hidden');
+            
+            updateProgress();
+            updateNavigation();
+        }
+
+        // Store custom notes when user types
+        function saveCustomNotes() {
+            for (let i = 1; i <= totalQuestions; i++) {
+                const noteElement = document.getElementById(`q${i}_notes`);
+                if (noteElement) {
+                    customNotes[`q${i}`] = noteElement.value.trim();
+                }
+            }
+        }
+
+        // Store wish list data
+        function saveWishListData() {
+            const wishFields = ['top_priorities', 'biggest_frustrations', 'dream_scenario', 'quick_wins'];
+            wishFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element) {
+                    wishListData[field] = element.value.trim();
+                }
+            });
+        }
+
+        // Modified nextQuestion function to handle wish list
+        function nextQuestion() {
+            // Save custom notes for current question
+            saveCustomNotes();
+            
+            if (currentQuestion < totalQuestions) {
+                // Hide current question
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                
+                currentQuestion++;
+                
+                // Show next question
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                
+                updateNavigation();
+                updateProgress();
+            } else {
+                // After last question, show wish list
+                document.getElementById('quizQuestions').classList.add('hidden');
+                document.getElementById('navigation').classList.add('hidden');
+                document.getElementById('progressBar').classList.add('hidden');
+                document.getElementById('wishListSection').classList.add('active');
+                
+                // Add navigation for wish list
+                addWishListNavigation();
+            }
+        }
+
+        function addWishListNavigation() {
+            const wishListSection = document.getElementById('wishListSection');
+            const navHTML = `
+                <div class="navigation" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                    <button type="button" class="nav-button secondary" onclick="goBackToQuiz()">← Back to Questions</button>
+                    <span style="color: #4a5568; font-weight: 500;">Wish List (Optional)</span>
+                    <button type="button" class="nav-button" onclick="showResults()">Get My Results →</button>
+                </div>
+            `;
+            wishListSection.insertAdjacentHTML('beforeend', navHTML);
+        }
+
+        function goBackToQuiz() {
+            document.getElementById('wishListSection').classList.remove('active');
+            document.getElementById('quizQuestions').classList.remove('hidden');
+            document.getElementById('navigation').classList.remove('hidden');
+            document.getElementById('progressBar').classList.remove('hidden');
+            
+            // Show last question
+            document.querySelector(`[data-question="${totalQuestions}"]`).classList.add('active');
+            updateNavigation();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                // Save custom notes for current question
+                saveCustomNotes();
+                
+                // Hide current question
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                
+                currentQuestion--;
+                
+                // Show previous question
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                
+                updateNavigation();
+                updateProgress();
+            }
+        }
+
+        // Email form submission handler
+        function setupEmailForm() {
+            const emailForm = document.getElementById('emailForm');
+            if (emailForm) {
+                emailForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Email form submitted');
+                    
+                    const firstName = document.getElementById('firstName').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    
+                    if (!firstName || !email || !isValidEmail(email)) {
+                        showError('Please fill in all fields correctly.');
+                        return;
+                    }
+                    
+                    userData = { firstName, email };
+                    console.log('User data stored:', userData);
+                    
+                    // Send results email with custom notes and wish list
+                    const totalScore = Object.values(userAnswers).reduce((sum, value) => sum + value, 0);
+                    const percentageScore = Math.round((totalScore / 15) * 100);
+                    const leakPercentage = Math.round(((15 - totalScore) / 15) * 100);
+                    
+                    // Send enhanced email
+                    sendEnhancedResultsEmail(totalScore, percentageScore, leakPercentage);
+                    
+                    // Save to Google Sheets with additional data
+                    try {
+                        saveEnhancedDataToSheets(firstName, email, totalScore, percentageScore, leakPercentage);
+                    } catch (error) {
+                        console.error('Google Sheets save failed:', error);
+                    }
+                    
+                    // Hide email form and show CTA
+                    document.getElementById('emailCapture').style.display = 'none';
+                    document.getElementById('ctaSection').style.display = 'block';
+                });
+            }
+        }
+
+        // Initialize email form when DOM is ready
+        document.addEventListener('DOMContentLoaded', setupEmailForm);
+
+        function showResults() {
+            // Save wish list data
+            saveWishListData();
+            saveCustomNotes();
+            
+            // Calculate total score
+            const totalScore = Object.values(userAnswers).reduce((sum, value) => sum + value, 0);
+            const maxScore = 15;
+            const percentageScore = Math.round((totalScore / maxScore) * 100);
+            
+            // Hide wish list, show results
+            document.getElementById('wishListSection').classList.remove('active');
+            document.querySelector('.header').style.display = 'none';
+            document.getElementById('results').classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+            
+            // Display score
+            const leakPercentage = 100 - percentageScore;
+            document.getElementById('totalScore').textContent = `${leakPercentage}%`;
+            
+            // Score description
+            let scoreDescription;
+            if (percentageScore >= 80) {
+                scoreDescription = "Low Risk - You have strong people management systems in place.";
+            } else if (percentageScore >= 60) {
+                scoreDescription = "Moderate Risk - Some improvements needed to prevent profit leaks.";
+            } else if (percentageScore >= 40) {
+                scoreDescription = "High Risk - Significant money leaks are draining your profits.";
+            } else {
+                scoreDescription = "Critical Risk - Major profit leaks are seriously impacting your business.";
+            }
+            
+            document.getElementById('scoreDescription').textContent = scoreDescription;
+            
+            // Generate detailed breakdown
+            generateDetailedBreakdown();
+            
+            // NEW: Generate personal insights
+            generatePersonalInsights();
+            
+            // Setup email form
+            setTimeout(setupEmailForm, 100);
+        }
+
+        // NEW: Generate personal insights based on custom notes and wish list
+        function generatePersonalInsights() {
+            const insightsContainer = document.getElementById('personalInsights');
+            const insights = [];
+
+            // Analyze wish list priorities
+            if (wishListData.top_priorities) {
+                insights.push({
+                    title: "🎯 Priority Focus Areas",
+                    content: `Based on your top priorities: "${wishListData.top_priorities.substring(0, 100)}..." - April recommends starting with accountability systems and clear role definitions to address these core issues.`
+                });
+            }
+
+            // Analyze frustrations
+            if (wishListData.biggest_frustrations) {
+                insights.push({
+                    title: "😤 Frustration Solutions",
+                    content: `Your biggest frustrations: "${wishListData.biggest_frustrations.substring(0, 100)}..." - These are classic signs of operator mindset. April's system will help you delegate these responsibilities effectively.`
+                });
+            }
+
+            // Analyze custom notes for specific recommendations
+            let specificChallenges = [];
+            Object.keys(customNotes).forEach(key => {
+                if (customNotes[key]) {
+                    const questionNum = key.replace('q', '');
+                    const categories = {
+                        '1': 'accountability systems',
+                        '2': 'role clarity processes', 
+                        '3': 'decision-making frameworks',
+                        '4': 'performance management skills',
+                        '5': 'documentation and systems'
+                    };
+                    specificChallenges.push(categories[questionNum]);
+                }
+            });
+
+            if (specificChallenges.length > 0) {
+                insights.push({
+                    title: "🎯 Your Specific Action Items",
+                    content: `Based on your detailed responses, focus immediately on: ${specificChallenges.join(', ')}. April has proven templates and systems for each of these areas.`
+                });
+            }
+
+            // Dream scenario insight
+            if (wishListData.dream_scenario) {
+                insights.push({
+                    title: "🏆 Your Owner Vision",
+                    content: `Your dream scenario: "${wishListData.dream_scenario.substring(0, 100)}..." - This vision is absolutely achievable! April's roadmap will show you exactly how to get there in 90 days or less.`
+                });
+            }
+
+            // Quick wins
+            if (wishListData.quick_wins) {
+                insights.push({
+                    title: "⚡ Immediate Impact Opportunities",
+                    content: `You identified these quick wins: "${wishListData.quick_wins.substring(0, 100)}..." - Start here for immediate relief while building your long-term systems.`
+                });
+            }
+
+            // Render insights
+            insights.forEach(insight => {
+                const insightDiv = document.createElement('div');
+                insightDiv.className = 'insight-item';
+                insightDiv.innerHTML = `
+                    <h4>${insight.title}</h4>
+                    <p>${insight.content}</p>
+                `;
+                insightsContainer.appendChild(insightDiv);
+            });
+
+            // If no custom data, show generic insight
+            if (insights.length === 0) {
+                const genericInsight = document.createElement('div');
+                genericInsight.className = 'insight-item';
+                genericInsight.innerHTML = `
+                    <h4>🎯 Your Next Steps</h4>
+                    <p>Based on your quiz results, April recommends starting with accountability systems and clear expectations. These foundational elements will give you the biggest impact on reducing money leaks.</p>
+                `;
+                insightsContainer.appendChild(genericInsight);
+            }
+        }
+
+        // Enhanced email sending with custom data
+        function sendEnhancedResultsEmail(totalScore, percentageScore, leakPercentage) {
+            const categories = [
+                { name: "Accountability Systems", score: userAnswers.q1 },
+                { name: "Clear Expectations", score: userAnswers.q2 },
+                { name: "Decision-Making Authority", score: userAnswers.q3 },
+                { name: "Performance Management", score: userAnswers.q4 },
+                { name: "Systems & Processes", score: userAnswers.q5 }
+            ];
+
+            const resultsBreakdown = categories.map(cat => 
+                `${cat.name}: ${Math.round(((3 - cat.score) / 3) * 100)}% leak risk`
+            ).join('\n');
+
+            // Create custom insights summary for email
+            let customInsightsSummary = "CUSTOM INSIGHTS:\n\n";
+            
+            if (wishListData.top_priorities) {
+                customInsightsSummary += `Top Priorities: ${wishListData.top_priorities}\n\n`;
+            }
+            if (wishListData.biggest_frustrations) {
+                customInsightsSummary += `Biggest Frustrations: ${wishListData.biggest_frustrations}\n\n`;
+            }
+            if (wishListData.dream_scenario) {
+                customInsightsSummary += `Dream Scenario: ${wishListData.dream_scenario}\n\n`;
+            }
+            if (wishListData.quick_wins) {
+                customInsightsSummary += `Quick Wins Identified: ${wishListData.quick_wins}\n\n`;
+            }
+
+            // Add custom notes summary
+            let customNotesSummary = "DETAILED CHALLENGE NOTES:\n\n";
+            Object.keys(customNotes).forEach(key => {
+                if (customNotes[key]) {
+                    const questionNum = key.replace('q', '');
+                    const categoryNames = {
+                        '1': 'Accountability Challenges',
+                        '2': 'Role Clarity Issues',
+                        '3': 'Decision-Making Problems',
+                        '4': 'Performance Management Difficulties',
+                        '5': 'Systems & Process Gaps'
+                    };
+                    customNotesSummary += `${categoryNames[questionNum]}: ${customNotes[key]}\n\n`;
+                }
+            });
+
+            const emailParams = {
+                firstName: userData.firstName,
+                name: userData.firstName,
+                email: userData.email,
+                to_email: userData.email,
+                totalScore: totalScore,
+                percentageScore: percentageScore,
+                leakPercentage: leakPercentage,
+                assessmentDate: new Date().toLocaleDateString(),
+                resultsBreakdown: resultsBreakdown,
+                customInsights: customInsightsSummary,
+                customNotes: customNotesSummary,
+                q1_score: userAnswers.q1,
+                q2_score: userAnswers.q2,
+                q3_score: userAnswers.q3,
+                q4_score: userAnswers.q4,
+                q5_score: userAnswers.q5
+            };
+            
+            emailjs.send('service_vntq4ai', 'template_8td5nlh', emailParams)
+                .then(function(response) {
+                    console.log('Enhanced results email sent successfully:', response);
+                }, function(error) {
+                    console.error('Email send failed:', error);
+                });
+        }
+
+        // Enhanced Google Sheets saving
+        function saveEnhancedDataToSheets(firstName, email, totalScore, percentageScore, leakPercentage) {
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNJfMeVPj0wLbJMNAKaexf4jPXlDLUjjIlFpmKkMDgdASpp0xFE9dJLFAQiUrOk88/exec';
+            
+            const data = {
+                firstName: firstName,
+                email: email,
+                totalScore: totalScore,
+                percentageScore: percentageScore,
+                leakPercentage: leakPercentage,
+                q1_score: userAnswers.q1 || 0,
+                q2_score: userAnswers.q2 || 0,
+                q3_score: userAnswers.q3 || 0,
+                q4_score: userAnswers.q4 || 0,
+                q5_score: userAnswers.q5 || 0,
+                // NEW: Add custom data
+                q1_notes: customNotes.q1 || '',
+                q2_notes: customNotes.q2 || '',
+                q3_notes: customNotes.q3 || '',
+                q4_notes: customNotes.q4 || '',
+                q5_notes: customNotes.q5 || '',
+                top_priorities: wishListData.top_priorities || '',
+                biggest_frustrations: wishListData.biggest_frustrations || '',
+                dream_scenario: wishListData.dream_scenario || '',
+                quick_wins: wishListData.quick_wins || '',
+                submission_date: new Date().toISOString()
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).then(() => {
+                console.log('Enhanced data saved to Google Sheets successfully');
+            }).catch(error => {
+                console.error('Error saving to Google Sheets:', error);
+            });
+        }
+
+        // Answer option handling
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                const questionDiv = e.target.closest('.question');
+                questionDiv.querySelectorAll('.answer-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                e.target.closest('.answer-option').classList.add('selected');
+                userAnswers[e.target.name] = parseInt(e.target.value);
+                updateNavigation();
+            }
+        });
+
+        function updateNavigation() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            const counter = document.getElementById('questionCounter');
+            
+            prevButton.disabled = currentQuestion === 1;
+            
+            if (currentQuestion === totalQuestions) {
+                nextButton.textContent = 'Continue →';
+            } else {
+                nextButton.textContent = 'Next →';
+            }
+            
+            const currentAnswer = userAnswers[`q${currentQuestion}`];
+            nextButton.disabled = currentAnswer === undefined;
+            
+            counter.textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function generateDetailedBreakdown() {
+            const categories = [
+                {
+                    name: "Accountability Systems",
+                    score: userAnswers.q1,
+                    description: "How well your team follows through on commitments",
+                    recommendation: "Implement weekly accountability check-ins and clear consequence systems for missed commitments."
+                },
+                {
+                    name: "Clear Expectations",
+                    score: userAnswers.q2,
+                    description: "Clarity of roles, responsibilities, and standards",
+                    recommendation: "Create detailed job descriptions and performance metrics that everyone understands and signs off on."
+                },
+                {
+                    name: "Decision-Making Authority",
+                    score: userAnswers.q3,
+                    description: "Your team's ability to operate independently",
+                    recommendation: "Develop decision-making frameworks that empower your team to act without constant approval."
+                },
+                {
+                    name: "Performance Management",
+                    score: userAnswers.q4,
+                    description: "How effectively you address performance issues",
+                    recommendation: "Establish regular performance reviews and develop skills in having difficult conversations."
+                },
+                {
+                    name: "Systems & Processes",
+                    score: userAnswers.q5,
+                    description: "Documentation and consistency of business operations",
+                    recommendation: "Document all key processes and create systems for ensuring they're followed consistently."
+                }
+            ];
+            
+            const leakContainer = document.getElementById('leakCategories');
+            
+            categories.forEach(category => {
+                const riskClass = category.score <= 1 ? 'high' : category.score === 2 ? 'medium' : 'low';
+                const leakPercentage = Math.round(((3 - category.score) / 3) * 100);
+                
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = `leak-category ${riskClass}`;
+                categoryDiv.innerHTML = `
+                    <h4>${category.name} - ${leakPercentage}% Leak Risk</h4>
+                    <p>${category.description}</p>
+                    <div class="recommendation">
+                        <h5>Recommended Action:</h5>
+                        <p>${category.recommendation}</p>
+                    </div>
+                `;
+                
+                leakContainer.appendChild(categoryDiv);
+            });
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('emailError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize
+        updateNavigation();
+    </script>
+</body>
+</html>

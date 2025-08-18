@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Quiz Builder - Quiz for Profits</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #1e3a8a;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .suggestion-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .suggestion-box:hover {
+            border-color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .suggestion-box.selected {
+            border-color: #1e3a8a;
+            background: #eff6ff;
+            transform: scale(1.02);
+        }
+
+        .titles-list {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .title-option {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .title-option:hover {
+            border-color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .title-option .title-text {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .title-option .title-type {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: #1e3a8a;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .answer-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .answer-letter {
+            background: #e2e8f0;
+            color: #475569;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .answer-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        .score-input {
+            width: 60px;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Simple Quiz Builder</h1>
+        <p>Create professional quizzes in minutes</p>
+    </div>
+
+    <div class="container">
+        <!-- Quiz Details -->
+        <div class="section">
+            <h2>📝 Quiz Details</h2>
+            <input type="text" class="input-field" id="quizTitle" placeholder="Enter your quiz title...">
+            <button class="btn" onclick="showTitles()">✨ Generate Title Ideas</button>
+            
+            <div id="titlesList" class="titles-list"></div>
+            
+            <textarea class="input-field" id="quizDescription" rows="3" placeholder="Describe what your quiz does..."></textarea>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="section">
+            <h2>🚀 Quick Start</h2>
+            <p style="margin-bottom: 20px;">Choose a quiz type to get started:</p>
+            
+            <div class="suggestions">
+                <div class="suggestion-box" onclick="createQuiz('Leadership assessment for managers')">
+                    💼<br><strong>Leadership Quiz</strong><br>
+                    <small>For managers & leaders</small>
+                </div>
+                <div class="suggestion-box" onclick="createQuiz('Marketing skills evaluation')">
+                    📈<br><strong>Marketing Quiz</strong><br>
+                    <small>For business owners</small>
+                </div>
+                <div class="suggestion-box" onclick="createQuiz('Time management assessment')">
+                    ⏰<br><strong>Productivity Quiz</strong><br>
+                    <small>For entrepreneurs</small>
+                </div>
+                <div class="suggestion-box" onclick="createQuiz('Sales skills diagnostic')">
+                    💰<br><strong>Sales Quiz</strong><br>
+                    <small>For sales teams</small>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <strong>OR</strong>
+            </div>
+
+            <textarea class="input-field" id="customTopic" placeholder="Describe your own quiz topic: 'Create a quiz to help coaches identify their biggest challenge with...'"></textarea>
+            <button class="btn" onclick="createCustomQuiz()">✨ Generate Custom Quiz</button>
+        </div>
+
+        <!-- Questions -->
+        <div class="section">
+            <h2>📋 Your Questions</h2>
+            <button class="btn btn-secondary" onclick="addBlankQuestion()">+ Add Blank Question</button>
+            <button class="btn btn-secondary" onclick="clearAll()">Clear All</button>
+            
+            <div id="questionsContainer">
+                <div class="empty-state">
+                    <h3>No questions yet</h3>
+                    <p>Choose a quick start option above or add a blank question</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publish -->
+        <div class="section">
+            <h2>🎉 Ready to Publish?</h2>
+            <button class="btn" onclick="downloadQuiz()" style="font-size: 1.2rem; padding: 15px 30px;">
+                📥 Download Quiz HTML File
+            </button>
+            <p style="margin-top: 15px; color: #6b7280;">
+                Your quiz will be saved as an HTML file that you can upload to any website.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let questions = [];
+        let questionCounter = 0;
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            if (type === 'error') {
+                notification.style.background = '#ef4444';
+            } else if (type === 'warning') {
+                notification.style.background = '#f59e0b';
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function showTitles() {
+            console.log('showTitles called');
+            
+            const titlesList = document.getElementById('titlesList');
+            const currentTitle = document.getElementById('quizTitle').value.trim();
+            const topic = currentTitle || 'Business';
+            
+            const titles = [
+                { text: `What's Your ${topic} Style?`, type: 'Personality' },
+                { text: `${topic} Skills Assessment`, type: 'Assessment' },
+                { text: `What's Your Biggest ${topic} Challenge?`, type: 'Diagnostic' },
+                { text: `How Good Are You at ${topic}?`, type: 'Evaluation' },
+                { text: `${topic} Readiness Quiz`, type: 'Readiness' },
+                { text: `Find Your ${topic} Superpower`, type: 'Discovery' }
+            ];
+
+            titlesList.innerHTML = `
+                <h4 style="margin-bottom: 15px;">🎯 Choose a title:</h4>
+                ${titles.map(title => `
+                    <div class="title-option" onclick="selectTitle('${title.text.replace(/'/g, "\\'")}')">
+                        <div class="title-text">${title.text}</div>
+                        <div class="title-type">${title.type} Style</div>
+                    </div>
+                `).join('')}
+            `;
+            
+            titlesList.style.display = 'block';
+            showNotification('✅ Title suggestions generated!');
+        }
+
+        function selectTitle(title) {
+            document.getElementById('quizTitle').value = title;
+            document.getElementById('titlesList').style.display = 'none';
+            
+            // Auto-generate description
+            if (!document.getElementById('quizDescription').value.trim()) {
+                document.getElementById('quizDescription').value = 'Take this quick assessment to discover personalized insights and get actionable recommendations.';
+            }
+            
+            showNotification('✅ Title selected!');
+        }
+
+        function createQuiz(topic) {
+            console.log('Creating quiz for:', topic);
+            
+            // Clear existing questions
+            questions = [];
+            questionCounter = 0;
+            document.getElementById('questionsContainer').innerHTML = '';
+            
+            // Auto-fill title if empty
+            if (!document.getElementById('quizTitle').value.trim()) {
+                const titles = [
+                    `What's Your ${topic.split(' ')[0]} Style?`,
+                    `${topic.split(' ')[0]} Assessment Quiz`,
+                    `Discover Your ${topic.split(' ')[0]} Approach`
+                ];
+                document.getElementById('quizTitle').value = titles[Math.floor(Math.random() * titles.length)];
+            }
+
+            // Generate 5 questions
+            const sampleQuestions = [
+                {
+                    question: `What's your biggest challenge with ${topic.toLowerCase()}?`,
+                    answers: [
+                        { text: 'Finding time to focus on it', score: 1 },
+                        { text: 'Knowing where to start', score: 2 },
+                        { text: 'Staying consistent', score: 3 },
+                        { text: 'Measuring results effectively', score: 4 }
+                    ]
+                },
+                {
+                    question: `How do you currently approach ${topic.toLowerCase()}?`,
+                    answers: [
+                        { text: 'I wing it and hope for the best', score: 1 },
+                        { text: 'I follow basic best practices', score: 2 },
+                        { text: 'I have a systematic approach', score: 3 },
+                        { text: 'I constantly test and optimize', score: 4 }
+                    ]
+                },
+                {
+                    question: `What best describes your experience with ${topic.toLowerCase()}?`,
+                    answers: [
+                        { text: 'Complete beginner', score: 1 },
+                        { text: 'Some experience', score: 2 },
+                        { text: 'Pretty experienced', score: 3 },
+                        { text: 'Expert level', score: 4 }
+                    ]
+                },
+                {
+                    question: `When you think about improving your ${topic.toLowerCase()}, you:`,
+                    answers: [
+                        { text: 'Feel overwhelmed and unsure where to start', score: 1 },
+                        { text: 'Have some ideas but lack a clear plan', score: 2 },
+                        { text: 'Have a plan and are making progress', score: 3 },
+                        { text: 'Are already seeing great results', score: 4 }
+                    ]
+                },
+                {
+                    question: `Your goal for ${topic.toLowerCase()} is to:`,
+                    answers: [
+                        { text: 'Just get started and learn the basics', score: 1 },
+                        { text: 'Build a solid foundation', score: 2 },
+                        { text: 'Take it to the next level', score: 3 },
+                        { text: 'Become a recognized expert', score: 4 }
+                    ]
+                }
+            ];
+
+            // Add questions with delay for animation
+            sampleQuestions.forEach((q, index) => {
+                setTimeout(() => {
+                    addQuestion(q.question, q.answers);
+                    
+                    if (index === sampleQuestions.length - 1) {
+                        showNotification('🎉 Quiz created successfully!');
+                    }
+                }, index * 200);
+            });
+        }
+
+        function createCustomQuiz() {
+            const topic = document.getElementById('customTopic').value.trim();
+            if (!topic) {
+                showNotification('Please describe your quiz topic first!', 'warning');
+                return;
+            }
+            
+            createQuiz(topic);
+        }
+
+        function addQuestion(questionText = '', answers = null) {
+            questionCounter++;
+            
+            const defaultAnswers = answers || [
+                { text: '', score: 1 },
+                { text: '', score: 2 },
+                { text: '', score: 3 },
+                { text: '', score: 4 }
+            ];
+
+            const questionHTML = `
+                <div class="question-card" id="question-${questionCounter}">
+                    <div class="question-number">${questionCounter}</div>
+                    <input type="text" class="input-field" value="${questionText}" placeholder="Enter your question...">
+                    ${defaultAnswers.map((answer, index) => `
+                        <div class="answer-row">
+                            <div class="answer-letter">${String.fromCharCode(65 + index)}</div>
+                            <input type="text" class="answer-input" value="${answer.text}" placeholder="Answer option ${String.fromCharCode(65 + index)}">
+                            <input type="number" class="score-input" value="${answer.score}" min="0" max="10" title="Points">
+                        </div>
+                    `).join('')}
+                    <button class="btn btn-secondary" onclick="deleteQuestion(${questionCounter})" style="margin-top: 10px;">🗑 Delete</button>
+                </div>
+            `;
+
+            const container = document.getElementById('questionsContainer');
+            
+            // Remove empty state
+            if (container.querySelector('.empty-state')) {
+                container.innerHTML = '';
+            }
+            
+            container.insertAdjacentHTML('beforeend', questionHTML);
+            
+            questions.push({
+                id: questionCounter,
+                question: questionText,
+                answers: defaultAnswers
+            });
+        }
+
+        function addBlankQuestion() {
+            addQuestion();
+            showNotification('✅ Blank question added!');
+        }
+
+        function deleteQuestion(id) {
+            if (confirm('Delete this question?')) {
+                document.getElementById(`question-${id}`).remove();
+                questions = questions.filter(q => q.id !== id);
+                
+                // Show empty state if no questions left
+                if (questions.length === 0) {
+                    document.getElementById('questionsContainer').innerHTML = `
+                        <div class="empty-state">
+                            <h3>No questions yet</h3>
+                            <p>Choose a quick start option above or add a blank question</p>
+                        </div>
+                    `;
+                }
+                
+                showNotification('✅ Question deleted!');
+            }
+        }
+
+        function clearAll() {
+            if (confirm('Clear all questions?')) {
+                questions = [];
+                questionCounter = 0;
+                document.getElementById('questionsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <h3>No questions yet</h3>
+                        <p>Choose a quick start option above or add a blank question</p>
+                    </div>
+                `;
+                showNotification('✅ All questions cleared!');
+            }
+        }
+
+        function downloadQuiz() {
+            const title = document.getElementById('quizTitle').value.trim();
+            const description = document.getElementById('quizDescription').value.trim();
+            
+            if (!title) {
+                showNotification('Please add a quiz title!', 'warning');
+                return;
+            }
+            
+            if (questions.length === 0) {
+                showNotification('Please add some questions first!', 'warning');
+                return;
+            }
+
+            // Collect all question data from the form
+            const questionElements = document.querySelectorAll('.question-card');
+            const quizData = { title, description, questions: [] };
+
+            questionElements.forEach((element) => {
+                const questionInput = element.querySelector('.input-field');
+                const answerInputs = element.querySelectorAll('.answer-input');
+                const scoreInputs = element.querySelectorAll('.score-input');
+
+                if (questionInput.value.trim()) {
+                    const answers = [];
+                    answerInputs.forEach((input, index) => {
+                        if (input.value.trim()) {
+                            answers.push({
+                                text: input.value.trim(),
+                                score: parseInt(scoreInputs[index].value) || 0
+                            });
+                        }
+                    });
+
+                    if (answers.length > 0) {
+                        quizData.questions.push({
+                            question: questionInput.value.trim(),
+                            answers: answers
+                        });
+                    }
+                }
+            });
+
+            // Generate and download HTML
+            const html = generateQuizHTML(quizData);
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = title.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-quiz.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('🎉 Quiz downloaded successfully!');
+        }
+
+        function generateQuizHTML(data) {
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${data.title}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        .quiz-container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .question { display: none; margin: 20px 0; }
+        .question.active { display: block; }
+        .question h3 { color: #333; margin-bottom: 20px; }
+        .answer { background: #f8f9fa; border: 2px solid #e9ecef; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; }
+        .answer:hover, .answer.selected { border-color: #007bff; background: #e3f2fd; }
+        .nav-buttons { text-align: center; margin: 30px 0; }
+        .btn { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #0056b3; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .results { display: none; text-align: center; }
+        .results.show { display: block; }
+        .score { font-size: 48px; color: #007bff; font-weight: bold; margin: 20px 0; }
+        h1 { text-align: center; color: #333; }
+        p { text-align: center; color: #666; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>${data.title}</h1>
+        <p>${data.description}</p>
+        
+        <div id="quiz">
+            ${data.questions.map((q, index) => `
+                <div class="question ${index === 0 ? 'active' : ''}" data-question="${index + 1}">
+                    <h3>Question ${index + 1}: ${q.question}</h3>
+                    ${q.answers.map((a, aIndex) => `
+                        <div class="answer" onclick="selectAnswer(${index + 1}, ${a.score}, this)">
+                            ${a.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('')}
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Your Results</h2>
+            <div class="score" id="finalScore"></div>
+            <p id="scoreText"></p>
+            <p><strong>Thanks for taking the quiz!</strong></p>
+        </div>
+    </div>
+    
+    <script>
+        let currentQuestion = 1;
+        let totalQuestions = ${data.questions.length};
+        let answers = {};
+        
+        function selectAnswer(questionNum, score, element) {
+            element.parentNode.querySelectorAll('.answer').forEach(a => a.classList.remove('selected'));
+            element.classList.add('selected');
+            answers[questionNum] = score;
+            document.getElementById('nextBtn').disabled = false;
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                document.querySelector('[data-question="' + currentQuestion + '"]').classList.remove('active');
+                currentQuestion++;
+                document.querySelector('[data-question="' + currentQuestion + '"]').classList.add('active');
+                updateButtons();
+            } else {
+                showResults();
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                document.querySelector('[data-question="' + currentQuestion + '"]').classList.remove('active');
+                currentQuestion--;
+                document.querySelector('[data-question="' + currentQuestion + '"]').classList.add('active');
+                updateButtons();
+            }
+        }
+        
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').disabled = !answers[currentQuestion];
+            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Get Results →' : 'Next →';
+        }
+        
+        function showResults() {
+            const totalScore = Object.values(answers).reduce((sum, score) => sum + score, 0);
+            const maxScore = totalQuestions * 4;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            document.getElementById('quiz').style.display = 'none';
+            document.querySelector('.nav-buttons').style.display = 'none';
+            document.getElementById('results').classList.add('show');
+            document.getElementById('finalScore').textContent = percentage + '%';
+            document.getElementById('scoreText').textContent = 'Your score: ' + totalScore + ' out of ' + maxScore;
+            
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>`;
+        }
+    </script>
+</body>
+</html>

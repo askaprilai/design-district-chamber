@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Builder - Quiz for Profits</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+
+        .ai-assistant {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .ai-assistant h4 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .ai-prompt {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .ai-generate-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .ai-generate-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .ai-suggestions {
+            margin-top: 1rem;
+        }
+
+        .suggestion-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .ai-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .ai-modal.show {
+            display: flex;
+        }
+
+        .ai-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .ai-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-modal h3 {
+            color: #1e293b;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .quiz-topic-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .ai-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-option {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ai-option:hover,
+        .ai-option.selected {
+            border-color: #6366f1;
+            background: #f0f0ff;
+        }
+
+        .generated-questions {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .generated-question {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .generated-question h5 {
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .generated-answers {
+            margin-top: 0.5rem;
+        }
+
+        .generated-answer {
+            padding: 0.25rem 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .question-types {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .question-type {
+            padding: 1rem;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            background: #f8fafc;
+            cursor: grab;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .question-type:hover {
+            border-color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .question-type.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .question-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .canvas {
+            flex: 1;
+            padding: 2rem;
+            background: #f8fafc;
+            overflow-y: auto;
+        }
+
+        .quiz-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: none;
+            background: none;
+            width: 100%;
+        }
+
+        .quiz-title:focus {
+            outline: 2px solid #1e3a8a;
+            outline-offset: 2px;
+        }
+
+        .quiz-description {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .drop-zone {
+            min-height: 400px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            position: relative;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .drop-zone-text {
+            color: #9ca3af;
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .question-card:hover {
+            border-color: #e2e8f0;
+        }
+
+        .question-card.selected {
+            border-color: #1e3a8a;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .question-number {
+            background: #1e3a8a;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .question-input {
+            flex: 1;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            background: none;
+            color: #1e293b;
+        }
+
+        .question-input:focus {
+            outline: 2px solid #1e3a8a;
+            outline-offset: 2px;
+        }
+
+        .question-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .answer-options {
+            margin-top: 1rem;
+        }
+
+        .answer-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .answer-option:hover {
+            background: #f8fafc;
+        }
+
+        .answer-input {
+            flex: 1;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+        }
+
+        .score-input {
+            width: 80px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .add-option-btn {
+            background: none;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 0.75rem;
+            cursor: pointer;
+            color: #64748b;
+            width: 100%;
+            margin-top: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .add-option-btn:hover {
+            border-color: #1e3a8a;
+            color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .properties-panel {
+            width: 320px;
+            background: white;
+            border-left: 1px solid #e2e8f0;
+            padding: 2rem;
+        }
+
+        .property-group {
+            margin-bottom: 2rem;
+        }
+
+        .property-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .property-input {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-option.selected {
+            border-color: #1e3a8a;
+            transform: scale(1.1);
+        }
+
+        .floating-toolbar {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .properties-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Quiz Builder</div>
+        <div class="header-actions">
+            <input type="text" placeholder="Quiz Name" class="property-input" style="width: 200px;" id="quizName">
+            <button class="btn btn-secondary" onclick="previewQuiz()">Preview</button>
+            <button class="btn btn-primary" onclick="saveQuiz()">Save Quiz</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="ai-assistant">
+                <h4>🤖 AI Quiz Assistant</h4>
+                <textarea class="ai-prompt" placeholder="Describe your quiz topic and target audience...&#10;Example: 'Create a marketing skills assessment for small business owners'"></textarea>
+                <button class="ai-generate-btn" onclick="openAIModal()">✨ Generate Quiz with AI</button>
+                
+                <div class="ai-suggestions">
+                    <div class="suggestion-item" onclick="fillPrompt('Leadership assessment for managers')">💼 Leadership Assessment</div>
+                    <div class="suggestion-item" onclick="fillPrompt('Financial literacy quiz for entrepreneurs')">💰 Financial Literacy</div>
+                    <div class="suggestion-item" onclick="fillPrompt('Marketing skills evaluation')">📈 Marketing Skills</div>
+                </div>
+            </div>
+
+            <h3>Question Types</h3>
+            <div class="question-types">
+                <div class="question-type" draggable="true" data-type="multiple-choice">
+                    <span class="question-icon">☑️</span>
+                    <div>Multiple Choice</div>
+                    <small>Single answer selection</small>
+                </div>
+                
+                <div class="question-type" draggable="true" data-type="scale">
+                    <span class="question-icon">📊</span>
+                    <div>Scale Rating</div>
+                    <small>1-5 or 1-10 scale</small>
+                </div>
+                
+                <div class="question-type" draggable="true" data-type="yes-no">
+                    <span class="question-icon">✅</span>
+                    <div>Yes/No</div>
+                    <small>Simple binary choice</small>
+                </div>
+                
+                <div class="question-type" draggable="true" data-type="text">
+                    <span class="question-icon">✏️</span>
+                    <div>Text Input</div>
+                    <small>Free form answer</small>
+                </div>
+                
+                <div class="question-type" draggable="true" data-type="image-choice">
+                    <span class="question-icon">🖼️</span>
+                    <div>Image Choice</div>
+                    <small>Visual selection</small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="canvas">
+            <div class="quiz-header">
+                <input type="text" class="quiz-title" placeholder="Enter your quiz title..." value="Untitled Quiz">
+                <textarea class="quiz-description" placeholder="Add a description for your quiz..."></textarea>
+            </div>
+
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-text">
+                    <strong>Drag question types here to start building</strong><br>
+                    Or click on a question type to add it to your quiz
+                </div>
+            </div>
+        </main>
+
+        <aside class="properties-panel" id="propertiesPanel">
+            <h3>Question Properties</h3>
+            <div class="property-group">
+                <div class="property-label">Question Text</div>
+                <textarea class="property-input" rows="3" placeholder="Enter your question..."></textarea>
+            </div>
+            
+            <div class="property-group">
+                <div class="property-label">Required</div>
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" checked> Make this question required
+                </label>
+            </div>
+            
+            <div class="property-group">
+                <div class="property-label">Scoring</div>
+                <select class="property-input">
+                    <option>Manual scoring</option>
+                    <option>Equal points per answer</option>
+                    <option>Custom scoring</option>
+                </select>
+            </div>
+            
+            <div class="property-group">
+                <div class="property-label">Theme Color</div>
+                <div class="color-picker">
+                    <div class="color-option selected" style="background: #1e3a8a;" data-color="#1e3a8a"></div>
+                    <div class="color-option" style="background: #059669;" data-color="#059669"></div>
+                    <div class="color-option" style="background: #dc2626;" data-color="#dc2626"></div>
+                    <div class="color-option" style="background: #7c3aed;" data-color="#7c3aed"></div>
+                    <div class="color-option" style="background: #ea580c;" data-color="#ea580c"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="floating-toolbar">
+        <button class="btn btn-secondary" onclick="addEmailCapture()">+ Email Capture</button>
+        <button class="btn btn-secondary" onclick="addResultsPage()">+ Results Page</button>
+        <button class="btn btn-primary" onclick="publishQuiz()">Publish Quiz</button>
+    </div>
+
+    <!-- AI Generation Modal -->
+    <div class="ai-modal" id="aiModal">
+        <div class="ai-modal-content">
+            <div class="ai-modal-header">
+                <h3>🤖 AI Quiz Generator</h3>
+                <button class="close-modal" onclick="closeAIModal()">×</button>
+            </div>
+            
+            <div class="property-group">
+                <label class="property-label">What's your quiz about?</label>
+                <textarea class="quiz-topic-input" id="aiTopicInput" rows="3" placeholder="E.g., 'A quiz to help small business owners identify their biggest time management challenges and get personalized productivity tips'"></textarea>
+            </div>
+            
+            <div class="property-group">
+                <label class="property-label">Quiz Type</label>
+                <div class="ai-options">
+                    <div class="ai-option" onclick="selectAIOption('assessment')" data-type="assessment">
+                        <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
+                        <div><strong>Skills Assessment</strong></div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Evaluate knowledge/skills</div>
+                    </div>
+                    <div class="ai-option selected" onclick="selectAIOption('personality')" data-type="personality">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🎭</div>
+                        <div><strong>Personality Quiz</strong></div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Categorize/segment users</div>
+                    </div>
+                    <div class="ai-option" onclick="selectAIOption('diagnostic')" data-type="diagnostic">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🔍</div>
+                        <div><strong>Problem Diagnostic</strong></div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Identify issues/solutions</div>
+                    </div>
+                    <div class="ai-option" onclick="selectAIOption('knowledge')" data-type="knowledge">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🧠</div>
+                        <div><strong>Knowledge Test</strong></div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Test understanding</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="property-group">
+                <label class="property-label">Number of Questions</label>
+                <select class="property-input" id="aiQuestionCount">
+                    <option value="5">5 questions (quick quiz)</option>
+                    <option value="8" selected>8 questions (standard)</option>
+                    <option value="12">12 questions (comprehensive)</option>
+                    <option value="15">15 questions (detailed assessment)</option>
+                </select>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-secondary" onclick="closeAIModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="generateAIQuiz()" id="generateBtn">
+                    <span id="generateText">Generate Quiz</span>
+                    <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
+                </button>
+            </div>
+            
+            <div class="generated-questions" id="generatedQuestions" style="display: none;">
+                <h4 style="margin-bottom: 1rem;">Generated Questions:</h4>
+                <div id="questionList"></div>
+                <button class="btn btn-primary" onclick="addGeneratedQuestions()" style="width: 100%; margin-top: 1rem;">Add All Questions to Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let questionCounter = 0;
+        let selectedQuestion = null;
+        let quizData = {
+            title: '',
+            description: '',
+            questions: [],
+            settings: {
+                theme: '#1e3a8a',
+                emailCapture: true,
+                resultsPage: true
+            }
+        };
+
+        // Drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionTypes = document.querySelectorAll('.question-type');
+            const dropZone = document.getElementById('dropZone');
+
+            questionTypes.forEach(type => {
+                type.addEventListener('dragstart', handleDragStart);
+                type.addEventListener('click', handleQuestionTypeClick);
+            });
+
+            dropZone.addEventListener('dragover', handleDragOver);
+            dropZone.addEventListener('drop', handleDrop);
+            dropZone.addEventListener('dragenter', handleDragEnter);
+            dropZone.addEventListener('dragleave', handleDragLeave);
+        });
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.type);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.target.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.target.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.target.classList.remove('drag-over');
+            const questionType = e.dataTransfer.getData('text/plain');
+            addQuestion(questionType);
+            
+            // Remove dragging class
+            document.querySelectorAll('.question-type').forEach(el => {
+                el.classList.remove('dragging');
+            });
+        }
+
+        function handleQuestionTypeClick(e) {
+            const questionType = e.currentTarget.dataset.type;
+            addQuestion(questionType);
+        }
+
+        function addQuestion(type) {
+            questionCounter++;
+            const dropZone = document.getElementById('dropZone');
+            
+            if (dropZone.querySelector('.drop-zone-text')) {
+                dropZone.innerHTML = '';
+            }
+
+            const questionCard = createQuestionCard(type, questionCounter);
+            dropZone.appendChild(questionCard);
+            
+            // Add to quiz data
+            quizData.questions.push({
+                id: questionCounter,
+                type: type,
+                question: '',
+                answers: getDefaultAnswers(type),
+                required: true,
+                scoring: 'manual'
+            });
+
+            selectQuestion(questionCard, questionCounter);
+        }
+
+        function createQuestionCard(type, number) {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.dataset.questionId = number;
+            card.onclick = () => selectQuestion(card, number);
+
+            const questionTypeNames = {
+                'multiple-choice': 'Multiple Choice',
+                'scale': 'Scale Rating',
+                'yes-no': 'Yes/No',
+                'text': 'Text Input',
+                'image-choice': 'Image Choice'
+            };
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${number}</div>
+                    <input type="text" class="question-input" placeholder="Enter your question..." 
+                           onchange="updateQuestionText(${number}, this.value)">
+                    <div class="question-actions">
+                        <button class="action-btn" onclick="duplicateQuestion(${number})" title="Duplicate">⧉</button>
+                        <button class="action-btn" onclick="deleteQuestion(${number})" title="Delete">🗑</button>
+                    </div>
+                </div>
+                <div class="answer-options">
+                    ${generateAnswerOptions(type, number)}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function generateAnswerOptions(type, questionId) {
+            switch (type) {
+                case 'multiple-choice':
+                    return `
+                        <div class="answer-option">
+                            <span>A.</span>
+                            <input type="text" class="answer-input" placeholder="Option A" 
+                                   onchange="updateAnswer(${questionId}, 0, this.value)">
+                            <input type="number" class="score-input" value="0" min="0" 
+                                   onchange="updateAnswerScore(${questionId}, 0, this.value)">
+                        </div>
+                        <div class="answer-option">
+                            <span>B.</span>
+                            <input type="text" class="answer-input" placeholder="Option B" 
+                                   onchange="updateAnswer(${questionId}, 1, this.value)">
+                            <input type="number" class="score-input" value="1" min="0" 
+                                   onchange="updateAnswerScore(${questionId}, 1, this.value)">
+                        </div>
+                        <button class="add-option-btn" onclick="addAnswerOption(${questionId})">+ Add Option</button>
+                    `;
+                
+                case 'scale':
+                    return `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                            <span>1 (Strongly Disagree)</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                ${[1,2,3,4,5].map(i => `
+                                    <label style="display: flex; flex-direction: column; align-items: center;">
+                                        <input type="radio" name="scale_${questionId}" value="${i}">
+                                        <span>${i}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                            <span>5 (Strongly Agree)</span>
+                        </div>
+                    `;
+                
+                case 'yes-no':
+                    return `
+                        <div class="answer-option">
+                            <input type="radio" name="yesno_${questionId}" value="yes">
+                            <span>Yes</span>
+                            <input type="number" class="score-input" value="1" min="0">
+                        </div>
+                        <div class="answer-option">
+                            <input type="radio" name="yesno_${questionId}" value="no">
+                            <span>No</span>
+                            <input type="number" class="score-input" value="0" min="0">
+                        </div>
+                    `;
+                
+                case 'text':
+                    return `
+                        <textarea class="property-input" rows="3" placeholder="User will type their answer here..." disabled></textarea>
+                    `;
+                
+                case 'image-choice':
+                    return `
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 8px;">
+                                <div>📷</div>
+                                <div>Upload Image A</div>
+                                <input type="number" class="score-input" value="0" min="0" style="margin-top: 0.5rem;">
+                            </div>
+                            <div style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 8px;">
+                                <div>📷</div>
+                                <div>Upload Image B</div>
+                                <input type="number" class="score-input" value="1" min="0" style="margin-top: 0.5rem;">
+                            </div>
+                        </div>
+                        <button class="add-option-btn" onclick="addImageOption(${questionId})">+ Add Image Option</button>
+                    `;
+                
+                default:
+                    return '';
+            }
+        }
+
+        function getDefaultAnswers(type) {
+            switch (type) {
+                case 'multiple-choice':
+                    return [
+                        { text: '', score: 0 },
+                        { text: '', score: 1 }
+                    ];
+                case 'scale':
+                    return [
+                        { text: '1', score: 1 },
+                        { text: '2', score: 2 },
+                        { text: '3', score: 3 },
+                        { text: '4', score: 4 },
+                        { text: '5', score: 5 }
+                    ];
+                case 'yes-no':
+                    return [
+                        { text: 'Yes', score: 1 },
+                        { text: 'No', score: 0 }
+                    ];
+                default:
+                    return [];
+            }
+        }
+
+        function selectQuestion(card, questionId) {
+            // Remove previous selection
+            document.querySelectorAll('.question-card').forEach(c => c.classList.remove('selected'));
+            
+            // Select current
+            card.classList.add('selected');
+            selectedQuestion = questionId;
+            
+            // Update properties panel
+            updatePropertiesPanel(questionId);
+        }
+
+        function updatePropertiesPanel(questionId) {
+            const question = quizData.questions.find(q => q.id === questionId);
+            if (!question) return;
+
+            // Update properties panel with question data
+            const textarea = document.querySelector('.properties-panel textarea');
+            const checkbox = document.querySelector('.properties-panel input[type="checkbox"]');
+            const select = document.querySelector('.properties-panel select');
+
+            if (textarea) textarea.value = question.question;
+            if (checkbox) checkbox.checked = question.required;
+            if (select) select.value = question.scoring;
+        }
+
+        function updateQuestionText(questionId, text) {
+            const question = quizData.questions.find(q => q.id === questionId);
+            if (question) {
+                question.question = text;
+            }
+        }
+
+        function updateAnswer(questionId, answerIndex, text) {
+            const question = quizData.questions.find(q => q.id === questionId);
+            if (question && question.answers[answerIndex]) {
+                question.answers[answerIndex].text = text;
+            }
+        }
+
+        function updateAnswerScore(questionId, answerIndex, score) {
+            const question = quizData.questions.find(q => q.id === questionId);
+            if (question && question.answers[answerIndex]) {
+                question.answers[answerIndex].score = parseInt(score);
+            }
+        }
+
+        function addAnswerOption(questionId) {
+            const question = quizData.questions.find(q => q.id === questionId);
+            if (!question) return;
+
+            const optionLetter = String.fromCharCode(65 + question.answers.length);
+            question.answers.push({ text: '', score: 0 });
+
+            const card = document.querySelector(`[data-question-id="${questionId}"]`);
+            const answerOptions = card.querySelector('.answer-options');
+            const addButton = answerOptions.querySelector('.add-option-btn');
+
+            const newOption = document.createElement('div');
+            newOption.className = 'answer-option';
+            newOption.innerHTML = `
+                <span>${optionLetter}.</span>
+                <input type="text" class="answer-input" placeholder="Option ${optionLetter}" 
+                       onchange="updateAnswer(${questionId}, ${question.answers.length - 1}, this.value)">
+                <input type="number" class="score-input" value="0" min="0" 
+                       onchange="updateAnswerScore(${questionId}, ${question.answers.length - 1}, this.value)">
+            `;
+
+            answerOptions.insertBefore(newOption, addButton);
+        }
+
+        function duplicateQuestion(questionId) {
+            const originalQuestion = quizData.questions.find(q => q.id === questionId);
+            if (!originalQuestion) return;
+
+            questionCounter++;
+            const newQuestion = { ...originalQuestion, id: questionCounter };
+            quizData.questions.push(newQuestion);
+
+            const originalCard = document.querySelector(`[data-question-id="${questionId}"]`);
+            const newCard = createQuestionCard(originalQuestion.type, questionCounter);
+            
+            // Copy values
+            const originalInputs = originalCard.querySelectorAll('input, textarea');
+            const newInputs = newCard.querySelectorAll('input, textarea');
+            
+            originalInputs.forEach((input, index) => {
+                if (newInputs[index]) {
+                    newInputs[index].value = input.value;
+                }
+            });
+
+            originalCard.parentNode.insertBefore(newCard, originalCard.nextSibling);
+            selectQuestion(newCard, questionCounter);
+        }
+
+        function deleteQuestion(questionId) {
+            if (confirm('Are you sure you want to delete this question?')) {
+                quizData.questions = quizData.questions.filter(q => q.id !== questionId);
+                document.querySelector(`[data-question-id="${questionId}"]`).remove();
+                
+                // If no questions left, show drop zone text
+                const dropZone = document.getElementById('dropZone');
+                if (dropZone.children.length === 0) {
+                    dropZone.innerHTML = `
+                        <div class="drop-zone-text">
+                            <strong>Drag question types here to start building</strong><br>
+                            Or click on a question type to add it to your quiz
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function previewQuiz() {
+            // Generate preview HTML
+            const previewWindow = window.open('', '_blank');
+            previewWindow.document.write(generateQuizHTML(true));
+        }
+
+        function saveQuiz() {
+            quizData.title = document.querySelector('#quizName').value || 'Untitled Quiz';
+            quizData.description = document.querySelector('.quiz-description').value;
+            
+            // In a real app, this would save to a database
+            localStorage.setItem('quiz_' + Date.now(), JSON.stringify(quizData));
+            alert('Quiz saved successfully!');
+        }
+
+        function publishQuiz() {
+            if (quizData.questions.length === 0) {
+                alert('Please add at least one question before publishing.');
+                return;
+            }
+            
+            saveQuiz();
+            const quizHTML = generateQuizHTML(false);
+            
+            // In a real app, this would deploy to a URL
+            const blob = new Blob([quizHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (quizData.title || 'quiz').toLowerCase().replace(/[^a-z0-9]/g, '-') + '.html';
+            a.click();
+            
+            alert('Quiz published! Download the HTML file to host it on your website.');
+        }
+
+        function generateQuizHTML(isPreview) {
+            // This would generate the actual quiz HTML similar to your money leak quiz
+            return `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${quizData.title}</title>
+                    <!-- Quiz styling and functionality would be generated here -->
+                </head>
+                <body>
+                    <h1>${quizData.title}</h1>
+                    <p>${quizData.description}</p>
+                    ${isPreview ? '<p><em>This is a preview. Actual quiz functionality will be implemented in the generated file.</em></p>' : ''}
+                    <!-- Generated quiz questions would appear here -->
+                </body>
+                </html>
+            `;
+        }
+
+        function addEmailCapture() {
+            alert('Email capture page will be added to the quiz flow.');
+        }
+
+        function addResultsPage() {
+            alert('Custom results page will be added to the quiz.');
+        }
+
+        // AI Assistant Functions
+        let selectedAIType = 'personality';
+        let generatedQuizData = null;
+
+        function fillPrompt(prompt) {
+            document.querySelector('.ai-prompt').value = prompt;
+        }
+
+        function openAIModal() {
+            const prompt = document.querySelector('.ai-prompt').value;
+            if (prompt.trim()) {
+                document.getElementById('aiTopicInput').value = prompt;
+            }
+            document.getElementById('aiModal').classList.add('show');
+        }
+
+        function closeAIModal() {
+            document.getElementById('aiModal').classList.remove('show');
+            document.getElementById('generatedQuestions').style.display = 'none';
+        }
+
+        function selectAIOption(type) {
+            selectedAIType = type;
+            document.querySelectorAll('.ai-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+        }
+
+        async function generateAIQuiz() {
+            const topic = document.getElementById('aiTopicInput').value.trim();
+            const questionCount = document.getElementById('aiQuestionCount').value;
+
+            if (!topic) {
+                alert('Please describe your quiz topic first.');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('generateText').style.display = 'none';
+            document.getElementById('loadingSpinner').style.display = 'inline-block';
+            document.getElementById('generateBtn').disabled = true;
+
+            try {
+                // Simulate AI generation (replace with actual AI API call)
+                const generatedQuiz = await simulateAIGeneration(topic, selectedAIType, questionCount);
+                
+                // Display generated questions
+                displayGeneratedQuestions(generatedQuiz);
+                
+            } catch (error) {
+                console.error('AI generation failed:', error);
+                alert('Failed to generate quiz. Please try again.');
+            } finally {
+                // Reset loading state
+                document.getElementById('generateText').style.display = 'inline';
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('generateBtn').disabled = false;
+            }
+        }
+
+        async function simulateAIGeneration(topic, quizType, questionCount) {
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            const templates = {
+                personality: {
+                    title: `What's Your ${topic.split(' ')[0]} Style?`,
+                    questions: [
+                        {
+                            question: `When facing a ${topic.toLowerCase()} challenge, what's your first instinct?`,
+                            answers: [
+                                { text: "Research all available options thoroughly", score: 1 },
+                                { text: "Trust my gut feeling and act quickly", score: 2 },
+                                { text: "Seek advice from trusted colleagues", score: 3 },
+                                { text: "Break it down into manageable steps", score: 4 }
+                            ]
+                        },
+                        {
+                            question: `How do you prefer to learn new ${topic.toLowerCase()} skills?`,
+                            answers: [
+                                { text: "Reading books and articles", score: 1 },
+                                { text: "Hands-on experimentation", score: 2 },
+                                { text: "Workshops and networking events", score: 3 },
+                                { text: "Online courses and tutorials", score: 4 }
+                            ]
+                        }
+                    ]
+                },
+                assessment: {
+                    title: `${topic} Skills Assessment`,
+                    questions: [
+                        {
+                            question: `Rate your current experience with ${topic.toLowerCase()}:`,
+                            answers: [
+                                { text: "Beginner - just starting out", score: 1 },
+                                { text: "Intermediate - some experience", score: 2 },
+                                { text: "Advanced - very experienced", score: 3 },
+                                { text: "Expert - could teach others", score: 4 }
+                            ]
+                        }
+                    ]
+                },
+                diagnostic: {
+                    title: `${topic} Problem Identifier`,
+                    questions: [
+                        {
+                            question: `What's your biggest challenge with ${topic.toLowerCase()}?`,
+                            answers: [
+                                { text: "Lack of time to focus on it", score: 1 },
+                                { text: "Don't know where to start", score: 2 },
+                                { text: "Limited budget/resources", score: 3 },
+                                { text: "Keeping up with changes", score: 4 }
+                            ]
+                        }
+                    ]
+                }
+            };
+
+            const template = templates[quizType] || templates.personality;
+            
+            // Generate additional questions based on count
+            const baseQuestions = template.questions;
+            const questions = [];
+            
+            for (let i = 0; i < parseInt(questionCount); i++) {
+                if (i < baseQuestions.length) {
+                    questions.push(baseQuestions[i]);
+                } else {
+                    // Generate variations
+                    questions.push({
+                        question: `Additional question ${i + 1} about ${topic.toLowerCase()}?`,
+                        answers: [
+                            { text: `Option A for question ${i + 1}`, score: 1 },
+                            { text: `Option B for question ${i + 1}`, score: 2 },
+                            { text: `Option C for question ${i + 1}`, score: 3 },
+                            { text: `Option D for question ${i + 1}`, score: 4 }
+                        ]
+                    });
+                }
+            }
+
+            return {
+                title: template.title,
+                description: `Discover insights about your ${topic.toLowerCase()} approach and get personalized recommendations.`,
+                questions: questions
+            };
+        }
+
+        function displayGeneratedQuestions(quiz) {
+            generatedQuizData = quiz;
+            
+            const questionList = document.getElementById('questionList');
+            questionList.innerHTML = '';
+
+            quiz.questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'generated-question';
+                
+                const answersHtml = q.answers.map(a => 
+                    `<div class="generated-answer">• ${a.text} (${a.score} pts)</div>`
+                ).join('');
+
+                questionDiv.innerHTML = `
+                    <h5>Question ${index + 1}: ${q.question}</h5>
+                    <div class="generated-answers">${answersHtml}</div>
+                `;
+                
+                questionList.appendChild(questionDiv);
+            });
+
+            document.getElementById('generatedQuestions').style.display = 'block';
+        }
+
+        function addGeneratedQuestions() {
+            if (!generatedQuizData) return;
+
+            // Set quiz title and description
+            document.getElementById('quizName').value = generatedQuizData.title;
+            document.querySelector('.quiz-title').value = generatedQuizData.title;
+            document.querySelector('.quiz-description').value = generatedQuizData.description;
+
+            // Clear existing questions
+            const dropZone = document.getElementById('dropZone');
+            dropZone.innerHTML = '';
+
+            // Add generated questions
+            generatedQuizData.questions.forEach((q, index) => {
+                questionCounter++;
+                const questionCard = createQuestionCard('multiple-choice', questionCounter);
+                dropZone.appendChild(questionCard);
+
+                // Populate question text
+                const questionInput = questionCard.querySelector('.question-input');
+                questionInput.value = q.question;
+
+                // Populate answers
+                const answerInputs = questionCard.querySelectorAll('.answer-input');
+                const scoreInputs = questionCard.querySelectorAll('.score-input');
+                
+                q.answers.forEach((answer, answerIndex) => {
+                    if (answerInputs[answerIndex]) {
+                        answerInputs[answerIndex].value = answer.text;
+                    }
+                    if (scoreInputs[answerIndex]) {
+                        scoreInputs[answerIndex].value = answer.score;
+                    }
+                });
+
+                // Add to quiz data
+                quizData.questions.push({
+                    id: questionCounter,
+                    type: 'multiple-choice',
+                    question: q.question,
+                    answers: q.answers,
+                    required: true,
+                    scoring: 'manual'
+                });
+            });
+
+            // Update quiz data
+            quizData.title = generatedQuizData.title;
+            quizData.description = generatedQuizData.description;
+
+            closeAIModal();
+            alert(`Successfully added ${generatedQuizData.questions.length} AI-generated questions to your quiz!`);
+        }
+
+        // Color picker functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('color-option')) {
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                e.target.classList.add('selected');
+                
+                const color = e.target.dataset.color;
+                quizData.settings.theme = color;
+                
+                // Update theme colors in the interface
+                document.documentElement.style.setProperty('--theme-color', color);
+            }
+        });
+    </script>
+</body>
+</html>
