@@ -971,6 +971,22 @@
                     <input type="text" id="companyInput" placeholder="Company/Business Name" required>
                     <button type="submit">Get Notified</button>
                 </form>
+                
+                <!-- Hidden Zoho form for actual submission -->
+                <iframe name="hiddenFrame" style="display:none;"></iframe>
+                <form id="hiddenZohoForm" action="https://crm.zoho.com/crm/WebToLeadForm" method="POST" target="hiddenFrame" style="display:none;">
+                    <input type="text" name="xnQsjsdp" value="70afa6ff1b5a8e08867dc4d869ae714b411b09cb8ca6a8c2c90c86686bb61abd">
+                    <input type="hidden" name="zc_gad" value="">
+                    <input type="text" name="xmIwtLD" value="8dfa2166419e1352039072930edfe8ff91df13671b6da294b21d7d2022be27626105ea9e4451e795b42fc78be81eaa16">
+                    <input type="text" name="actionType" value="TGVhZHM=">
+                    <input type="text" name="returnURL" value="null">
+                    <input type="text" name="aG9uZXlwb3Q" value="">
+                    
+                    <input type="text" name="Company" id="hiddenCompany">
+                    <input type="text" name="First Name" id="hiddenFirstName">
+                    <input type="text" name="Last Name" id="hiddenLastName">
+                    <input type="text" name="Email" id="hiddenEmail">
+                </form>
                 <div class="success-message" id="successMessage">
                     Thank you! We'll keep you updated on our launch.
                 </div>
@@ -1357,79 +1373,35 @@
                 return;
             }
             
-            // Prepare form data for Zoho CRM
-            const formData = new FormData();
-            
             // Split name into first and last name
             const nameParts = name.trim().split(' ');
             const firstName = nameParts[0] || '';
             const lastName = nameParts.slice(1).join(' ') || nameParts[0] || 'Member';
             
-            // Required Zoho fields
-            formData.append('First Name', firstName);
-            formData.append('Last Name', lastName);
-            formData.append('Email', email);
-            formData.append('Company', company);
+            // Populate hidden Zoho form
+            document.getElementById('hiddenCompany').value = company;
+            document.getElementById('hiddenFirstName').value = firstName;
+            document.getElementById('hiddenLastName').value = lastName;
+            document.getElementById('hiddenEmail').value = email;
             
-            // Required Zoho hidden fields (from your form)
-            formData.append('xnQsjsdp', '70afa6ff1b5a8e08867dc4d869ae714b411b09cb8ca6a8c2c90c86686bb61abd');
-            formData.append('xmIwtLD', '8dfa2166419e1352039072930edfe8ff91df13671b6da294b21d7d2022be27626105ea9e4451e795b42fc78be81eaa16');
-            formData.append('actionType', 'TGVhZHM=');
-            formData.append('returnURL', 'null');
-            formData.append('zc_gad', '');
-            formData.append('aG9uZXlwb3Q', '');
+            // Submit the hidden form
+            document.getElementById('hiddenZohoForm').submit();
             
-            // Send to Zoho CRM using jQuery AJAX (same method as original Zoho form)
-            $.ajax({
-                url: 'https://crm.zoho.com/crm/WebToLeadForm',
-                type: 'POST',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    console.log('SUCCESS!', data);
-                    
-                    // Show success message
-                    document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and send you chamber information.';
-                    document.getElementById('successMessage').style.display = 'block';
-                    document.getElementById('successMessage').style.background = '#28a745';
-                    
-                    // Clear form
-                    document.getElementById('nameInput').value = '';
-                    document.getElementById('emailInput').value = '';
-                    document.getElementById('companyInput').value = '';
-                    
-                    // Hide success message after 5 seconds
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                    }, 5000);
-                },
-                error: function(data) {
-                    console.log('FAILED...', data);
-                    
-                    // Even if there's a CORS "error", the form might still submit successfully
-                    // Show success message anyway
-                    document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and send you chamber information.';
-                    document.getElementById('successMessage').style.display = 'block';
-                    document.getElementById('successMessage').style.background = '#28a745';
-                    
-                    // Clear form
-                    document.getElementById('nameInput').value = '';
-                    document.getElementById('emailInput').value = '';
-                    document.getElementById('companyInput').value = '';
-                    
-                    // Hide success message after 5 seconds
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                    }, 5000);
-                }
-            })
-            .finally(() => {
-                // Reset button state
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
-            });
+            // Show success message immediately
+            document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and send you chamber information.';
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('successMessage').style.background = '#28a745';
+            
+            // Clear form
+            document.getElementById('nameInput').value = '';
+            document.getElementById('emailInput').value = '';
+            document.getElementById('companyInput').value = '';
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+            
         });
 
         // Smooth scrolling for navigation links
