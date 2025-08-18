@@ -1352,52 +1352,58 @@
                 return;
             }
             
-            // Prepare template parameters
-            const templateParams = {
-                from_name: name,
-                from_email: email,
-                to_name: 'Design District Chamber',
-                message: `New member signup from ${name} (${email}) for Design District Chamber of Commerce updates.`,
-                reply_to: email
-            };
+            // Prepare form data for Google Sheets
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('timestamp', new Date().toISOString());
+            formData.append('source', 'Design District Chamber Website');
             
-            // Send email via EmailJS
-            emailjs.send('service_vntq4ai', 'template_m5wg27w', templateParams)
-                .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    
-                    // Show success message
-                    document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch.';
-                    document.getElementById('successMessage').style.display = 'block';
-                    document.getElementById('successMessage').style.background = '#28a745';
-                    
-                    // Clear form
-                    document.getElementById('nameInput').value = '';
-                    document.getElementById('emailInput').value = '';
-                    
-                    // Hide success message after 5 seconds
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                    }, 5000);
-                    
-                }, function(error) {
-                    console.log('FAILED...', error);
-                    
-                    // Show error message
-                    document.getElementById('successMessage').innerHTML = '✗ Sorry, there was an error. Please try again.';
-                    document.getElementById('successMessage').style.display = 'block';
-                    document.getElementById('successMessage').style.background = '#dc3545';
-                    
-                    // Hide error message after 5 seconds
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                    }, 5000);
-                })
-                .finally(function() {
-                    // Reset button state
-                    submitButton.textContent = originalButtonText;
-                    submitButton.disabled = false;
-                });
+            // Send to Google Sheets (replace with your Google Apps Script URL)
+            // TODO: Replace this URL with your actual Google Apps Script deployment URL
+            const googleAppsScriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+            
+            fetch(googleAppsScriptURL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('SUCCESS!', data);
+                
+                // Show success message
+                document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch.';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').style.background = '#28a745';
+                
+                // Clear form
+                document.getElementById('nameInput').value = '';
+                document.getElementById('emailInput').value = '';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+                
+            })
+            .catch(error => {
+                console.log('FAILED...', error);
+                
+                // Show error message
+                document.getElementById('successMessage').innerHTML = '✗ Sorry, there was an error. Please try again.';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').style.background = '#dc3545';
+                
+                // Hide error message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            })
+            .finally(() => {
+                // Reset button state
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            });
         });
 
         // Smooth scrolling for navigation links
