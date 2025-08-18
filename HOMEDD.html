@@ -965,10 +965,19 @@
             <div class="email-capture">
                 <h3>Be the first to know</h3>
                 <div style="margin: 1.5rem 0;"></div>
-                <form class="email-form" id="emailForm">
-                    <input type="text" id="nameInput" placeholder="Your Name" required>
-                    <input type="email" id="emailInput" placeholder="Your Email" required>
-                    <input type="text" id="companyInput" placeholder="Company/Business Name" required>
+                <form class="email-form" id="emailForm" action="https://crm.zoho.com/crm/WebToLeadForm" method="POST" accept-charset="UTF-8">
+                    <!-- Zoho Hidden Fields -->
+                    <input type="text" style="display:none;" name="xnQsjsdp" value="60145fe024e715d15c17e592a63251db614cf0b264f145f3daceeb16b2960914">
+                    <input type="hidden" name="zc_gad" id="zc_gad" value="">
+                    <input type="text" style="display:none;" name="xmIwtLD" value="cf0632f1e011fa758d5fef729ebf5069eb280e172494f3dda35f1560b0d3358ace3c93867a2f209f2fdf6f4ad82489a5">
+                    <input type="text" style="display:none;" name="actionType" value="TGVhZHM=">
+                    <input type="text" style="display:none;" name="returnURL" value="https://design-district-chamber.vercel.app/HOMEDD.html?success=true">
+                    <input type="text" style="display:none;" name="aG9uZXlwb3Q" value="">
+                    
+                    <!-- Visible Form Fields -->
+                    <input type="text" id="nameInput" name="Last Name" placeholder="Your Name" required>
+                    <input type="email" id="emailInput" name="Email" placeholder="Your Email" required>
+                    <input type="text" id="companyInput" name="Company" placeholder="Company/Business Name" required>
                     <button type="submit">Get Notified</button>
                 </form>
                 
@@ -1326,7 +1335,7 @@
             emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
         })();
 
-        // Email capture functionality
+        // Zoho Email capture functionality
         document.getElementById('emailForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1354,28 +1363,23 @@
             submitButton.textContent = 'Sending...';
             submitButton.disabled = true;
             
-            // Create mailto link with the form data
-            const subject = 'Design District Chamber - New Member Interest';
-            const body = `Hello,
-
-I would like to be notified about the Design District Chamber of Commerce launch and membership opportunities.
-
-Name: ${name}
-Email: ${email}
-Company/Business: ${company}
-
-Please keep me updated on the chamber's progress and membership details.
-
-Best regards,
-${name}`;
+            // Submit form to Zoho
+            const form = document.getElementById('emailForm');
             
-            const mailtoLink = `mailto:info@miamidesigndistrictchamberofcommerce.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            // Create a hidden iframe to handle the form submission
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.name = 'zoho_form_iframe';
+            document.body.appendChild(iframe);
             
-            // Open email client
-            window.location.href = mailtoLink;
+            // Set form target to iframe
+            form.target = 'zoho_form_iframe';
+            
+            // Submit the form
+            form.submit();
             
             // Show success message
-            document.getElementById('successMessage').innerHTML = '✓ Thank you! Your email client should open. Send the email to complete your registration.';
+            document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and membership opportunities.';
             document.getElementById('successMessage').style.display = 'block';
             document.getElementById('successMessage').style.background = '#28a745';
             document.getElementById('successMessage').style.color = 'white';
@@ -1384,13 +1388,18 @@ ${name}`;
             document.getElementById('successMessage').style.marginTop = '1rem';
             
             // Clear form
-            document.getElementById('nameInput').value = '';
-            document.getElementById('emailInput').value = '';
-            document.getElementById('companyInput').value = '';
-            
-            // Reset button
-            submitButton.textContent = originalButtonText;
-            submitButton.disabled = false;
+            setTimeout(() => {
+                document.getElementById('nameInput').value = '';
+                document.getElementById('emailInput').value = '';
+                document.getElementById('companyInput').value = '';
+                
+                // Reset button
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+                
+                // Remove iframe
+                document.body.removeChild(iframe);
+            }, 1000);
             
             // Hide success message after 8 seconds
             setTimeout(() => {
