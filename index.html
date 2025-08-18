@@ -1108,7 +1108,7 @@
                 
                 <h3>Be the first to know</h3>
                 <div style="margin: 1.5rem 0;"></div>
-                <form class="email-form" id="emailForm" action="https://crm.zoho.com/crm/WebToLeadForm" method="POST" accept-charset="UTF-8" target="_blank">
+                <form class="email-form" id="emailForm" method="POST">
                     <!-- Zoho Hidden Fields -->
                     <input type="text" style="display:none;" name="xnQsjsdp" value="60145fe024e715d15c17e592a63251db614cf0b264f145f3daceeb16b2960914">
                     <input type="hidden" name="zc_gad" id="zc_gad" value="">
@@ -1469,31 +1469,75 @@
             emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
         })();
 
-        // Minimal form validation only
+        // Email form handler
         document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
             const name = document.getElementById('nameInput').value.trim();
             const email = document.getElementById('emailInput').value.trim();
             const company = document.getElementById('companyInput').value.trim();
             
-            // Basic validation only
+            // Basic validation
             if (!name || !email || !company) {
-                e.preventDefault();
                 alert('Please fill in all fields.');
-                return false;
+                return;
             }
             
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                e.preventDefault();
                 alert('Please enter a valid email address.');
-                return false;
+                return;
             }
             
-            console.log('Form submitting to Zoho with:', { name, email, company });
+            // Show loading state
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
             
-            // Let form submit naturally - no interference
-            return true;
+            // Create email content
+            const subject = 'New Chamber Waitlist Registration';
+            const body = `New member interest from Design District Chamber website:
+
+Name: ${name}
+Email: ${email}
+Company: ${company}
+Date: ${new Date().toLocaleString()}
+Source: Chamber Website Waitlist
+
+Please follow up with this lead for membership information.`;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:info@miamidesigndistrictchamberofcommerce.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and membership opportunities.';
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('successMessage').style.background = '#28a745';
+            document.getElementById('successMessage').style.color = 'white';
+            document.getElementById('successMessage').style.padding = '1rem';
+            document.getElementById('successMessage').style.borderRadius = '8px';
+            document.getElementById('successMessage').style.marginTop = '1rem';
+            
+            // Clear form after delay
+            setTimeout(() => {
+                document.getElementById('nameInput').value = '';
+                document.getElementById('emailInput').value = '';
+                document.getElementById('companyInput').value = '';
+                
+                // Reset button
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }, 2000);
+            
+            // Hide success message after 8 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 8000);
         });
 
         // Smooth scrolling for navigation links
