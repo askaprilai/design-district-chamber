@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Test - Design District Chamber</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0a0a0b;
+            color: #e8eaed;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            color: #d4af37;
+            text-align: center;
+        }
+        button {
+            background: #d4af37;
+            color: #000;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 0;
+            width: 100%;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        .success {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        .error {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Supabase Waitlist Test</h1>
+        <p>This page tests your new Supabase waitlist system with auto-responder emails.</p>
+        
+        <div class="form-group">
+            <input type="text" id="testName" placeholder="Enter your name" value="Test User">
+        </div>
+        <div class="form-group">
+            <input type="email" id="testEmail" placeholder="Enter your email">
+        </div>
+        
+        <button onclick="testWaitlist()" id="testBtn">Test Waitlist Signup</button>
+        
+        <div id="result" class="result"></div>
+        
+        <hr style="margin: 30px 0; border-color: rgba(255,255,255,0.1);">
+        
+        <h3 style="color: #d4af37;">What This Test Does:</h3>
+        <ul>
+            <li>✅ Adds your entry to Supabase database</li>
+            <li>✅ Sends welcome email with your custom message</li>
+            <li>✅ Logs email delivery status</li>
+            <li>✅ Prevents duplicate submissions</li>
+        </ul>
+        
+        <p><strong>Next:</strong> Check your email for the welcome message!</p>
+    </div>
+
+    <script>
+        function showResult(message, type) {
+            const result = document.getElementById('result');
+            result.innerHTML = message;
+            result.className = 'result ' + type;
+            result.style.display = 'block';
+        }
+
+        async function testWaitlist() {
+            const name = document.getElementById('testName').value.trim();
+            const email = document.getElementById('testEmail').value.trim();
+            const btn = document.getElementById('testBtn');
+            
+            if (!name || !email) {
+                showResult('❌ Please enter both name and email', 'error');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showResult('❌ Please enter a valid email address', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Testing...';
+            showResult('⏳ Submitting to database and sending welcome email...', 'info');
+            
+            try {
+                const response = await fetch('/api/waitlist-supabase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        referral_source: 'supabase_test'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showResult(
+                        `🎉 <strong>SUCCESS!</strong><br><br>` +
+                        `✅ Added "${name}" to waitlist<br>` +
+                        `✅ Database entry ID: ${data.id}<br>` +
+                        `✅ Email sent: ${data.email_sent ? 'Yes' : 'Failed'}<br>` +
+                        `✅ Time: ${new Date(data.timestamp).toLocaleString()}<br><br>` +
+                        `<strong>Check your email for the welcome message!</strong>`,
+                        'success'
+                    );
+                } else if (response.status === 409) {
+                    showResult(
+                        `⚠️ <strong>Already Registered</strong><br><br>` +
+                        `This email is already on the waitlist. The system correctly prevented a duplicate entry!`,
+                        'error'
+                    );
+                } else {
+                    showResult(
+                        `❌ <strong>Error:</strong> ${data.error}<br><br>` +
+                        `This might mean the Supabase setup needs configuration.`,
+                        'error'
+                    );
+                }
+                
+            } catch (error) {
+                showResult(
+                    `❌ <strong>Network Error:</strong> ${error.message}<br><br>` +
+                    `This usually means the API endpoint isn't deployed yet or environment variables aren't set.`,
+                    'error'
+                );
+            }
+            
+            btn.disabled = false;
+            btn.textContent = 'Test Waitlist Signup';
+        }
+    </script>
+</body>
+</html>
