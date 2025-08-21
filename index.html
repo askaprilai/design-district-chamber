@@ -1380,6 +1380,18 @@
                     <img src="Images/madyun-logo.png" alt="The Madyun Group" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                     <span style="display: none;">The Madyun Group</span>
                 </div>
+                <div class="business-logo">
+                    <img src="fan_horizontal_4.svg" alt="FAN Business" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">FAN Business</span>
+                </div>
+                <div class="business-logo">
+                    <img src="IMG_3955.jpeg" alt="IMG Business" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">IMG Business</span>
+                </div>
+                <div class="business-logo">
+                    <img src="Local_Global.png" alt="Local Global" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">Local Global</span>
+                </div>
                 
                 <!-- Duplicate set for seamless loop -->
                 <div class="business-logo">
@@ -1398,6 +1410,18 @@
                     <img src="Images/madyun-logo.png" alt="The Madyun Group" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                     <span style="display: none;">The Madyun Group</span>
                 </div>
+                <div class="business-logo">
+                    <img src="fan_horizontal_4.svg" alt="FAN Business" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">FAN Business</span>
+                </div>
+                <div class="business-logo">
+                    <img src="IMG_3955.jpeg" alt="IMG Business" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">IMG Business</span>
+                </div>
+                <div class="business-logo">
+                    <img src="Local_Global.png" alt="Local Global" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">Local Global</span>
+                </div>
                 
                 <!-- Second duplicate for better fill -->
                 <div class="business-logo">
@@ -1415,6 +1439,18 @@
                 <div class="business-logo">
                     <img src="Images/madyun-logo.png" alt="The Madyun Group" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                     <span style="display: none;">The Madyun Group</span>
+                </div>
+                <div class="business-logo">
+                    <img src="fan_horizontal_4.svg" alt="FAN Business" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">FAN Business</span>
+                </div>
+                <div class="business-logo">
+                    <img src="IMG_3955.jpeg" alt="IMG Business" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">IMG Business</span>
+                </div>
+                <div class="business-logo">
+                    <img src="Local_Global.png" alt="Local Global" style="max-width: 90%; max-height: 60%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display: none;">Local Global</span>
                 </div>
             </div>
         </div>
@@ -1483,8 +1519,8 @@
             emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
         })();
 
-        // Email form handler
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
+        // Email form handler with Notion + Supabase + Auto-responder
+        document.getElementById('emailForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const submitButton = e.target.querySelector('button[type="submit"]');
@@ -1494,77 +1530,120 @@
             const company = document.getElementById('companyInput').value.trim();
             
             // Basic validation
-            if (!name || !email || !company) {
-                alert('Please fill in all fields.');
+            if (!name || !email) {
+                showMessage('Please fill in name and email fields.', 'error');
                 return;
             }
             
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address.');
+                showMessage('Please enter a valid email address.', 'error');
                 return;
             }
             
             // Show loading state
-            submitButton.textContent = 'Sending...';
+            submitButton.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite;">⚡</span> Joining Waitlist...';
             submitButton.disabled = true;
             
-            // Create email content
-            const subject = 'New Chamber Waitlist Registration';
-            const body = `New member interest from Design District Chamber website:
-
-Name: ${name}
-Email: ${email}
-Company: ${company}
-Date: ${new Date().toLocaleString()}
-Source: Chamber Website Waitlist
-
-Please follow up with this lead for membership information.`;
-            
-            // Create mailto link
-            const mailtoLink = `mailto:info@miamidesigndistrictchamberofcommerce.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Track form submission event with GTM
-            if (typeof dataLayer !== 'undefined') {
-                dataLayer.push({
-                    'event': 'generate_lead',
-                    'event_category': 'engagement',
-                    'event_label': 'waitlist_signup',
-                    'lead_name': name,
-                    'lead_email': email,
-                    'lead_company': company
+            try {
+                // Submit to our API (saves to Notion + Supabase + sends email)
+                const response = await fetch('/api/chamber-waitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        company: company || null
+                    })
                 });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Track form submission event with GTM
+                    if (typeof dataLayer !== 'undefined') {
+                        dataLayer.push({
+                            'event': 'generate_lead',
+                            'event_category': 'engagement',
+                            'event_label': 'waitlist_signup',
+                            'lead_name': name,
+                            'lead_email': email,
+                            'lead_company': company
+                        });
+                    }
+                    
+                    // Show detailed success message
+                    let successMsg = `🎉 <strong>Welcome to the waitlist!</strong><br><br>`;
+                    successMsg += `✅ Saved to database<br>`;
+                    if (result.data.saved_to_notion) {
+                        successMsg += `✅ Added to Notion<br>`;
+                    }
+                    if (result.data.email_sent) {
+                        successMsg += `✅ Welcome email sent<br>`;
+                    }
+                    successMsg += `<br>Check your email for our welcome message!`;
+                    
+                    showMessage(successMsg, 'success');
+                    
+                    // Clear form
+                    document.getElementById('nameInput').value = '';
+                    document.getElementById('emailInput').value = '';
+                    document.getElementById('companyInput').value = '';
+                    
+                } else if (response.status === 409) {
+                    // Duplicate email
+                    showMessage('⚠️ This email is already on our waitlist!', 'warning');
+                } else {
+                    // Other error
+                    showMessage(`❌ ${result.error || 'Something went wrong. Please try again.'}`, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showMessage('❌ Network error. Please check your connection and try again.', 'error');
             }
             
-            // Show success message
-            document.getElementById('successMessage').innerHTML = '✓ Thank you! We\'ll keep you updated on our launch and membership opportunities.';
-            document.getElementById('successMessage').style.display = 'block';
-            document.getElementById('successMessage').style.background = '#28a745';
-            document.getElementById('successMessage').style.color = 'white';
-            document.getElementById('successMessage').style.padding = '1rem';
-            document.getElementById('successMessage').style.borderRadius = '8px';
-            document.getElementById('successMessage').style.marginTop = '1rem';
-            
-            // Clear form after delay
-            setTimeout(() => {
-                document.getElementById('nameInput').value = '';
-                document.getElementById('emailInput').value = '';
-                document.getElementById('companyInput').value = '';
-                
-                // Reset button
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
-            }, 2000);
-            
-            // Hide success message after 8 seconds
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 8000);
+            // Reset button
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
         });
+        
+        // Helper function to show messages
+        function showMessage(message, type) {
+            const successElement = document.getElementById('successMessage');
+            successElement.innerHTML = message;
+            successElement.style.display = 'block';
+            successElement.style.padding = '1rem';
+            successElement.style.borderRadius = '8px';
+            successElement.style.marginTop = '1rem';
+            
+            // Style based on type
+            switch(type) {
+                case 'success':
+                    successElement.style.background = '#28a745';
+                    successElement.style.color = 'white';
+                    break;
+                case 'error':
+                    successElement.style.background = '#dc3545';
+                    successElement.style.color = 'white';
+                    break;
+                case 'warning':
+                    successElement.style.background = '#ffc107';
+                    successElement.style.color = '#000';
+                    break;
+                default:
+                    successElement.style.background = '#17a2b8';
+                    successElement.style.color = 'white';
+            }
+            
+            // Hide message after 8 seconds
+            setTimeout(() => {
+                successElement.style.display = 'none';
+            }, 8000);
+        }
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
