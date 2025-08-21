@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leadership Accountability Assessment - AskApril AI</title>
+    <title>The Positive Accountability Index™ - AskApril AI</title>
     <style>
         * {
             margin: 0;
@@ -13,9 +13,38 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            background: #0a0a0a;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .beams-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            filter: blur(15px);
+        }
+
+        .beams-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.05);
+            backdrop-filter: blur(50px);
+            z-index: -1;
+            animation: pulse-overlay 10s ease-in-out infinite;
+        }
+
+        @keyframes pulse-overlay {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.15; }
         }
 
         .container {
@@ -29,7 +58,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
             padding: 40px;
             text-align: center;
@@ -67,10 +96,10 @@
         .quiz-start {
             text-align: center;
             padding: 30px;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 48, 163, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.1) 0%, rgba(22, 33, 62, 0.1) 100%);
             border-radius: 15px;
             margin-bottom: 30px;
-            border-left: 4px solid #1e3a8a;
+            border-left: 4px solid #ffd700;
         }
 
         .quiz-start h3 {
@@ -85,7 +114,7 @@
         }
 
         .quiz-start button {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
             border: none;
             padding: 15px 30px;
@@ -109,7 +138,7 @@
         }
 
         .progress-fill {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #ffd700 0%, #f1c40f 100%);
             height: 100%;
             border-radius: 3px;
             transition: width 0.3s ease;
@@ -139,8 +168,8 @@
         }
 
         .question-number {
-            background: #1e3a8a;
-            color: white;
+            background: #ffd700;
+            color: #1a1a2e;
             width: 35px;
             height: 35px;
             border-radius: 50%;
@@ -153,15 +182,15 @@
         }
 
         .framework-step {
-            background: rgba(30, 58, 138, 0.1);
+            background: rgba(26, 26, 46, 0.1);
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
-            border-left: 4px solid #1e3a8a;
+            border-left: 4px solid #ffd700;
         }
 
         .framework-step h4 {
-            color: #1e3a8a;
+            color: #1a1a2e;
             font-size: 1em;
             margin-bottom: 5px;
             font-weight: 600;
@@ -188,14 +217,14 @@
         }
 
         .answer-option:hover {
-            border-color: #1e3a8a;
+            border-color: #ffd700;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
         }
 
         .answer-option.selected {
-            border-color: #1e3a8a;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(55, 48, 163, 0.1) 100%);
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(241, 196, 15, 0.1) 100%);
         }
 
         .answer-option input[type="radio"] {
@@ -223,7 +252,7 @@
         }
 
         .nav-button {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -265,7 +294,7 @@
         }
 
         .score-display {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
             padding: 40px;
             border-radius: 20px;
@@ -331,7 +360,7 @@
         }
 
         .cta-section {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
             padding: 40px;
             border-radius: 20px;
@@ -352,8 +381,8 @@
         }
 
         .cta-button {
-            background: white;
-            color: #1e3a8a;
+            background: #ffd700;
+            color: #1a1a2e;
             padding: 15px 30px;
             border: none;
             border-radius: 10px;
@@ -397,9 +426,13 @@
     </style>
 </head>
 <body>
+    <!-- Animated Beams Background -->
+    <canvas class="beams-canvas" id="beamsCanvas"></canvas>
+    <div class="beams-overlay"></div>
+
     <div class="container">
         <div class="header">
-            <h1>🎯 Leadership Accountability Assessment</h1>
+            <h1>The Positive Accountability Index™</h1>
             <p class="subtitle">Discover Your Leadership Strengths Using the 9-Step Accountability Framework</p>
             <div class="value-prop">
                 <div class="value-prop-text">
@@ -430,27 +463,27 @@
                         <h4>Step 1: Right Person, Right Role</h4>
                         <p>Ensuring you have the right people in positions that match their strengths and capabilities</p>
                     </div>
-                    <h3><span class="question-number">1</span>How effectively do you ensure people are in roles that match their strengths and capabilities?</h3>
+                    <h3><span class="question-number">1</span>Honestly: When you need something done, how often do you actually match the person to the role vs. just assigning it to whoever's available?</h3>
                     <div class="answers">
                         <label class="answer-option">
                             <input type="radio" name="q1" value="1">
-                            <div class="answer-text">Rarely Consider Role-Person Fit</div>
-                            <div class="answer-description">I assign people based on availability rather than strengths or role requirements</div>
+                            <div class="answer-text">Never</div>
+                            <div class="answer-description">I assign based on who's available or who I think of first. Figuring out strengths takes too much time</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q1" value="2">
-                            <div class="answer-text">Sometimes Consider Fit</div>
-                            <div class="answer-description">I try to match people to roles but often make compromises due to urgency or limited options</div>
+                            <div class="answer-text">Sometimes</div>
+                            <div class="answer-description">For big projects I think about fit, but for daily tasks I just assign to whoever can do it</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q1" value="3">
-                            <div class="answer-text">Usually Assess Role Fit</div>
-                            <div class="answer-description">I generally consider strengths and capabilities when assigning roles, with occasional mismatches</div>
+                            <div class="answer-text">Usually</div>
+                            <div class="answer-description">I try to match strengths most of the time, but when I'm slammed I default to convenience</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q1" value="4">
-                            <div class="answer-text">Always Ensure Perfect Alignment</div>
-                            <div class="answer-description">I systematically assess and align people's strengths with role requirements before any assignment</div>
+                            <div class="answer-text">Always</div>
+                            <div class="answer-description">Even for small tasks, I pause to think "who's best suited for this?" - it saves time in the long run</div>
                         </label>
                     </div>
                 </div>
@@ -461,27 +494,27 @@
                         <h4>Step 2: Expectations Are Clear & Confirmed</h4>
                         <p>Ensuring all expectations are crystal clear, documented, and mutually understood</p>
                     </div>
-                    <h3><span class="question-number">2</span>How clearly do you communicate and confirm expectations with your team members?</h3>
+                    <h3><span class="question-number">2</span>Be honest: How often do you actually have your team validate understanding by showing you what they heard (even when you're rushed or they're experienced)?</h3>
                     <div class="answers">
                         <label class="answer-option">
                             <input type="radio" name="q2" value="1">
-                            <div class="answer-text">Expectations Are Vague</div>
-                            <div class="answer-description">I assume people know what's expected and rarely check for understanding</div>
+                            <div class="answer-text">Never</div>
+                            <div class="answer-description">I assume they understand. Asking them to repeat back feels like micromanaging or a waste of time</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q2" value="2">
-                            <div class="answer-text">Basic Expectations Shared</div>
-                            <div class="answer-description">I communicate general expectations but don't always confirm understanding or document details</div>
+                            <div class="answer-text">Sometimes</div>
+                            <div class="answer-description">Only for complex tasks or new people. When I'm busy or they're experienced, I skip this step</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q2" value="3">
-                            <div class="answer-text">Clear Communication Most Times</div>
-                            <div class="answer-description">I usually provide clear expectations and check for understanding, with occasional gaps</div>
+                            <div class="answer-text">Usually</div>
+                            <div class="answer-description">I do this most of the time, but honestly slip when under pressure or with people I trust</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q2" value="4">
-                            <div class="answer-text">Crystal Clear & Confirmed</div>
-                            <div class="answer-description">I always ensure expectations are specific, documented, and confirmed with mutual understanding</div>
+                            <div class="answer-text">Always</div>
+                            <div class="answer-description">Every single time, even with senior people and even when I'm rushed - I've seen too many misunderstandings to skip this</div>
                         </label>
                     </div>
                 </div>
@@ -554,27 +587,27 @@
                         <h4>Step 5: Course-Correct Quickly</h4>
                         <p>Making rapid adjustments when things aren't going according to plan</p>
                     </div>
-                    <h3><span class="question-number">5</span>How quickly do you course-correct when expectations aren't being met?</h3>
+                    <h3><span class="question-number">5</span>Reality check: When you see someone missing expectations, how quickly do you actually address it (not just think about addressing it)?</h3>
                     <div class="answers">
                         <label class="answer-option">
                             <input type="radio" name="q5" value="1">
-                            <div class="answer-text">Slow to React</div>
-                            <div class="answer-description">I often wait too long hoping things will improve before taking action</div>
+                            <div class="answer-text">Never</div>
+                            <div class="answer-description">I notice but keep hoping it will fix itself. Confrontation is uncomfortable and maybe they'll figure it out</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q5" value="2">
-                            <div class="answer-text">Eventually Address Issues</div>
-                            <div class="answer-description">I address problems but it usually takes several instances before I act</div>
+                            <div class="answer-text">Sometimes</div>
+                            <div class="answer-description">I address it when it becomes a big problem, but I let small stuff slide hoping it won't happen again</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q5" value="3">
-                            <div class="answer-text">Timely Course Corrections</div>
-                            <div class="answer-description">I generally address issues within a reasonable timeframe with occasional delays</div>
+                            <div class="answer-text">Usually</div>
+                            <div class="answer-description">I generally speak up within a few days, though I sometimes procrastinate on difficult conversations</div>
                         </label>
                         <label class="answer-option">
                             <input type="radio" name="q5" value="4">
-                            <div class="answer-text">Immediate Course Correction</div>
-                            <div class="answer-description">I identify and address deviations quickly, making adjustments as soon as issues are apparent</div>
+                            <div class="answer-text">Always</div>
+                            <div class="answer-description">Same day or next day at latest. I've learned that small issues become big problems if I wait</div>
                         </label>
                     </div>
                 </div>
@@ -714,7 +747,7 @@
 
             <!-- Results -->
             <div class="results" id="results">
-                <h2 style="color: #4a5568; margin-bottom: 20px;">Your Leadership Accountability Assessment Results</h2>
+                <h2 style="color: #4a5568; margin-bottom: 20px;">Your Positive Accountability Index™ Results</h2>
                 
                 <div class="score-display">
                     <div class="score-number" id="totalScore">0</div>
@@ -725,7 +758,7 @@
                 <div id="stepBreakdown"></div>
 
                 <!-- NewZenler Form Integration -->
-                <div style="background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 20px; margin: 30px 0; border-left: 4px solid #1e3a8a;">
+                <div style="background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 20px; margin: 30px 0; border-left: 4px solid #ffd700;">
                     <div class="text-center">
                         <h3 style="color: #4a5568; margin-bottom: 15px; font-size: 1.8em;">Get Your Personalized Leadership Development Plan</h3>
                         <p style="color: #718096; margin-bottom: 25px; font-size: 1.1em;">Enter your details to receive your detailed action plan for mastering all 9 accountability steps:</p>
@@ -733,11 +766,11 @@
                         <div style="margin: 20px 0;">
                             <p style="font-size: 1em; margin-bottom: 15px; color: #4a5568;"><strong>You'll receive:</strong></p>
                             <ul style="text-align: left; max-width: 450px; margin: 0 auto 25px; color: #718096;">
-                                <li style="margin: 8px 0;">✅ Step-by-step action plan for each framework step</li>
-                                <li style="margin: 8px 0;">✅ Leadership accountability templates</li>
-                                <li style="margin: 8px 0;">✅ 30-day free trial to AskApril AI</li>
-                                <li style="margin: 8px 0;">✅ Weekly office hours with expert guidance</li>
-                                <li style="margin: 8px 0;">✅ Transform from operator to owner guide</li>
+                                <li style="margin: 8px 0;">• Step-by-step action plan for each framework step</li>
+                                <li style="margin: 8px 0;">• Leadership accountability templates</li>
+                                <li style="margin: 8px 0;">• Weekly office hours with expert guidance</li>
+                                <li style="margin: 8px 0;">• Transform from operator to owner guide</li>
+                                <li style="margin: 8px 0;">• Comprehensive leadership development resources</li>
                             </ul>
                         </div>
                     </div>
@@ -746,14 +779,14 @@
                     <div style="max-width: 500px; margin: 0 auto;">
                         <form id="leadForm" style="padding: 20px;">
                             <div style="margin-bottom: 20px;">
-                                <input type="text" id="firstName" placeholder="First Name" required="" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;">
+                                <input type="text" id="firstName" placeholder="First Name" required="" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;" onfocus="this.style.borderColor='#ffd700'" onblur="this.style.borderColor='#e2e8f0'">
                             </div>
 
                             <div style="margin-bottom: 20px;">
-                                <input type="email" id="email" placeholder="Email" required="" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;">
+                                <input type="email" id="email" placeholder="Email" required="" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;" onfocus="this.style.borderColor='#ffd700'" onblur="this.style.borderColor='#e2e8f0'">
                             </div>
                             
-                            <button type="submit" style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: 600; width: 100%; transition: transform 0.2s ease;">
+                            <button type="submit" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: 600; width: 100%; transition: transform 0.2s ease;">
                                 Get My Leadership Development Plan Now
                             </button>
                         </form>
@@ -766,6 +799,40 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 40px 20px; text-align: center; margin-top: 50px;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 30px;">
+                <!-- Company Info -->
+                <div>
+                    <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.2em;">AskApril AI</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6; margin-bottom: 15px;">Transform your leadership with AI-powered accountability frameworks and personalized development plans.</p>
+                </div>
+                
+                <!-- Book Section -->
+                <div>
+                    <h4 style="color: #ffd700; margin-bottom: 15px; font-size: 1.1em;">Featured Book</h4>
+                    <div style="display: flex; align-items: center; gap: 15px; justify-content: center;">
+                        <div style="width: 80px; height: 100px; background: #ffd700; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #1a1a2e; font-weight: bold; font-size: 12px; text-align: center;">
+                            Positive<br>Accountability<br>Book
+                        </div>
+                        <div style="text-align: left;">
+                            <h5 style="color: white; margin: 0 0 5px 0; font-size: 1em;">Positive Accountability</h5>
+                            <p style="color: rgba(255, 255, 255, 0.7); margin: 0; font-size: 0.9em;">Master the 9-step framework for leadership accountability</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div style="border-top: 1px solid rgba(255, 215, 0, 0.3); padding-top: 20px; margin-top: 20px;">
+                <p style="color: rgba(255, 255, 255, 0.6); margin: 0; font-size: 0.9em;">
+                    © 2024 AskApril AI. All rights reserved. | Empowering leaders through AI-driven accountability.
+                </p>
+            </div>
+        </div>
+    </footer>
 
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -1029,20 +1096,20 @@
                         // Show success message
                         document.querySelector('[style*="background: rgba(255, 255, 255, 0.95)"]').innerHTML = `
                             <div style="text-align: center; padding: 40px;">
-                                <h3 style="color: #48bb78; margin-bottom: 20px; font-size: 1.8em;">🎉 Success!</h3>
+                                <h3 style="color: #48bb78; margin-bottom: 20px; font-size: 1.8em;">Success!</h3>
                                 <p style="color: #4a5568; margin-bottom: 25px; font-size: 1.1em;">Your personalized Leadership Development Plan has been sent to your email!</p>
                                 <div style="background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 178, 172, 0.1) 100%); padding: 20px; border-radius: 15px; margin: 20px 0; border-left: 4px solid #48bb78;">
                                     <p style="color: #4a5568; margin-bottom: 15px;"><strong>Check your email for:</strong></p>
                                     <ul style="text-align: left; max-width: 400px; margin: 0 auto; color: #718096;">
-                                        <li style="margin: 8px 0;">✅ Your personalized leadership assessment results</li>
-                                        <li style="margin: 8px 0;">✅ Detailed action plan for each framework step</li>
-                                        <li style="margin: 8px 0;">✅ Leadership accountability templates</li>
-                                        <li style="margin: 8px 0;">✅ Free trial invitation to AskApril AI</li>
+                                        <li style="margin: 8px 0;">• Your personalized leadership assessment results</li>
+                                        <li style="margin: 8px 0;">• Detailed action plan for each framework step</li>
+                                        <li style="margin: 8px 0;">• Leadership accountability templates</li>
+                                        <li style="margin: 8px 0;">• Free trial invitation to AskApril AI</li>
                                     </ul>
                                 </div>
-                                <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                                <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
                                     <p style="margin-bottom: 15px;"><strong>Ready to accelerate your leadership transformation?</strong></p>
-                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: white; color: #1e3a8a; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
+                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: #ffd700; color: #1a1a2e; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
                                 </div>
                                 <p style="color: #718096; font-size: 0.9em;">Check your email (including spam folder) for your comprehensive leadership development guide.</p>
                             </div>
@@ -1054,11 +1121,11 @@
                         // Show fallback success message
                         document.querySelector('[style*="background: rgba(255, 255, 255, 0.95)"]').innerHTML = `
                             <div style="text-align: center; padding: 40px;">
-                                <h3 style="color: #f6ad55; margin-bottom: 20px; font-size: 1.8em;">⚠️ Almost There!</h3>
+                                <h3 style="color: #f6ad55; margin-bottom: 20px; font-size: 1.8em;">Almost There!</h3>
                                 <p style="color: #4a5568; margin-bottom: 25px; font-size: 1.1em;">Your assessment is complete! We're processing your results.</p>
                                 <p style="color: #718096;">If you don't receive an email within a few minutes, please contact us with your assessment details.</p>
-                                <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
-                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: white; color: #1e3a8a; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
+                                <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: #ffd700; color: #1a1a2e; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
                                 </div>
                             </div>
                         `;
@@ -1072,6 +1139,112 @@
         });
 
         updateNavigation();
+
+        // Beams Background Animation
+        class BeamsBackground {
+            constructor() {
+                this.canvas = document.getElementById('beamsCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.beams = [];
+                this.animationFrame = null;
+                this.MINIMUM_BEAMS = 20;
+                
+                this.init();
+            }
+            
+            init() {
+                this.updateCanvasSize();
+                window.addEventListener('resize', () => this.updateCanvasSize());
+                this.animate();
+            }
+            
+            updateCanvasSize() {
+                const dpr = window.devicePixelRatio || 1;
+                this.canvas.width = window.innerWidth * dpr;
+                this.canvas.height = window.innerHeight * dpr;
+                this.canvas.style.width = `${window.innerWidth}px`;
+                this.canvas.style.height = `${window.innerHeight}px`;
+                this.ctx.scale(dpr, dpr);
+                
+                const totalBeams = this.MINIMUM_BEAMS * 1.5;
+                this.beams = Array.from({ length: totalBeams }, (_, index) => 
+                    this.createBeam(index, totalBeams)
+                );
+            }
+            
+            createBeam(index, totalBeams) {
+                const angle = -35 + Math.random() * 10;
+                return {
+                    x: Math.random() * window.innerWidth * 1.5 - window.innerWidth * 0.25,
+                    y: Math.random() * window.innerHeight * 1.5 - window.innerHeight * 0.25,
+                    width: 30 + Math.random() * 60,
+                    length: window.innerHeight * 2.5,
+                    angle: angle,
+                    speed: 0.6 + Math.random() * 1.2,
+                    opacity: 0.12 + Math.random() * 0.16,
+                    hue: 45 + Math.random() * 15, // Yellow range for our theme
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: 0.02 + Math.random() * 0.03,
+                };
+            }
+            
+            resetBeam(beam, index, totalBeams) {
+                const column = index % 3;
+                const spacing = window.innerWidth / 3;
+                
+                beam.y = window.innerHeight + 100;
+                beam.x = column * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
+                beam.width = 100 + Math.random() * 100;
+                beam.speed = 0.5 + Math.random() * 0.4;
+                beam.hue = 45 + (index * 15) / totalBeams; // Yellow range
+                beam.opacity = 0.2 + Math.random() * 0.1;
+                return beam;
+            }
+            
+            drawBeam(beam) {
+                this.ctx.save();
+                this.ctx.translate(beam.x, beam.y);
+                this.ctx.rotate((beam.angle * Math.PI) / 180);
+                
+                const pulsingOpacity = beam.opacity * (0.8 + Math.sin(beam.pulse) * 0.2);
+                
+                const gradient = this.ctx.createLinearGradient(0, 0, 0, beam.length);
+                gradient.addColorStop(0, `hsla(${beam.hue}, 85%, 65%, 0)`);
+                gradient.addColorStop(0.1, `hsla(${beam.hue}, 85%, 65%, ${pulsingOpacity * 0.5})`);
+                gradient.addColorStop(0.4, `hsla(${beam.hue}, 85%, 65%, ${pulsingOpacity})`);
+                gradient.addColorStop(0.6, `hsla(${beam.hue}, 85%, 65%, ${pulsingOpacity})`);
+                gradient.addColorStop(0.9, `hsla(${beam.hue}, 85%, 65%, ${pulsingOpacity * 0.5})`);
+                gradient.addColorStop(1, `hsla(${beam.hue}, 85%, 65%, 0)`);
+                
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length);
+                this.ctx.restore();
+            }
+            
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.filter = 'blur(35px)';
+                
+                const totalBeams = this.beams.length;
+                this.beams.forEach((beam, index) => {
+                    beam.y -= beam.speed;
+                    beam.pulse += beam.pulseSpeed;
+                    
+                    if (beam.y + beam.length < -100) {
+                        this.resetBeam(beam, index, totalBeams);
+                    }
+                    
+                    this.drawBeam(beam);
+                });
+                
+                this.animationFrame = requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // Initialize beams background
+        document.addEventListener('DOMContentLoaded', () => {
+            new BeamsBackground();
+        });
     </script>
 </body>
 </html>
