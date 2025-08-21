@@ -1,16 +1,49 @@
 // Chamber waitlist API - Saves to both Notion & Supabase + sends auto-responder
-import { Client } from '@notionhq/client'
-import { supabaseAdmin } from '../lib/supabase.js'
-import { emailService } from '../lib/email-service.js'
 
-// Initialize Notion client
-const notion = new Client({
-  auth: process.env.NOTION_API_KEY
-})
+// Dynamic imports to handle missing dependencies gracefully
+let notion = null
+let supabaseAdmin = null
+let emailService = null
+
+// Initialize clients
+async function initializeClients() {
+  try {
+    // Initialize Supabase
+    const { supabaseAdmin: admin } = await import('../lib/supabase.js')
+    supabaseAdmin = admin
+    
+    // Initialize Notion if available
+    if (process.env.NOTION_API_KEY) {
+      try {
+        const { Client } = await import('@notionhq/client')
+        notion = new Client({
+          auth: process.env.NOTION_API_KEY
+        })
+      } catch (error) {
+        console.warn('Notion client not available:', error.message)
+      }
+    }
+    
+    // Initialize email service if available
+    try {
+      const { emailService: service } = await import('../lib/email-service.js')
+      emailService = service
+    } catch (error) {
+      console.warn('Email service not available:', error.message)
+    }
+  } catch (error) {
+    console.error('Failed to initialize clients:', error)
+  }
+}
 
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID
 
 export default async function handler(req, res) {
+  // Initialize clients on first request
+  if (!supabaseAdmin) {
+    await initializeClients()
+  }
+
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
@@ -45,6 +78,15 @@ export default async function handler(req, res) {
     }
 
     console.log('Processing waitlist signup:', { name, email, company })
+
+    // Check if Supabase is available
+    if (!supabaseAdmin) {
+      return res.status(500).json({
+        success: false,
+        error: 'Database service not available',
+        message: 'Please try again later'
+      })
+    }
 
     // 1. Check for duplicates in Supabase
     const { data: existingEntry, error: checkError } = await supabaseAdmin
@@ -89,7 +131,7 @@ export default async function handler(req, res) {
     // 3. Save to Notion (parallel to email sending)
     let notionSuccess = false
     try {
-      if (NOTION_DATABASE_ID) {
+      if (notion && NOTION_DATABASE_ID) {
         const notionResponse = await notion.pages.create({
           parent: {
             database_id: NOTION_DATABASE_ID
@@ -117,6 +159,8 @@ export default async function handler(req, res) {
         })
         notionSuccess = true
         console.log('✅ Saved to Notion:', notionResponse.id)
+      } else {
+        console.log('ℹ️ Notion not configured - skipping')
       }
     } catch (notionError) {
       console.error('⚠️ Notion save failed (non-critical):', notionError.message)
@@ -128,25 +172,30 @@ export default async function handler(req, res) {
     let emailDetails = 'Email service not configured'
     
     try {
-      const emailResult = await emailService.sendWelcomeEmail(name.trim(), email.toLowerCase().trim())
-      
-      if (emailResult.success) {
-        emailSent = true
-        emailDetails = emailResult.message
-        console.log('✅ Auto-responder sent:', emailResult.messageId)
+      if (emailService) {
+        const emailResult = await emailService.sendWelcomeEmail(name.trim(), email.toLowerCase().trim())
+        
+        if (emailResult.success) {
+          emailSent = true
+          emailDetails = emailResult.message
+          console.log('✅ Auto-responder sent:', emailResult.messageId)
 
-        // Update Supabase record to mark email as sent
-        await supabaseAdmin
-          .from('chamber_waitlist')
-          .update({
-            auto_responder_sent: true,
-            auto_responder_sent_at: new Date().toISOString()
-          })
-          .eq('id', supabaseData.id)
+          // Update Supabase record to mark email as sent
+          await supabaseAdmin
+            .from('chamber_waitlist')
+            .update({
+              auto_responder_sent: true,
+              auto_responder_sent_at: new Date().toISOString()
+            })
+            .eq('id', supabaseData.id)
 
+        } else {
+          emailDetails = emailResult.error
+          console.error('❌ Email failed:', emailResult.error)
+        }
       } else {
-        emailDetails = emailResult.error
-        console.error('❌ Email failed:', emailResult.error)
+        console.log('ℹ️ Email service not configured - skipping')
+        emailDetails = 'Email service not available'
       }
     } catch (emailError) {
       console.error('❌ Email service error:', emailError.message)
