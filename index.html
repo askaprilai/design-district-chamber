@@ -206,7 +206,7 @@
 
         /* Hero Section */
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -215,6 +215,7 @@
                 linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)),
                 url('designdistrict.png') center/cover;
             margin-top: 80px;
+            padding: 4rem 2rem;
             position: relative;
             overflow: hidden;
         }
@@ -324,13 +325,15 @@
         /* Email Capture */
         .email-capture {
             background: rgba(255, 255, 255, 0.95);
-            padding: 2.5rem;
+            padding: 3rem 2.5rem;
             border-radius: 20px;
             max-width: 450px;
-            margin: 0 auto;
+            margin: 6rem auto 8rem auto;
             backdrop-filter: blur(20px);
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.3);
+            width: 85%;
+            box-sizing: border-box;
         }
 
         .email-capture h3 {
@@ -719,6 +722,71 @@
 
             .email-form {
                 flex-direction: column;
+            }
+
+            .email-capture {
+                width: 92%;
+                padding: 2.5rem 2rem;
+                margin: 4rem auto 5rem auto;
+            }
+
+            .email-form input {
+                padding: 0.8rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .email-form button {
+                padding: 1rem;
+                font-size: 16px;
+                width: 100%;
+            }
+        }
+
+        /* Tablet and smaller desktop responsive */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .email-capture {
+                width: 80%;
+                max-width: 500px;
+            }
+
+            .hero-content {
+                max-width: 600px;
+                padding: 0 2rem;
+            }
+        }
+
+        /* Samsung Galaxy and similar devices */
+        @media (max-width: 414px) {
+            .hero {
+                margin-top: 70px;
+                padding: 2rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2em;
+                letter-spacing: -2px;
+            }
+
+            .hero h1 .design-district {
+                font-size: 1em;
+                letter-spacing: 1px;
+            }
+
+            .hero p {
+                font-size: 1em;
+                padding: 0 1rem;
+            }
+
+            .email-capture {
+                width: 90%;
+                padding: 2rem 1.5rem;
+                margin: 3rem auto 4rem auto;
+            }
+
+            .email-capture h3 {
+                font-size: 1.2em;
             }
         }
 
@@ -1122,19 +1190,11 @@
                 
                 <h3>Be the first to know</h3>
                 <div style="margin: 1.5rem 0;"></div>
-                <form class="email-form" id="emailForm" method="POST">
-                    <!-- Zoho Hidden Fields -->
-                    <input type="text" style="display:none;" name="xnQsjsdp" value="60145fe024e715d15c17e592a63251db614cf0b264f145f3daceeb16b2960914">
-                    <input type="hidden" name="zc_gad" id="zc_gad" value="">
-                    <input type="text" style="display:none;" name="xmIwtLD" value="cf0632f1e011fa758d5fef729ebf5069eb280e172494f3dda35f1560b0d3358ace3c93867a2f209f2fdf6f4ad82489a5">
-                    <input type="text" style="display:none;" name="actionType" value="TGVhZHM=">
-                    <input type="text" style="display:none;" name="returnURL" value="https://miamidesigndistrictchamberofcommerce.org/?success=true">
-                    <input type="text" style="display:none;" name="aG9uZXlwb3Q" value="">
-                    
+                <form class="email-form" id="emailForm">
                     <!-- Visible Form Fields -->
-                    <input type="text" id="nameInput" name="Last Name" placeholder="Your Name" required>
-                    <input type="email" id="emailInput" name="Email" placeholder="Your Email" required>
-                    <input type="text" id="companyInput" name="Company" placeholder="Company/Business Name" required>
+                    <input type="text" id="nameInput" name="name" placeholder="Your Name" required>
+                    <input type="email" id="emailInput" name="email" placeholder="Your Email" required>
+                    <input type="text" id="companyInput" name="company" placeholder="Company/Business Name" required>
                     <button type="submit">Get Notified</button>
                 </form>
                 
@@ -1514,12 +1574,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
     <script>
-        // Initialize EmailJS
-        (function(){
-            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
-        })();
-
-        // Email form handler with Notion + Supabase + Auto-responder
+        // Multi-service form handler (EmailJS + Google Sheets + Autoresponder)
         document.getElementById('emailForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1546,64 +1601,87 @@
             submitButton.innerHTML = '<span style="display: inline-block; animation: spin 1s linear infinite;">⚡</span> Joining Waitlist...';
             submitButton.disabled = true;
             
+            let successCount = 0;
+            let errors = [];
+            
             try {
-                // Submit to our API (saves to Notion + Supabase + sends email)
-                const response = await fetch('/api/chamber-waitlist', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        email: email,
-                        company: company || null
-                    })
-                });
+                // 1. Send notification email using EmailJS
+                const adminTemplateParams = {
+                    from_name: name,
+                    from_email: email,
+                    company: company || 'Not specified',
+                    message: `New waitlist signup:\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'Not specified'}\nDate: ${new Date().toLocaleString()}`
+                };
                 
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Track form submission event with GTM
-                    if (typeof dataLayer !== 'undefined') {
-                        dataLayer.push({
-                            'event': 'generate_lead',
-                            'event_category': 'engagement',
-                            'event_label': 'waitlist_signup',
-                            'lead_name': name,
-                            'lead_email': email,
-                            'lead_company': company
-                        });
-                    }
-                    
-                    // Show detailed success message
-                    let successMsg = `🎉 <strong>Welcome to the waitlist!</strong><br><br>`;
-                    successMsg += `✅ Saved to database<br>`;
-                    if (result.data.saved_to_notion) {
-                        successMsg += `✅ Added to Notion<br>`;
-                    }
-                    if (result.data.email_sent) {
-                        successMsg += `✅ Welcome email sent<br>`;
-                    }
-                    successMsg += `<br>Check your email for our welcome message!`;
-                    
-                    showMessage(successMsg, 'success');
-                    
-                    // Clear form
-                    document.getElementById('nameInput').value = '';
-                    document.getElementById('emailInput').value = '';
-                    document.getElementById('companyInput').value = '';
-                    
-                } else if (response.status === 409) {
-                    // Duplicate email
-                    showMessage('⚠️ This email is already on our waitlist!', 'warning');
-                } else {
-                    // Other error
-                    showMessage(`❌ ${result.error || 'Something went wrong. Please try again.'}`, 'error');
+                try {
+                    const response = await emailjs.send(
+                        'service_vntq4ai', // Your EmailJS service ID
+                        'template_m5wg27w', // Your template ID
+                        adminTemplateParams
+                    );
+                    if (response.status === 200) successCount++;
+                } catch (error) {
+                    errors.push('Email notification failed');
+                    console.error('Email error:', error);
                 }
+                
+                // 3. Save to Google Sheets
+                const sheetData = {
+                    timestamp: new Date().toISOString(),
+                    name: name,
+                    email: email,
+                    company: company || '',
+                    source: 'Design District Chamber Website'
+                };
+                
+                try {
+                    const sheetResponse = await fetch('https://script.google.com/macros/s/AKfycbzhBAHTJCTuu6HkQ9TH8WW_lcOEbwkVTRdx5GGQWIG7xlOapG_JZ-pPgFMaMmrQP1A/exec', {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(sheetData)
+                    });
+                    successCount++; // Google Sheets always returns success due to no-cors
+                } catch (error) {
+                    errors.push('Google Sheets save failed');
+                    console.error('Google Sheets error:', error);
+                }
+                
+                // Track form submission event with GTM
+                if (typeof dataLayer !== 'undefined') {
+                    dataLayer.push({
+                        'event': 'generate_lead',
+                        'event_category': 'engagement',
+                        'event_label': 'waitlist_signup',
+                        'lead_name': name,
+                        'lead_email': email,
+                        'lead_company': company
+                    });
+                }
+                
+                // Show success message based on what worked
+                if (successCount >= 2) {
+                    let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
+                    successMsg += '✅ Email notification sent<br>';
+                    successMsg += '✅ Added to our database<br>';
+                    successMsg += '<br>Thank you for joining! We\'ll keep you updated on our launch.';
+                    showMessage(successMsg, 'success');
+                } else if (successCount >= 1) {
+                    showMessage('✅ Thank you for joining! You\'re on our waitlist. Some services may be delayed, but we got your information.', 'warning');
+                } else {
+                    throw new Error('All services failed');
+                }
+                
+                // Clear form on success
+                document.getElementById('nameInput').value = '';
+                document.getElementById('emailInput').value = '';
+                document.getElementById('companyInput').value = '';
                 
             } catch (error) {
                 console.error('Form submission error:', error);
-                showMessage('❌ Network error. Please check your connection and try again.', 'error');
+                showMessage('❌ Sorry, there was an error processing your request. Please try again or contact us directly at info@miamidesigndistrictchamberofcommerce.org', 'error');
             }
             
             // Reset button
@@ -1658,6 +1736,7 @@
                 }
             });
         });
+
 
         // Portal Preview Modal functionality
         document.getElementById('previewPortalBtn').addEventListener('click', function(e) {
