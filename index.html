@@ -1574,6 +1574,9 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
     <script>
+        // Initialize EmailJS
+        emailjs.init("SAU17WFhPmeQLrng7");
+        
         // Multi-service form handler (EmailJS + Google Sheets + Autoresponder)
         document.getElementById('emailForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1614,15 +1617,22 @@
                 };
                 
                 try {
+                    console.log('Attempting to send email with params:', adminTemplateParams);
                     const response = await emailjs.send(
                         'service_vntq4ai', // Your EmailJS service ID
                         'template_m5wg27w', // Your template ID
                         adminTemplateParams
                     );
-                    if (response.status === 200) successCount++;
+                    console.log('EmailJS response:', response);
+                    if (response.status === 200) {
+                        successCount++;
+                        console.log('Email sent successfully');
+                    }
                 } catch (error) {
                     errors.push('Email notification failed');
-                    console.error('Email error:', error);
+                    console.error('Email error details:', error);
+                    console.error('Email error text:', error.text);
+                    console.error('Email error status:', error.status);
                 }
                 
                 // 3. Save to Google Sheets
