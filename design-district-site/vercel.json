@@ -1,14 +1,10 @@
 {
   "cleanUrls": true,
-  "headers": [
+  "redirects": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
+      "source": "/about-us",
+      "destination": "/board-members",
+      "permanent": false
     }
   ]
 }
