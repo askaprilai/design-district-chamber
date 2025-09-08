@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touch2Massage - Professional Therapeutic Massage Therapy</title>
+    <meta name="description" content="Experience professional therapeutic massage therapy. Book online today for Swedish, deep tissue, hot stone, and sports massage. Licensed therapists, immediate availability.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: #2c5530;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #8fbc8f;
+        }
+        
+        .book-now-header {
+            background: #8fbc8f;
+            color: #2c5530;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .book-now-header:hover {
+            background: #7aa87a;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(44, 85, 48, 0.9), rgba(143, 188, 143, 0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f0f8f0" width="1200" height="800"/><circle fill="%23e8f5e8" cx="400" cy="200" r="150"/><circle fill="%23e0f0e0" cx="800" cy="600" r="200"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 140px 0 80px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-benefits {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin: 2rem auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+        }
+        
+        .hero-benefits p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #8fbc8f;
+            color: #2c5530;
+            padding: 18px 35px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            margin: 15px;
+            box-shadow: 0 4px 15px rgba(143, 188, 143, 0.3);
+        }
+        
+        .cta-button:hover {
+            background: #7aa87a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(143, 188, 143, 0.4);
+        }
+        
+        .cta-secondary {
+            background: transparent;
+            border: 2px solid #8fbc8f;
+            color: white;
+        }
+        
+        .cta-secondary:hover {
+            background: #8fbc8f;
+            color: #2c5530;
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c5530;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            border-top: 4px solid #8fbc8f;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #2c5530;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c5530;
+        }
+        
+        .service-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #8fbc8f;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-benefits {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        
+        .service-benefits li {
+            padding: 0.3rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+            color: #555;
+        }
+        
+        .service-benefits li:before {
+            content: "✓";
+            color: #8fbc8f;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Booking Section */
+        .booking {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #2c5530 0%, #8fbc8f 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .booking-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 2rem auto;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .testimonial-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 4px solid #8fbc8f;
+        }
+        
+        .stars {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: #2c5530;
+        }
+        
+        /* Trust Elements */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .trust-badge {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .trust-badge i {
+            font-size: 2.5rem;
+            color: #8fbc8f;
+            margin-bottom: 0.5rem;
+        }
+        
+        .trust-badge h4 {
+            color: #2c5530;
+            margin-bottom: 0.5rem;
+        }
+        
+        .trust-badge p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background: #2c5530;
+            color: white;
+            text-align: center;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .contact-item {
+            padding: 1.5rem;
+        }
+        
+        .contact-item i {
+            font-size: 2.5rem;
+            color: #8fbc8f;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-item h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .contact-item p {
+            opacity: 0.9;
+        }
+        
+        .emergency-booking {
+            background: rgba(143, 188, 143, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem auto;
+            max-width: 600px;
+            border: 2px solid #8fbc8f;
+        }
+        
+        .emergency-booking h3 {
+            color: #8fbc8f;
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a3a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .trust-badges {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 1rem auto;
+            }
+        }
+        
+        /* Floating Book Button */
+        .floating-book {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #8fbc8f;
+            color: #2c5530;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(143, 188, 143, 0.4);
+            z-index: 999;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .floating-book:hover {
+            background: #7aa87a;
+            transform: scale(1.1);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Floating Book Button -->
+    <a href="#booking" class="floating-book">
+        <i class="fas fa-calendar-plus"></i> Book Now
+    </a>
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">Touch2Massage</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#booking" class="book-now-header">Book Appointment</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Your Path to Pain Relief & Wellness</h1>
+            <p class="hero-subtitle">Professional therapeutic massage therapy designed to restore your body, reduce stress, and enhance your well-being. Licensed therapists. Immediate availability.</p>
+            
+            <div class="hero-benefits">
+                <p><strong>✓ Same-Day Appointments Available</strong> | <strong>✓ Licensed & Insured Therapists</strong> | <strong>✓ 100% Satisfaction Guarantee</strong></p>
+            </div>
+            
+            <a href="#booking" class="cta-button">Book Your Massage Today</a>
+            <a href="tel:+1234567890" class="cta-button cta-secondary">Call Now: (123) 456-7890</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Therapeutic Massage Services</h2>
+            <p class="section-subtitle">Choose from our range of professional massage therapies, each designed to address specific needs and promote healing</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-spa"></i></div>
+                    <h3>Swedish Relaxation Massage</h3>
+                    <div class="service-price">$80 - $120</div>
+                    <p>Perfect for stress relief and overall relaxation using gentle, flowing strokes to promote circulation and ease tension.</p>
+                    <ul class="service-benefits">
+                        <li>Reduces stress and anxiety</li>
+                        <li>Improves blood circulation</li>
+                        <li>Promotes better sleep</li>
+                        <li>60 or 90-minute sessions</li>
+                    </ul>
+                    <a href="#booking" class="cta-button">Book Swedish Massage</a>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-fist-raised"></i></div>
+                    <h3>Deep Tissue Massage</h3>
+                    <div class="service-price">$90 - $140</div>
+                    <p>Targeted therapy for chronic pain and muscle tension using firm pressure to reach deeper muscle layers.</p>
+                    <ul class="service-benefits">
+                        <li>Relieves chronic pain</li>
+                        <li>Breaks down muscle knots</li>
+                        <li>Improves mobility</li>
+                        <li>Reduces inflammation</li>
+                    </ul>
+                    <a href="#booking" class="cta-button">Book Deep Tissue</a>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-fire"></i></div>
+                    <h3>Hot Stone Massage</h3>
+                    <div class="service-price">$100 - $150</div>
+                    <p>Luxurious treatment combining heated stones with massage techniques for ultimate relaxation and healing.</p>
+                    <ul class="service-benefits">
+                        <li>Deep muscle relaxation</li>
+                        <li>Enhanced circulation</li>
+                        <li>Stress reduction</li>
+                        <li>Improved flexibility</li>
+                    </ul>
+                    <a href="#booking" class="cta-button">Book Hot Stone</a>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-running"></i></div>
+                    <h3>Sports Massage</h3>
+                    <div class="service-price">$85 - $130</div>
+                    <p>Specialized massage for athletes and active individuals focusing on performance enhancement and injury prevention.</p>
+                    <ul class="service-benefits">
+                        <li>Prevents sports injuries</li>
+                        <li>Enhances performance</li>
+                        <li>Speeds recovery</li>
+                        <li>Increases flexibility</li>
+                    </ul>
+                    <a href="#booking" class="cta-button">Book Sports Massage</a>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-baby"></i></div>
+                    <h3>Prenatal Massage</h3>
+                    <div class="service-price">$85 - $125</div>
+                    <p>Safe, gentle massage specifically designed for expectant mothers to reduce pregnancy-related discomfort.</p>
+                    <ul class="service-benefits">
+                        <li>Reduces pregnancy discomfort</li>
+                        <li>Improves sleep quality</li>
+                        <li>Decreases swelling</li>
+                        <li>Certified prenatal therapists</li>
+                    </ul>
+                    <a href="#booking" class="cta-button">Book Prenatal Massage</a>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Couples Massage</h3>
+                    <div class="service-price">$160 - $240</div>
+                    <p>Share a relaxing massage experience together in our private couples suite with two licensed therapists.</p>
+                    <ul class="service-benefits">
+                        <li>Private couples suite</li>
+                        <li>Two therapists simultaneously</li>
+                        <li>Perfect for special occasions</li>
+                        <li>Complimentary refreshments</li>
+                    </ul>
+                    <a href="#booking" class="cta-button">Book Couples Massage</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges -->
+    <section class="services">
+        <div class="container">
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <i class="fas fa-certificate"></i>
+                    <h4>Licensed Therapists</h4>
+                    <p>All therapists are state licensed and certified</p>
+                </div>
+                
+                <div class="trust-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Fully Insured</h4>
+                    <p>Complete liability coverage for your peace of mind</p>
+                </div>
+                
+                <div class="trust-badge">
+                    <i class="fas fa-clock"></i>
+                    <h4>Flexible Scheduling</h4>
+                    <p>Same-day appointments and evening hours available</p>
+                </div>
+                
+                <div class="trust-badge">
+                    <i class="fas fa-heart"></i>
+                    <h4>100% Satisfaction</h4>
+                    <p>Not satisfied? We'll make it right or refund your money</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking">
+        <div class="container">
+            <h2>Book Your Appointment Today</h2>
+            <p>Ready to experience the healing power of therapeutic massage? Book online or call us directly.</p>
+            
+            <div class="booking-form">
+                <h3>Quick Booking Form</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="service">Preferred Service</label>
+                        <select id="service" name="service" required>
+                            <option value="">Select a Service</option>
+                            <option value="swedish">Swedish Relaxation Massage</option>
+                            <option value="deep-tissue">Deep Tissue Massage</option>
+                            <option value="hot-stone">Hot Stone Massage</option>
+                            <option value="sports">Sports Massage</option>
+                            <option value="prenatal">Prenatal Massage</option>
+                            <option value="couples">Couples Massage</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Preferred Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time">Preferred Time</label>
+                        <select id="time" name="time" required>
+                            <option value="">Select Time</option>
+                            <option value="9am">9:00 AM</option>
+                            <option value="10am">10:00 AM</option>
+                            <option value="11am">11:00 AM</option>
+                            <option value="12pm">12:00 PM</option>
+                            <option value="1pm">1:00 PM</option>
+                            <option value="2pm">2:00 PM</option>
+                            <option value="3pm">3:00 PM</option>
+                            <option value="4pm">4:00 PM</option>
+                            <option value="5pm">5:00 PM</option>
+                            <option value="6pm">6:00 PM</option>
+                            <option value="7pm">7:00 PM</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Special Requests or Health Concerns</label>
+                        <textarea id="message" name="message" rows="3" placeholder="Any specific areas of focus, injuries, or health conditions we should know about?"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="cta-button" style="width: 100%;">Book My Appointment</button>
+                </form>
+            </div>
+            
+            <p style="margin-top: 2rem; font-size: 1.1rem;">
+                <strong>Need immediate assistance?</strong><br>
+                Call us at <a href="tel:+1234567890" style="color: #8fbc8f;">(123) 456-7890</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <p class="section-subtitle">Join thousands of satisfied clients who have experienced the healing power of our therapeutic massage</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"After months of chronic back pain, Sarah's deep tissue massage provided immediate relief. I can finally sleep through the night again. The best investment in my health I've ever made!"</p>
+                    <div class="testimonial-author">- Jennifer M., Marketing Executive</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"The prenatal massage during my pregnancy was a lifesaver. The therapist was so knowledgeable and made me feel completely comfortable. I booked monthly sessions throughout my entire pregnancy."</p>
+                    <div class="testimonial-author">- Maria Rodriguez, New Mom</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"As a marathon runner, the sports massage has become essential to my training. It's helped prevent injuries and improved my recovery time dramatically. Professional service every time!"</p>
+                    <div class="testimonial-author">- David Chen, Professional Athlete</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"My wife and I book couples massages here for special occasions. The atmosphere is perfect, the therapists are skilled, and we always leave feeling completely relaxed and reconnected."</p>
+                    <div class="testimonial-author">- Robert & Linda Johnson</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"I was skeptical about massage therapy, but after my first Swedish massage here, I'm a convert. The stress relief is incredible, and the therapist explained everything. Booking monthly now!"</p>
+                    <div class="testimonial-author">- Amanda Foster, Teacher</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"The hot stone massage is pure luxury! It's my monthly treat to myself. The therapists are professional, the facility is clean, and I always feel like a new person afterward."</p>
+                    <div class="testimonial-author">- Patricia Williams, Nurse</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact Touch2Massage</h2>
+            <p>Ready to book your therapeutic massage? We're here to help you feel your best.</p>
+            
+            <div class="emergency-booking">
+                <h3><i class="fas fa-phone-alt"></i> Same-Day Appointments Available</h3>
+                <p>Call us for immediate booking or urgent pain relief appointments</p>
+                <a href="tel:+1234567890" class="cta-button">Call (123) 456-7890 Now</a>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Visit Our Location</h3>
+                    <p>123 Wellness Way<br>Health City, HC 12345<br>Easy parking available</p>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>Business Hours</h3>
+                    <p>Monday - Friday: 9:00 AM - 8:00 PM<br>Saturday: 9:00 AM - 6:00 PM<br>Sunday: 10:00 AM - 5:00 PM</p>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>info@touch2massage.net<br>We respond within 2 hours<br>during business hours</p>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Online Booking</h3>
+                    <p>Book 24/7 through our website<br>Instant confirmation<br>Easy rescheduling</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Touch2Massage. All rights reserved. Licensed Massage Therapists | Fully Insured</p>
+            <p style="margin-top: 1rem; opacity: 0.8;">Serving the community with professional therapeutic massage since 2015</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your booking request! We will contact you within 30 minutes to confirm your appointment.');
+        });
+
+        // Add current date as minimum for date picker
+        document.getElementById('date').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>

@@ -1,8 +1,10 @@
 {
-  "builds": [
+  "cleanUrls": true,
+  "redirects": [
     {
-      "src": "**",
-      "use": "@vercel/static"
+      "source": "/about-us",
+      "destination": "/board-members",
+      "permanent": false
     }
   ]
 }

@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Service Assessment | Livewire REMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --border-color: #e5e7eb;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --secondary-color: #2563eb;
+            --accent-color: #60a5fa;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --border-color: #374151;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px var(--shadow-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-color);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .assessment-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px var(--shadow-color);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .card-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .email-capture {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .email-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            margin: 1rem auto;
+            display: block;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .options {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .option {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .option-radio {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .option.selected .option-radio {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            box-shadow: inset 0 0 0 3px var(--bg-primary);
+        }
+
+        .option-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .subscription-plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .plan-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .plan-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .plan-card.recommended {
+            border-color: var(--warning-color);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--warning-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .plan-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .plan-period {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: var(--success-color);
+            font-weight: bold;
+            width: 16px;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--primary-color), var(--accent-color) var(--score-angle), var(--bg-secondary) var(--score-angle));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .score-circle::after {
+            content: '';
+            width: 90px;
+            height: 90px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .score-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            z-index: 1;
+        }
+
+        .insights-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .insight-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .insight-text {
+            color: var(--text-secondary);
+        }
+
+        .action-items {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-items h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .action-list {
+            list-style: none;
+        }
+
+        .action-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .action-list li:last-child {
+            border-bottom: none;
+        }
+
+        .action-list li::before {
+            content: "→";
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            .card-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subscription-plans {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LW</div>
+                <span>Livewire REMS</span>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="assessment-card">
+            <div class="card-header">
+                <h1>Property Service Assessment</h1>
+                <p class="subtitle">Evaluate your property management and residential services with comprehensive insights</p>
+            </div>
+            
+            <div class="card-body">
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Step 1 of 11</div>
+                </div>
+
+                <!-- Email Capture -->
+                <div class="email-capture" id="emailCapture">
+                    <h3 style="margin-bottom: 1rem;">Get Your Detailed Assessment Report</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        Enter your email to receive comprehensive insights and actionable recommendations for optimizing your property services.
+                    </p>
+                    <input type="email" id="emailInput" class="email-input" placeholder="Enter your email address" required>
+                    <button class="btn btn-primary" onclick="startAssessment()" id="startBtn">
+                        Begin Assessment
+                    </button>
+                </div>
+
+                <!-- Assessment Questions -->
+                <div id="assessmentQuestions" style="display: none;">
+                    <!-- Questions will be populated by JavaScript -->
+                </div>
+
+                <!-- Subscription Plans -->
+                <div id="subscriptionSection" style="display: none;">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Property Management Assessment Plans</h2>
+                    <div class="subscription-plans">
+                        <div class="plan-card">
+                            <div class="plan-title">Essential</div>
+                            <div class="plan-price">$147</div>
+                            <div class="plan-period">per year</div>
+                            <ul class="plan-features">
+                                <li>Quarterly property assessments</li>
+                                <li>Basic service provider evaluations</li>
+                                <li>Email reports and insights</li>
+                                <li>Standard analytics dashboard</li>
+                                <li>Community forum access</li>
+                            </ul>
+                            <button class="btn btn-primary" onclick="selectPlan('essential')" style="width: 100%;">
+                                Select Essential
+                            </button>
+                        </div>
+                        
+                        <div class="plan-card recommended">
+                            <div class="recommended-badge">Most Popular</div>
+                            <div class="plan-title">Professional</div>
+                            <div class="plan-price">$297</div>
+                            <div class="plan-period">per year</div>
+                            <ul class="plan-features">
+                                <li>Monthly comprehensive assessments</li>
+                                <li>Advanced service evaluations</li>
+                                <li>Detailed PDF reports</li>
+                                <li>Priority support</li>
+                                <li>Custom assessment criteria</li>
+                                <li>Service provider benchmarking</li>
+                                <li>Performance tracking dashboard</li>
+                            </ul>
+                            <button class="btn btn-primary" onclick="selectPlan('professional')" style="width: 100%;">
+                                Select Professional
+                            </button>
+                        </div>
+                        
+                        <div class="plan-card">
+                            <div class="plan-title">Enterprise</div>
+                            <div class="plan-price">$597</div>
+                            <div class="plan-period">per year</div>
+                            <ul class="plan-features">
+                                <li>Weekly mystery shopping assessments</li>
+                                <li>Multi-property portfolio management</li>
+                                <li>Real-time alerts and notifications</li>
+                                <li>Personal consultation calls</li>
+                                <li>White-label reporting</li>
+                                <li>Advanced analytics and AI insights</li>
+                                <li>Custom integration support</li>
+                                <li>Dedicated account manager</li>
+                            </ul>
+                            <button class="btn btn-primary" onclick="selectPlan('enterprise')" style="width: 100%;">
+                                Select Enterprise
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Your Property Service Assessment Results</h2>
+                    
+                    <div class="score-display">
+                        <div class="score-circle" id="scoreCircle">
+                            <div class="score-text" id="scoreText">0%</div>
+                        </div>
+                        <h3 id="scoreTitle" style="margin-bottom: 0.5rem;"></h3>
+                        <p id="scoreDescription" style="color: var(--text-secondary);"></p>
+                    </div>
+
+                    <div class="insights-grid" id="insightsGrid">
+                        <!-- Insights will be populated by JavaScript -->
+                    </div>
+
+                    <div class="action-items">
+                        <h3>Recommended Action Items</h3>
+                        <ul class="action-list" id="actionList">
+                            <!-- Action items will be populated by JavaScript -->
+                        </ul>
+                    </div>
+
+                    <!-- Comments and Photo Upload Section -->
+                    <div class="feedback-section" style="background: var(--bg-secondary); border-radius: 8px; padding: 1.5rem; margin-top: 2rem;">
+                        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Additional Comments & Photos</h3>
+                        
+                        <div style="position: relative; margin-bottom: 1rem;">
+                            <textarea id="commentsText" placeholder="Share any additional observations, concerns, or feedback about your property services..." 
+                                style="width: 100%; min-height: 120px; padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; resize: vertical; background: var(--bg-primary); color: var(--text-primary);"></textarea>
+                            
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; align-items: center;">
+                                <button id="speechBtn" onclick="toggleSpeechRecognition()" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem;">
+                                    🎤 <span id="speechBtnText">Start Dictation</span>
+                                </button>
+                                <span id="speechStatus" style="font-size: 0.875rem; color: var(--text-secondary);"></span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <label for="photoUpload" class="btn btn-secondary" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                                📸 Upload Photos
+                                <input type="file" id="photoUpload" multiple accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                            </label>
+                            <div id="uploadedPhotos" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                <!-- Uploaded photos will appear here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="generatePDFReport()">
+                            📄 Download PDF Report
+                        </button>
+                        <button class="btn btn-primary" onclick="showSubscriptionPlans()">
+                            Upgrade for Advanced Insights
+                        </button>
+                        <button class="btn btn-secondary" onclick="restartAssessment()">
+                            Retake Assessment
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="navigation" id="navigation" style="display: none;">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
+                        Previous
+                    </button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            
+            if (isDark) {
+                body.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-icon').textContent = '☀️';
+            }
+        });
+
+        // Assessment questions focused on property and residential services
+        const questions = [
+            {
+                question: "How would you rate the overall quality of your property management services?",
+                description: "Consider maintenance response times, tenant communication, and property upkeep.",
+                options: [
+                    { text: "Excellent - Consistently exceeds expectations with proactive management", value: 5 },
+                    { text: "Good - Generally reliable with minor areas for improvement", value: 4 },
+                    { text: "Average - Meets basic requirements but lacks consistency", value: 3 },
+                    { text: "Below Average - Frequent issues and communication problems", value: 2 },
+                    { text: "Poor - Major concerns affecting property value and tenant satisfaction", value: 1 }
+                ]
+            },
+            {
+                question: "How responsive are your service providers to maintenance requests?",
+                description: "Think about emergency repairs, routine maintenance, and tenant requests.",
+                options: [
+                    { text: "Immediate response to emergencies, same-day for urgent issues", value: 5 },
+                    { text: "Quick response within 24 hours for most requests", value: 4 },
+                    { text: "Usually responds within 2-3 business days", value: 3 },
+                    { text: "Slow response, often takes a week or more", value: 2 },
+                    { text: "Very poor response times, requests often ignored", value: 1 }
+                ]
+            },
+            {
+                question: "How effective is the communication between property managers and tenants?",
+                description: "Consider clarity, professionalism, and frequency of communications.",
+                options: [
+                    { text: "Excellent communication - clear, professional, and proactive", value: 5 },
+                    { text: "Good communication with occasional misunderstandings", value: 4 },
+                    { text: "Basic communication, sometimes unclear or delayed", value: 3 },
+                    { text: "Poor communication leading to frequent confusion", value: 2 },
+                    { text: "Very poor - communication breakdowns are common", value: 1 }
+                ]
+            },
+            {
+                question: "How well are your properties maintained and inspected?",
+                description: "Consider regular inspections, preventive maintenance, and property condition.",
+                options: [
+                    { text: "Regular inspections with proactive maintenance and excellent upkeep", value: 5 },
+                    { text: "Good maintenance schedule with most issues addressed promptly", value: 4 },
+                    { text: "Basic maintenance, reactive approach to most issues", value: 3 },
+                    { text: "Poor maintenance with many deferred repairs", value: 2 },
+                    { text: "Very poor upkeep, properties deteriorating", value: 1 }
+                ]
+            },
+            {
+                question: "How satisfied are you with tenant screening and placement processes?",
+                description: "Think about tenant quality, background checks, and placement speed.",
+                options: [
+                    { text: "Excellent screening results in high-quality, long-term tenants", value: 5 },
+                    { text: "Good tenant screening with mostly reliable tenants", value: 4 },
+                    { text: "Average screening, mixed results with tenant quality", value: 3 },
+                    { text: "Poor screening leads to frequent tenant issues", value: 2 },
+                    { text: "Very poor screening, major problems with tenant selection", value: 1 }
+                ]
+            },
+            {
+                question: "How transparent and accurate is your financial reporting?",
+                description: "Consider rent collection reports, expense tracking, and financial transparency.",
+                options: [
+                    { text: "Excellent reporting - detailed, accurate, and timely financial statements", value: 5 },
+                    { text: "Good reporting with minor delays or formatting issues", value: 4 },
+                    { text: "Basic reporting that meets minimum requirements", value: 3 },
+                    { text: "Poor reporting with frequent errors or delays", value: 2 },
+                    { text: "Very poor or missing financial reporting", value: 1 }
+                ]
+            },
+            {
+                question: "How effectively are property-related emergencies handled?",
+                description: "Think about after-hours emergencies, contractor coordination, and tenant safety.",
+                options: [
+                    { text: "Excellent emergency response with 24/7 availability and quick resolution", value: 5 },
+                    { text: "Good emergency handling with reasonable response times", value: 4 },
+                    { text: "Basic emergency response, sometimes slow or inadequate", value: 3 },
+                    { text: "Poor emergency handling leading to property damage or tenant issues", value: 2 },
+                    { text: "Very poor emergency response, major safety or property concerns", value: 1 }
+                ]
+            },
+            {
+                question: "How competitive and justified are your property management fees?",
+                description: "Consider management fees, maintenance markups, and overall value for services provided.",
+                options: [
+                    { text: "Excellent value - competitive fees with superior service quality", value: 5 },
+                    { text: "Good value for the level of service provided", value: 4 },
+                    { text: "Fair pricing but service quality could match the cost better", value: 3 },
+                    { text: "Overpriced for the level of service received", value: 2 },
+                    { text: "Very expensive with poor service quality", value: 1 }
+                ]
+            },
+            {
+                question: "How well does your property manager understand local market conditions?",
+                description: "Consider rent optimization, market analysis, and strategic property improvements.",
+                options: [
+                    { text: "Excellent market knowledge leading to optimal rent and property decisions", value: 5 },
+                    { text: "Good market awareness with generally sound recommendations", value: 4 },
+                    { text: "Basic market knowledge but could be more strategic", value: 3 },
+                    { text: "Poor market understanding leading to suboptimal decisions", value: 2 },
+                    { text: "Very poor market knowledge, missing opportunities", value: 1 }
+                ]
+            },
+            {
+                question: "How would you rate the technology and systems used for property management?",
+                description: "Think about online portals, reporting systems, and digital communication tools.",
+                options: [
+                    { text: "Excellent technology - modern, user-friendly systems with great features", value: 5 },
+                    { text: "Good technology that meets most needs effectively", value: 4 },
+                    { text: "Basic technology that works but could be improved", value: 3 },
+                    { text: "Outdated or difficult-to-use technology systems", value: 2 },
+                    { text: "Poor or no technology, relying on outdated methods", value: 1 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let responses = [];
+        let userEmail = '';
+
+        function startAssessment() {
+            const email = document.getElementById('emailInput').value;
+            if (!email || !isValidEmail(email)) {
+                alert('Please enter a valid email address to continue.');
+                return;
+            }
+            
+            userEmail = email;
+            document.getElementById('emailCapture').style.display = 'none';
+            document.getElementById('assessmentQuestions').style.display = 'block';
+            document.getElementById('navigation').style.display = 'flex';
+            
+            renderQuestion();
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function renderQuestion() {
+            const questionsContainer = document.getElementById('assessmentQuestions');
+            const question = questions[currentQuestion];
+            
+            questionsContainer.innerHTML = `
+                <div class="question-container active">
+                    <div class="question">${question.question}</div>
+                    <div class="description">${question.description}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectOption(${option.value}, ${index})">
+                                <div class="option-radio"></div>
+                                <div class="option-text">${option.text}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            updateProgress();
+            updateNavigation();
+            
+            // Pre-select if answer exists
+            if (responses[currentQuestion] !== undefined) {
+                const selectedValue = responses[currentQuestion];
+                const selectedIndex = question.options.findIndex(opt => opt.value === selectedValue);
+                if (selectedIndex !== -1) {
+                    selectOption(selectedValue, selectedIndex);
+                }
+            }
+        }
+
+        function selectOption(value, index) {
+            responses[currentQuestion] = value;
+            
+            // Update UI
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.option')[index].classList.add('selected');
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (responses[currentQuestion] === undefined) {
+                alert('Please select an answer before continuing.');
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `Step ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = responses[currentQuestion] === undefined;
+            nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Show Results' : 'Next Question';
+        }
+
+        function showResults() {
+            const totalScore = responses.reduce((sum, response) => sum + response, 0);
+            const maxScore = questions.length * 5;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            // Hide questions and navigation
+            document.getElementById('assessmentQuestions').style.display = 'none';
+            document.getElementById('navigation').style.display = 'none';
+            
+            // Show results
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Update score circle
+            const scoreAngle = (percentage * 3.6);
+            document.getElementById('scoreCircle').style.setProperty('--score-angle', `${scoreAngle}deg`);
+            document.getElementById('scoreText').textContent = `${percentage}%`;
+            
+            // Update score interpretation
+            const interpretation = getScoreInterpretation(percentage);
+            document.getElementById('scoreTitle').textContent = interpretation.title;
+            document.getElementById('scoreDescription').textContent = interpretation.description;
+            
+            // Populate insights
+            const insightsGrid = document.getElementById('insightsGrid');
+            insightsGrid.innerHTML = interpretation.insights.map(insight => `
+                <div class="insight-card">
+                    <div class="insight-title">${insight.title}</div>
+                    <div class="insight-text">${insight.text}</div>
+                </div>
+            `).join('');
+            
+            // Populate action items
+            const actionList = document.getElementById('actionList');
+            actionList.innerHTML = interpretation.actions.map(action => `<li>${action}</li>`).join('');
+            
+            // Save lead data
+            saveLeadData(percentage);
+        }
+
+        function getScoreInterpretation(percentage) {
+            if (percentage >= 85) {
+                return {
+                    title: "Exceptional Property Management",
+                    description: "Your property services are performing at an outstanding level with excellent management practices and tenant satisfaction.",
+                    insights: [
+                        {
+                            title: "Outstanding Service Standards",
+                            text: "Your property management demonstrates exceptional quality across all key areas including maintenance, communication, and financial management."
+                        },
+                        {
+                            title: "High Tenant Satisfaction",
+                            text: "Strong tenant relationships and satisfaction levels indicate excellent property management and service delivery."
+                        },
+                        {
+                            title: "Proactive Management Approach",
+                            text: "Your property management shows proactive maintenance, strategic planning, and excellent market understanding."
+                        }
+                    ],
+                    actions: [
+                        "Document and standardize your excellent processes for consistency",
+                        "Consider expanding your property portfolio with current management",
+                        "Share best practices and positive reviews to attract quality tenants",
+                        "Explore premium services or property improvements to maximize ROI"
+                    ]
+                };
+            } else if (percentage >= 70) {
+                return {
+                    title: "Strong Property Performance",
+                    description: "Your property services are performing well with some opportunities for optimization and improvement.",
+                    insights: [
+                        {
+                            title: "Solid Foundation with Growth Potential",
+                            text: "Your property management shows good performance but could benefit from enhanced processes and communication."
+                        },
+                        {
+                            title: "Service Consistency Opportunities",
+                            text: "While generally reliable, there are opportunities to improve consistency in maintenance, reporting, or tenant relations."
+                        },
+                        {
+                            title: "Market Position Enhancement",
+                            text: "Good foundation exists for improving market competitiveness and tenant retention through targeted improvements."
+                        }
+                    ],
+                    actions: [
+                        "Establish clearer service standards and expectations with management company",
+                        "Request more frequent reporting and communication",
+                        "Implement regular property inspections and maintenance schedules",
+                        "Consider benchmarking against top-performing properties in your area"
+                    ]
+                };
+            } else if (percentage >= 55) {
+                return {
+                    title: "Adequate Property Management",
+                    description: "Your property services meet basic requirements but have significant room for improvement across multiple areas.",
+                    insights: [
+                        {
+                            title: "Basic Service Delivery",
+                            text: "Current property management meets minimum standards but lacks the quality and consistency needed for optimal performance."
+                        },
+                        {
+                            title: "Communication and Responsiveness Gaps",
+                            text: "Improvements needed in management communication, maintenance response times, and tenant relationship management."
+                        },
+                        {
+                            title: "Financial Performance Concerns",
+                            text: "Property financial performance could be optimized through better management practices and market positioning."
+                        }
+                    ],
+                    actions: [
+                        "Conduct comprehensive evaluation of current property management company",
+                        "Establish clear performance metrics and regular review meetings",
+                        "Consider obtaining competitive bids from other property management companies",
+                        "Implement more rigorous maintenance and inspection protocols"
+                    ]
+                };
+            } else {
+                return {
+                    title: "Property Management Overhaul Needed",
+                    description: "Your property services require immediate attention and significant improvements across multiple critical areas.",
+                    insights: [
+                        {
+                            title: "Critical Service Deficiencies",
+                            text: "Multiple areas of property management are underperforming, potentially affecting property value and tenant retention."
+                        },
+                        {
+                            title: "Management Company Issues",
+                            text: "Current property management appears inadequate across key performance areas including maintenance, communication, and financial reporting."
+                        },
+                        {
+                            title: "Tenant Satisfaction at Risk",
+                            text: "Poor service levels likely contributing to tenant turnover, vacancy rates, and reduced rental income potential."
+                        }
+                    ],
+                    actions: [
+                        "Immediately begin searching for new property management company",
+                        "Document all current issues and service failures for reference",
+                        "Obtain multiple competitive bids from reputable management companies",
+                        "Implement strict service level agreements with any new management partner",
+                        "Consider temporary self-management while transitioning to better service provider"
+                    ]
+                };
+            }
+        }
+
+        function saveLeadData(score) {
+            const leadData = {
+                email: userEmail,
+                score: score,
+                responses: responses,
+                timestamp: new Date().toISOString(),
+                assessmentType: 'livewire-property-assessment'
+            };
+            
+            // In a real implementation, this would send data to your Livewire backend
+            console.log('Property assessment data:', leadData);
+            
+            // Store in localStorage as backup
+            localStorage.setItem('livewire_assessment_' + Date.now(), JSON.stringify(leadData));
+        }
+
+        function showSubscriptionPlans() {
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('subscriptionSection').style.display = 'block';
+        }
+
+        function selectPlan(planType) {
+            const plans = {
+                essential: { name: 'Essential', price: 14700, features: 'Quarterly assessments and basic analytics' },
+                professional: { name: 'Professional', price: 29700, features: 'Monthly assessments with advanced insights' },
+                enterprise: { name: 'Enterprise', price: 59700, features: 'Weekly assessments with dedicated support' }
+            };
+            
+            const selectedPlan = plans[planType];
+            alert(`You selected the ${selectedPlan.name} plan for $${(selectedPlan.price/100).toFixed(2)} per year.\n\nFeatures: ${selectedPlan.features}\n\nRedirecting to secure checkout...`);
+            
+            // In a real implementation, integrate with Livewire's existing payment system
+            // window.location.href = `/livewire/checkout/${planType}`;
+        }
+
+        function restartAssessment() {
+            currentQuestion = 0;
+            responses = [];
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('subscriptionSection').style.display = 'none';
+            document.getElementById('emailCapture').style.display = 'block';
+            document.getElementById('emailInput').value = userEmail;
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('progressText').textContent = 'Step 1 of 11';
+            
+            // Clear comments and photos
+            document.getElementById('commentsText').value = '';
+            document.getElementById('uploadedPhotos').innerHTML = '';
+            uploadedPhotos = [];
+        }
+
+        // Speech Recognition functionality
+        let recognition = null;
+        let isListening = false;
+        
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = function() {
+                    isListening = true;
+                    document.getElementById('speechBtnText').textContent = 'Stop Dictation';
+                    document.getElementById('speechBtn').style.background = '#ef4444';
+                    document.getElementById('speechBtn').style.color = 'white';
+                    document.getElementById('speechStatus').textContent = 'Listening... speak now';
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    document.getElementById('speechBtnText').textContent = 'Start Dictation';
+                    document.getElementById('speechBtn').style.background = 'transparent';
+                    document.getElementById('speechBtn').style.color = 'var(--primary-color)';
+                    document.getElementById('speechStatus').textContent = '';
+                };
+                
+                recognition.onresult = function(event) {
+                    let finalTranscript = '';
+                    let interimTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript + ' ';
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    const textArea = document.getElementById('commentsText');
+                    if (finalTranscript) {
+                        // Append final transcript to existing text
+                        textArea.value += finalTranscript;
+                    }
+                    
+                    // Show interim results as status
+                    if (interimTranscript) {
+                        document.getElementById('speechStatus').textContent = 'Recognizing: ' + interimTranscript;
+                    }
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    document.getElementById('speechStatus').textContent = 'Error: ' + event.error;
+                    stopSpeechRecognition();
+                };
+                
+                return true;
+            }
+            return false;
+        }
+        
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                if (!initSpeechRecognition()) {
+                    alert('Speech recognition is not supported in your browser. Please try Chrome or Edge.');
+                    return;
+                }
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+        
+        function stopSpeechRecognition() {
+            if (recognition && isListening) {
+                recognition.stop();
+            }
+        }
+
+        // Photo upload functionality
+        let uploadedPhotos = [];
+        
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadedPhotos.push({
+                            name: file.name,
+                            data: e.target.result,
+                            size: file.size
+                        });
+                        displayUploadedPhoto(e.target.result, file.name);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+        
+        function displayUploadedPhoto(src, name) {
+            const photosContainer = document.getElementById('uploadedPhotos');
+            const photoDiv = document.createElement('div');
+            photoDiv.style.cssText = `
+                position: relative;
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                overflow: hidden;
+                background: var(--bg-primary);
+            `;
+            
+            photoDiv.innerHTML = `
+                <img src="${src}" alt="${name}" style="width: 100%; height: 120px; object-fit: cover;">
+                <div style="padding: 0.5rem; font-size: 0.75rem; color: var(--text-secondary); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${name}
+                </div>
+                <button onclick="removePhoto(this)" style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 16px;">×</button>
+            `;
+            
+            photosContainer.appendChild(photoDiv);
+        }
+        
+        function removePhoto(button) {
+            const photoDiv = button.parentElement;
+            const img = photoDiv.querySelector('img');
+            const src = img.src;
+            
+            // Remove from uploadedPhotos array
+            uploadedPhotos = uploadedPhotos.filter(photo => photo.data !== src);
+            
+            // Remove from DOM
+            photoDiv.remove();
+        }
+
+        // PDF Report Generation
+        function generatePDFReport() {
+            const totalScore = responses.reduce((sum, response) => sum + response, 0);
+            const maxScore = questions.length * 5;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            const interpretation = getScoreInterpretation(percentage);
+            const comments = document.getElementById('commentsText').value;
+            
+            // Create a new window for the PDF report
+            const reportWindow = window.open('', '_blank');
+            const reportHTML = generateReportHTML(percentage, interpretation, comments);
+            
+            reportWindow.document.write(reportHTML);
+            reportWindow.document.close();
+            
+            // Auto-print the report
+            setTimeout(() => {
+                reportWindow.print();
+            }, 1000);
+        }
+        
+        function generateReportHTML(score, interpretation, comments) {
+            const currentDate = new Date().toLocaleDateString();
+            
+            return `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Property Service Assessment Report</title>
+    <style>
+        @page { margin: 1in; }
+        body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; }
+        .header { text-align: center; border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { width: 60px; height: 60px; background: linear-gradient(135deg, #2563eb, #1e40af); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; }
+        h1 { color: #2563eb; margin: 0; font-size: 2.2em; }
+        .subtitle { color: #6b7280; margin: 10px 0 0 0; }
+        .score-section { background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+        .score-circle { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(from 0deg, #2563eb ${score * 3.6}deg, #e5e7eb ${score * 3.6}deg); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; position: relative; }
+        .score-circle::after { content: ''; width: 70px; height: 70px; background: white; border-radius: 50%; position: absolute; }
+        .score-text { font-size: 1.8em; font-weight: bold; color: #2563eb; z-index: 1; }
+        .section { margin: 25px 0; }
+        .section h2 { color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+        .insight { background: #f3f4f6; padding: 15px; margin: 10px 0; border-left: 4px solid #2563eb; border-radius: 4px; }
+        .insight-title { font-weight: bold; color: #1f2937; margin-bottom: 5px; }
+        .action-item { background: white; border: 1px solid #e5e7eb; padding: 12px; margin: 8px 0; border-radius: 6px; }
+        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em; }
+        .photo-section { page-break-inside: avoid; margin: 20px 0; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0; }
+        .photo-item { border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
+        .photo-item img { width: 100%; height: 150px; object-fit: cover; }
+        .photo-caption { padding: 8px; background: #f8fafc; font-size: 0.8em; color: #6b7280; }
+        @media print { 
+            body { color: black !important; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">LW</div>
+        <h1>Property Service Assessment Report</h1>
+        <p class="subtitle">Comprehensive Analysis and Recommendations</p>
+        <p style="margin-top: 10px;"><strong>Generated:</strong> ${currentDate} | <strong>Email:</strong> ${userEmail}</p>
+    </div>
+
+    <div class="score-section">
+        <div class="score-circle">
+            <div class="score-text">${score}%</div>
+        </div>
+        <h2 style="margin: 10px 0 5px 0; color: #2563eb;">${interpretation.title}</h2>
+        <p>${interpretation.description}</p>
+    </div>
+
+    <div class="section">
+        <h2>Key Insights</h2>
+        ${interpretation.insights.map(insight => `
+            <div class="insight">
+                <div class="insight-title">${insight.title}</div>
+                <div>${insight.text}</div>
+            </div>
+        `).join('')}
+    </div>
+
+    <div class="section">
+        <h2>Recommended Action Items</h2>
+        ${interpretation.actions.map(action => `
+            <div class="action-item">• ${action}</div>
+        `).join('')}
+    </div>
+
+    ${comments ? `
+    <div class="section">
+        <h2>Additional Comments</h2>
+        <div style="background: #f9fafb; padding: 15px; border-radius: 6px; border: 1px solid #e5e7eb;">
+            ${comments.replace(/\n/g, '<br>')}
+        </div>
+    </div>` : ''}
+
+    ${uploadedPhotos.length > 0 ? `
+    <div class="section photo-section page-break">
+        <h2>Supporting Photos</h2>
+        <div class="photo-grid">
+            ${uploadedPhotos.map(photo => `
+                <div class="photo-item">
+                    <img src="${photo.data}" alt="${photo.name}">
+                    <div class="photo-caption">${photo.name}</div>
+                </div>
+            `).join('')}
+        </div>
+    </div>` : ''}
+
+    <div class="section">
+        <h2>Assessment Details</h2>
+        <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+            <thead>
+                <tr style="background: #f3f4f6;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #e5e7eb;">Question</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #e5e7eb;">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${questions.map((question, index) => `
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #e5e7eb;">${question.question}</td>
+                        <td style="padding: 10px; text-align: center; border: 1px solid #e5e7eb;">${responses[index]}/5</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p><strong>Livewire REMS Property Assessment</strong></p>
+        <p>This report is confidential and intended solely for the use of the property owner/manager.</p>
+        <p>For questions or follow-up services, contact your Livewire REMS representative.</p>
+    </div>
+</body>
+</html>`;
+        }
+    </script>
+</body>
+</html>

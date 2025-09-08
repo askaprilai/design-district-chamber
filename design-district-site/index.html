@@ -325,10 +325,10 @@
         /* Email Capture */
         .email-capture {
             background: rgba(255, 255, 255, 0.95);
-            padding: 2.5rem;
+            padding: 3rem 2.5rem 4rem 2.5rem;
             border-radius: 20px;
             max-width: 450px;
-            margin: 5rem auto 7rem auto;
+            margin: 6rem auto 10rem auto;
             backdrop-filter: blur(20px);
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.3);
@@ -725,9 +725,9 @@
             }
 
             .email-capture {
-                width: 95%;
-                padding: 2rem 1.5rem;
-                margin: 3rem auto 4rem auto;
+                width: 92%;
+                padding: 2.5rem 2rem 3.5rem 2rem;
+                margin: 4rem auto 6rem auto;
             }
 
             .email-form input {
@@ -780,9 +780,9 @@
             }
 
             .email-capture {
-                width: 95%;
-                padding: 1.5rem 1rem;
-                margin: 2rem auto 2.5rem auto;
+                width: 90%;
+                padding: 2rem 1.5rem 3rem 1.5rem;
+                margin: 3rem auto 5rem auto;
             }
 
             .email-capture h3 {
@@ -1574,6 +1574,9 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
     <script>
+        // Initialize EmailJS
+        emailjs.init("SAU17WFhPmeQLrng7");
+        
         // Multi-service form handler (EmailJS + Google Sheets + Autoresponder)
         document.getElementById('emailForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1614,15 +1617,22 @@
                 };
                 
                 try {
+                    console.log('Attempting to send email with params:', adminTemplateParams);
                     const response = await emailjs.send(
                         'service_vntq4ai', // Your EmailJS service ID
                         'template_m5wg27w', // Your template ID
                         adminTemplateParams
                     );
-                    if (response.status === 200) successCount++;
+                    console.log('EmailJS response:', response);
+                    if (response.status === 200) {
+                        successCount++;
+                        console.log('Email sent successfully');
+                    }
                 } catch (error) {
                     errors.push('Email notification failed');
-                    console.error('Email error:', error);
+                    console.error('Email error details:', error);
+                    console.error('Email error text:', error.text);
+                    console.error('Email error status:', error.status);
                 }
                 
                 // 3. Save to Google Sheets

@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mastery Challenge™ - Transform Your Organization with AI</title>
+    <meta name="description" content="The only platform that combines AI assessment, gamified learning, and real-world application. Join 500+ companies accelerating their AI transformation.">
+    
+    <!-- Import Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            color: #ffffff;
+            overflow-x: hidden;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+            letter-spacing: -0.011em;
+        }
+
+        /* Dark Background with Geometric Pattern */
+        .page-container {
+            min-height: 100vh;
+            background: #0a0a0a;
+            position: relative;
+        }
+
+        .gradient-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        /* Animated Floating Shapes */
+        .elegant-shape {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 2;
+            filter: blur(1px);
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            top: -200px;
+            right: -200px;
+            animation: float1 20s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            bottom: -150px;
+            left: -150px;
+            animation: float2 25s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            top: 50%;
+            right: 10%;
+            animation: float3 30s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-50px, -100px) rotate(120deg); }
+            66% { transform: translate(100px, -50px) rotate(240deg); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(100px, -100px) rotate(180deg); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 50px) scale(1.1); }
+        }
+
+        /* Colorful Border Animation */
+        @keyframes colorfulBorder {
+            0% { border-color: rgba(102, 126, 234, 0.8); }
+            25% { border-color: rgba(139, 92, 246, 0.8); }
+            50% { border-color: rgba(244, 63, 94, 0.8); }
+            75% { border-color: rgba(245, 158, 11, 0.8); }
+            100% { border-color: rgba(102, 126, 234, 0.8); }
+        }
+
+        /* Page Content */
+        .page-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        .nav-modern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 32px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.7));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #a78bfa, #fda4af);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 48px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 64px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px 0 rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Stats Section */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 80px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.5);
+            animation: colorfulBorder 2s ease-in-out infinite;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.8));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 32px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(102, 126, 234, 0.5);
+            animation: colorfulBorder 2s ease-in-out infinite;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .feature-list li::before {
+            content: '◉';
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 64px;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 32px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(102, 126, 234, 0.5);
+            animation: colorfulBorder 2s ease-in-out infinite;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 24px;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .step-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* ROI Calculator */
+        .roi-section {
+            padding: 80px 0;
+        }
+
+        .roi-calculator {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .calculator-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+
+        .calculator-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .input-field {
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .roi-results {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .roi-number {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .roi-label {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 16px;
+        }
+
+        .roi-details {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 64px;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 32px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(102, 126, 234, 0.5);
+            animation: colorfulBorder 2s ease-in-out infinite;
+        }
+
+        .testimonial-quote {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .author-title {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 80px 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 64px;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 32px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: scale(1.05);
+            animation: colorfulBorder 3s ease-in-out infinite;
+        }
+
+        .pricing-card.popular::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-card:hover:not(.popular) {
+            transform: translateY(-8px);
+            border-color: rgba(102, 126, 234, 0.5);
+            animation: colorfulBorder 2s ease-in-out infinite;
+        }
+
+        .pricing-plan {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pricing-period {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 32px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .pricing-features li::before {
+            content: '◉';
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Waitlist Form */
+        .waitlist {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .waitlist-form {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 48px 40px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .form-input {
+            flex: 1;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .waitlist-note {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+
+            .form-group {
+                flex-direction: column;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+        }
+
+        /* Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Gradient Background -->
+        <div class="gradient-background"></div>
+
+        <!-- Floating Shapes -->
+        <div class="elegant-shape shape-1"></div>
+        <div class="elegant-shape shape-2"></div>
+        <div class="elegant-shape shape-3"></div>
+
+        <!-- Navigation -->
+        <nav class="nav-modern">
+            <div class="container nav-content">
+                <a href="#" class="nav-logo">AI Mastery Challenge™</a>
+                <ul class="nav-links">
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                    <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                    <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="page-content">
+            <div class="container">
+                <!-- Hero Section -->
+                <section class="hero">
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <span>◉</span>
+                            <span>Join 500+ companies transforming with AI</span>
+                        </div>
+                        
+                        <h1 class="hero-title">AI Mastery Challenge</h1>
+                        
+                        <div class="hero-subtitle">Assess. Apply. Accelerate.</div>
+                        
+                        <p class="hero-description">
+                            The only platform that combines diagnostic assessment, gamified learning, and real-world application. 
+                            Transform your organization from AI curious to AI champion with our proven methodology.
+                        </p>
+                        
+                        <div class="hero-buttons">
+                            <a href="#waitlist" class="btn btn-primary">
+                                <span>Join Waitlist</span>
+                                <span>→</span>
+                            </a>
+                            <a href="#how-it-works" class="btn btn-secondary">
+                                <span>See How It Works</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stats Section -->
+                <section class="hero-stats">
+                    <div class="stat-card">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Companies Transformed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">85%</span>
+                        <span class="stat-label">Faster AI Adoption</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">3.2x</span>
+                        <span class="stat-label">ROI in 6 Months</span>
+                    </div>
+                </section>
+
+                <!-- Features Section -->
+                <section class="features" id="features">
+                    <div class="section-header">
+                        <h2 class="section-title">Why AI Mastery Challenge?</h2>
+                        <p class="section-subtitle">
+                            The only solution that turns AI adoption into an engaging, measurable, and practical journey for your entire organization.
+                        </p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">◎</div>
+                            <h3 class="feature-title">Diagnostic-Driven</h3>
+                            <p class="feature-description">
+                                Start with our comprehensive AI readiness assessment. Get instant insights into your organization's strengths and gaps.
+                            </p>
+                            <ul class="feature-list">
+                                <li>Personal AI readiness scores</li>
+                                <li>Department-level insights</li>
+                                <li>Personalized roadmaps</li>
+                                <li>Gap analysis & recommendations</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">◆</div>
+                            <h3 class="feature-title">Gamified Application</h3>
+                            <p class="feature-description">
+                                Points, badges, leaderboards, and real-world missions make learning addictive. Your team will compete to become AI champions.
+                            </p>
+                            <ul class="feature-list">
+                                <li>Real-world AI missions</li>
+                                <li>Team leaderboards</li>
+                                <li>Achievement badges</li>
+                                <li>Progress tracking</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">▲</div>
+                            <h3 class="feature-title">Practical Implementation</h3>
+                            <p class="feature-description">
+                                No theoretical nonsense. Every mission involves implementing AI solutions for actual business challenges in your organization.
+                            </p>
+                            <ul class="feature-list">
+                                <li>Business-focused missions</li>
+                                <li>Immediate ROI tracking</li>
+                                <li>Time savings measurement</li>
+                                <li>Success celebrations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How It Works -->
+                <section class="how-it-works" id="how-it-works">
+                    <div class="section-header">
+                        <h2 class="section-title">How It Works</h2>
+                        <p class="section-subtitle">
+                            Four simple steps to transform your organization's AI capabilities
+                        </p>
+                    </div>
+                    
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h3 class="step-title">Assess</h3>
+                            <p class="step-description">
+                                Complete our comprehensive AI readiness diagnostic. Get instant scores by department and personalized recommendations.
+                            </p>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h3 class="step-title">Learn</h3>
+                            <p class="step-description">
+                                Access tailored learning paths and master prompt engineering techniques that turn basic AI interactions into powerful results.
+                            </p>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h3 class="step-title">Apply</h3>
+                            <p class="step-description">
+                                Complete gamified missions that involve real-world AI implementation in your actual business processes.
+                            </p>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">4</div>
+                            <h3 class="step-title">Accelerate</h3>
+                            <p class="step-description">
+                                Track progress, celebrate wins, and continuously adapt as your AI maturity evolves over time.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ROI Calculator -->
+                <section class="roi-section">
+                    <div class="roi-calculator">
+                        <h2 class="calculator-title">Calculate Your AI ROI</h2>
+                        <div class="calculator-inputs">
+                            <div class="input-group">
+                                <label class="input-label">Number of Employees</label>
+                                <input type="number" class="input-field" id="employees" placeholder="100" value="100">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">Average Salary ($)</label>
+                                <input type="number" class="input-field" id="salary" placeholder="75000" value="75000">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">Hours Saved/Week</label>
+                                <input type="number" class="input-field" id="hours" placeholder="5" value="5">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">Program Investment ($)</label>
+                                <input type="number" class="input-field" id="investment" placeholder="50000" value="50000">
+                            </div>
+                        </div>
+                        <div class="roi-results">
+                            <div class="roi-number" id="roi-percentage">320%</div>
+                            <div class="roi-label">Annual ROI</div>
+                            <div class="roi-details">
+                                Annual Savings: <span id="annual-savings">$1,950,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testimonials -->
+                <section class="testimonials" id="testimonials">
+                    <div class="section-header">
+                        <h2 class="section-title">What Leaders Are Saying</h2>
+                        <p class="section-subtitle">
+                            Companies worldwide are transforming their AI capabilities with our platform
+                        </p>
+                    </div>
+                    
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <p class="testimonial-quote">
+                                "AI Mastery Challenge transformed our entire approach to AI adoption. The gamification got our team excited about AI, and the real-world missions delivered immediate value. We saw a 40% increase in AI tool usage within 3 months."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">SM</div>
+                                <div class="author-info">
+                                    <div class="author-name">Sarah Martinez</div>
+                                    <div class="author-title">CTO, TechCorp Inc</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-card">
+                            <p class="testimonial-quote">
+                                "The diagnostic assessment was eye-opening. We thought we were AI-ready, but the platform revealed critical gaps. The personalized learning paths helped us focus on what mattered most."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">JD</div>
+                                <div class="author-info">
+                                    <div class="author-name">James Davis</div>
+                                    <div class="author-title">VP Operations, InnovateCo</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-card">
+                            <p class="testimonial-quote">
+                                "What I love most is the practical approach. Instead of theoretical training, our team implemented actual AI solutions while learning. The leaderboard created healthy competition."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">MR</div>
+                                <div class="author-info">
+                                    <div class="author-name">Maria Rodriguez</div>
+                                    <div class="author-title">CEO, GlobalTech</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pricing -->
+                <section class="pricing" id="pricing">
+                    <div class="section-header">
+                        <h2 class="section-title">Choose Your Plan</h2>
+                        <p class="section-subtitle">
+                            Flexible pricing to accelerate AI adoption for teams of any size
+                        </p>
+                    </div>
+                    
+                    <div class="pricing-grid">
+                        <div class="pricing-card">
+                            <h3 class="pricing-plan">Starter</h3>
+                            <div class="pricing-price">$49</div>
+                            <div class="pricing-period">per user/month</div>
+                            <ul class="pricing-features">
+                                <li>AI Readiness Assessment</li>
+                                <li>Personalized Learning Paths</li>
+                                <li>Basic Missions & Challenges</li>
+                                <li>Progress Tracking</li>
+                                <li>Individual Leaderboards</li>
+                                <li>Email Support</li>
+                            </ul>
+                            <a href="#waitlist" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                                Join Waitlist
+                            </a>
+                        </div>
+
+                        <div class="pricing-card popular">
+                            <h3 class="pricing-plan">Enterprise</h3>
+                            <div class="pricing-price">$99</div>
+                            <div class="pricing-period">per user/month</div>
+                            <ul class="pricing-features">
+                                <li>Everything in Starter</li>
+                                <li>Advanced AI Missions</li>
+                                <li>Team Collaboration Tools</li>
+                                <li>Department Analytics</li>
+                                <li>AI Champions Program</li>
+                                <li>Quarterly Progress Reviews</li>
+                                <li>Priority Support</li>
+                                <li>Custom Integrations</li>
+                            </ul>
+                            <a href="#waitlist" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                                Join Waitlist
+                            </a>
+                        </div>
+
+                        <div class="pricing-card">
+                            <h3 class="pricing-plan">Enterprise Plus</h3>
+                            <div class="pricing-price">$199</div>
+                            <div class="pricing-period">per user/month</div>
+                            <ul class="pricing-features">
+                                <li>Everything in Enterprise</li>
+                                <li>White-label Solution</li>
+                                <li>Custom Mission Development</li>
+                                <li>Dedicated Success Manager</li>
+                                <li>Advanced Analytics</li>
+                                <li>API Access</li>
+                                <li>On-site Training</li>
+                                <li>24/7 Premium Support</li>
+                            </ul>
+                            <a href="#waitlist" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                                Contact Sales
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Waitlist -->
+                <section class="waitlist" id="waitlist">
+                    <div class="section-header">
+                        <h2 class="section-title">Join the Waitlist</h2>
+                        <p class="section-subtitle">
+                            Be among the first to transform your organization's AI capabilities. Get early access and exclusive benefits.
+                        </p>
+                    </div>
+                    
+                    <div class="waitlist-form">
+                        <form id="waitlistForm">
+                            <div class="form-group">
+                                <input type="email" class="form-input" placeholder="Enter your email" required>
+                                <input type="text" class="form-input" placeholder="Company name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                                <span>Join Waitlist</span>
+                                <span>→</span>
+                            </button>
+                            <div class="waitlist-note">
+                                Join 2,000+ leaders already on the waitlist. No spam, unsubscribe anytime.
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <p>&copy; 2024 AI Mastery Challenge™. All rights reserved.</p>
+                    <p style="margin-top: 8px; font-size: 0.875rem;">A product of <strong>Ask April AI</strong> company</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Gradient Overlay -->
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <script>
+        // ROI Calculator
+        function calculateROI() {
+            const employees = parseInt(document.getElementById('employees').value) || 100;
+            const salary = parseInt(document.getElementById('salary').value) || 75000;
+            const hoursPerWeek = parseInt(document.getElementById('hours').value) || 5;
+            const investment = parseInt(document.getElementById('investment').value) || 50000;
+            
+            const hourlyRate = salary / 2080;
+            const annualHoursSaved = employees * hoursPerWeek * 52;
+            const annualSavings = annualHoursSaved * hourlyRate;
+            const roi = ((annualSavings - investment) / investment) * 100;
+            
+            document.getElementById('roi-percentage').textContent = Math.round(roi) + '%';
+            document.getElementById('annual-savings').textContent = '$' + annualSavings.toLocaleString();
+        }
+
+        // Initialize ROI calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = ['employees', 'salary', 'hours', 'investment'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', calculateROI);
+            });
+            calculateROI();
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Waitlist form
+        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            const company = this.querySelector('input[type="text"]').value;
+            
+            // Simple form validation
+            if (email && company) {
+                alert(`Thank you for joining our waitlist! We'll be in touch with ${company} at ${email} soon.`);
+                this.reset();
+            }
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.feature-card, .step-card, .testimonial-card, .pricing-card, .stat-card');
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

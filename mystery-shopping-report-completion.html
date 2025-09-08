@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Shopping Report Completion | Assessment Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #ff6b35;
+            --secondary-orange: #ff8c42;
+            --light-orange: #ffd3c1;
+            --primary-pink: #ff1654;
+            --secondary-pink: #ff427f;
+            --light-pink: #ffb3d1;
+            --accent-coral: #ff5722;
+            --text-dark: #2d1b14;
+            --text-medium: #5d4037;
+            --text-light: #8d6e63;
+            --bg-cream: #fef7f0;
+            --bg-white: #ffffff;
+            --bg-light: #fdf5f2;
+            --border-light: #ffe0d6;
+            --shadow-warm: rgba(255, 107, 53, 0.15);
+            --success-green: #4caf50;
+            --warning-amber: #ffc107;
+            --error-red: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-cream) 0%, var(--light-pink) 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-orange), var(--primary-pink));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px var(--shadow-warm);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .report-form {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px var(--shadow-warm);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--light-orange), var(--light-pink));
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .form-header h2 {
+            color: var(--text-dark);
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--text-medium);
+        }
+
+        .form-content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            color: var(--text-dark);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary-orange), var(--primary-pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            color: var(--text-medium);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-white);
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff6b35' viewBox='0 0 16 16'%3E%3Cpath d='M8 13.1l4.2-4.2-1.4-1.4L8 10.3 5.2 7.5 3.8 8.9z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px;
+            padding-right: 2.5rem;
+        }
+
+        .rating-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .rating-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+        }
+
+        .rating-label {
+            flex: 1;
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .star {
+            font-size: 1.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: var(--primary-orange);
+        }
+
+        .photo-upload-area {
+            border: 2px dashed var(--border-light);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            background: var(--bg-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-upload-area:hover {
+            border-color: var(--primary-orange);
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .photo-upload-area.dragover {
+            border-color: var(--primary-pink);
+            background: rgba(255, 22, 84, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-orange);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: var(--text-medium);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtext {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .photo-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .photo-preview {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--border-light);
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .voice-input-section {
+            background: linear-gradient(135deg, var(--light-orange), var(--light-pink));
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .voice-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .voice-btn {
+            background: linear-gradient(135deg, var(--primary-orange), var(--primary-pink));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .voice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-warm);
+        }
+
+        .voice-btn.recording {
+            background: var(--error-red);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .voice-status {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-orange), var(--primary-pink));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-warm);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-orange);
+            border: 2px solid var(--primary-orange);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-orange);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-green), #66bb6a);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-light);
+            border-radius: 50px;
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, var(--primary-orange), var(--primary-pink));
+            color: white;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-light);
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox.checked {
+            background: linear-gradient(135deg, var(--primary-orange), var(--primary-pink));
+            border-color: transparent;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .photo-preview-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--light-orange), var(--light-pink));
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .summary-title {
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-stat {
+            background: var(--bg-white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-light);
+        }
+
+        .summary-stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-stat-label {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mystery Shopping Report</h1>
+        <p>Complete your residential property assessment</p>
+    </div>
+
+    <div class="container">
+        <div class="progress-indicator">
+            <div class="progress-step active">
+                <span>📝</span>
+                <span>Report Completion</span>
+            </div>
+        </div>
+
+        <div class="report-form">
+            <div class="form-header">
+                <h2>Property Assessment Report</h2>
+                <p>Please fill out all sections to complete your mystery shopping evaluation</p>
+            </div>
+
+            <div class="form-content">
+                <!-- Basic Information -->
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">🏠</div>
+                        Property Information
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Property Name *</label>
+                            <input type="text" class="form-input" id="propertyName" placeholder="Enter property name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Property Address *</label>
+                            <input type="text" class="form-input" id="propertyAddress" placeholder="Enter complete address" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Assessment Date *</label>
+                            <input type="date" class="form-input" id="assessmentDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Assessment Type *</label>
+                            <select class="form-input form-select" id="assessmentType" required>
+                                <option value="">Select assessment type</option>
+                                <option value="routine">Routine Inspection</option>
+                                <option value="maintenance">Maintenance Evaluation</option>
+                                <option value="tenant-services">Tenant Services</option>
+                                <option value="emergency-response">Emergency Response</option>
+                                <option value="comprehensive">Comprehensive Review</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Ratings -->
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">⭐</div>
+                        Service Ratings
+                    </h3>
+                    <div class="rating-group">
+                        <div class="rating-item">
+                            <div class="rating-label">Property Management Quality</div>
+                            <div class="rating-stars" data-rating="management">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <div class="rating-label">Maintenance Response Time</div>
+                            <div class="rating-stars" data-rating="maintenance">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <div class="rating-label">Communication Effectiveness</div>
+                            <div class="rating-stars" data-rating="communication">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <div class="rating-label">Staff Professionalism</div>
+                            <div class="rating-stars" data-rating="professionalism">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-item">
+                            <div class="rating-label">Overall Satisfaction</div>
+                            <div class="rating-stars" data-rating="overall">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Observations -->
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">👁️</div>
+                        Detailed Observations
+                    </h3>
+                    <div class="form-group">
+                        <label class="form-label">What went well during your assessment?</label>
+                        <textarea class="form-input form-textarea" id="positiveObservations" 
+                            placeholder="Describe positive aspects, excellent service, standout performance, etc."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">What areas need improvement?</label>
+                        <textarea class="form-input form-textarea" id="improvementAreas" 
+                            placeholder="Identify specific issues, delays, communication problems, or service gaps"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Additional Comments & Recommendations</label>
+                        <textarea class="form-input form-textarea" id="additionalComments" 
+                            placeholder="Any other observations, suggestions, or detailed feedback"></textarea>
+                        
+                        <div class="voice-input-section">
+                            <div class="voice-controls">
+                                <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()">
+                                    <span id="voiceIcon">🎤</span>
+                                    <span id="voiceBtnText">Start Voice Input</span>
+                                </button>
+                                <span class="voice-status" id="voiceStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issues Checklist -->
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">❗</div>
+                        Issues Identified
+                    </h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item" onclick="toggleCheckbox('safety')">
+                            <div class="checkbox" id="checkbox-safety"></div>
+                            <div>Safety concerns or hazards</div>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleCheckbox('cleanliness')">
+                            <div class="checkbox" id="checkbox-cleanliness"></div>
+                            <div>Cleanliness or maintenance issues</div>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleCheckbox('communication')">
+                            <div class="checkbox" id="checkbox-communication"></div>
+                            <div>Poor communication or responsiveness</div>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleCheckbox('delays')">
+                            <div class="checkbox" id="checkbox-delays"></div>
+                            <div>Delays in service delivery</div>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleCheckbox('billing')">
+                            <div class="checkbox" id="checkbox-billing"></div>
+                            <div>Billing or pricing discrepancies</div>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleCheckbox('staff')">
+                            <div class="checkbox" id="checkbox-staff"></div>
+                            <div>Unprofessional staff behavior</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo Upload -->
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">📷</div>
+                        Supporting Photos
+                    </h3>
+                    <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('photoInput').click()">
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-text">Click to upload photos or drag & drop</div>
+                        <div class="upload-subtext">Support for JPG, PNG, HEIC files up to 5MB each</div>
+                        <input type="file" id="photoInput" multiple accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                    </div>
+                    <div class="photo-preview-grid" id="photoPreviewGrid">
+                        <!-- Uploaded photos will appear here -->
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">👤</div>
+                        Assessor Information
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Your Name *</label>
+                            <input type="text" class="form-input" id="assessorName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Your Email *</label>
+                            <input type="email" class="form-input" id="assessorEmail" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Your Phone (Optional)</label>
+                            <input type="tel" class="form-input" id="assessorPhone" placeholder="Enter your phone number">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company/Organization</label>
+                            <input type="text" class="form-input" id="assessorCompany" placeholder="Enter company name">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-card">
+                    <h3 class="summary-title">Assessment Summary</h3>
+                    <div class="summary-stats">
+                        <div class="summary-stat">
+                            <div class="summary-stat-number" id="avgRating">0.0</div>
+                            <div class="summary-stat-label">Average Rating</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="summary-stat-number" id="photoCount">0</div>
+                            <div class="summary-stat-label">Photos Uploaded</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="summary-stat-number" id="issueCount">0</div>
+                            <div class="summary-stat-label">Issues Identified</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="saveDraft()">
+                        <span>💾</span>
+                        Save Draft
+                    </button>
+                    <button class="btn btn-primary" onclick="previewReport()">
+                        <span>👁️</span>
+                        Preview Report
+                    </button>
+                    <button class="btn btn-success" onclick="submitReport()">
+                        <span>✅</span>
+                        Submit Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let uploadedPhotos = [];
+        let ratings = {};
+        let issues = [];
+        let recognition = null;
+        let isListening = false;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            setupDragAndDrop();
+            loadDraftData();
+            updateSummary();
+        });
+
+        function setupEventListeners() {
+            // Rating stars
+            document.querySelectorAll('.rating-stars').forEach(container => {
+                container.addEventListener('click', handleRatingClick);
+                container.addEventListener('mouseover', handleRatingHover);
+                container.addEventListener('mouseleave', handleRatingLeave);
+            });
+
+            // Form inputs
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('input', updateSummary);
+            });
+        }
+
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('photoUploadArea');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            uploadArea.addEventListener('drop', handleDrop, false);
+        }
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            document.getElementById('photoUploadArea').classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            document.getElementById('photoUploadArea').classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            [...files].forEach(uploadPhoto);
+        }
+
+        function uploadPhoto(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload only image files.');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoData = {
+                    id: Date.now() + Math.random(),
+                    name: file.name,
+                    data: e.target.result,
+                    size: file.size
+                };
+                
+                uploadedPhotos.push(photoData);
+                displayPhoto(photoData);
+                updateSummary();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function displayPhoto(photoData) {
+            const grid = document.getElementById('photoPreviewGrid');
+            const photoDiv = document.createElement('div');
+            photoDiv.className = 'photo-preview';
+            photoDiv.innerHTML = `
+                <img src="${photoData.data}" alt="${photoData.name}">
+                <button class="photo-remove" onclick="removePhoto('${photoData.id}')">×</button>
+            `;
+            grid.appendChild(photoDiv);
+        }
+
+        function removePhoto(photoId) {
+            uploadedPhotos = uploadedPhotos.filter(photo => photo.id != photoId);
+            document.getElementById('photoPreviewGrid').innerHTML = '';
+            uploadedPhotos.forEach(displayPhoto);
+            updateSummary();
+        }
+
+        function handleRatingClick(e) {
+            if (e.target.classList.contains('star')) {
+                const container = e.target.parentElement;
+                const ratingType = container.dataset.rating;
+                const value = parseInt(e.target.dataset.value);
+                
+                ratings[ratingType] = value;
+                updateStars(container, value);
+                updateSummary();
+            }
+        }
+
+        function handleRatingHover(e) {
+            if (e.target.classList.contains('star')) {
+                const container = e.target.parentElement;
+                const value = parseInt(e.target.dataset.value);
+                updateStars(container, value, true);
+            }
+        }
+
+        function handleRatingLeave(e) {
+            const container = e.target;
+            const ratingType = container.dataset.rating;
+            const currentValue = ratings[ratingType] || 0;
+            updateStars(container, currentValue);
+        }
+
+        function updateStars(container, value, isHover = false) {
+            const stars = container.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function toggleCheckbox(issueType) {
+            const checkbox = document.getElementById(`checkbox-${issueType}`);
+            const isChecked = checkbox.classList.contains('checked');
+            
+            if (isChecked) {
+                checkbox.classList.remove('checked');
+                issues = issues.filter(issue => issue !== issueType);
+            } else {
+                checkbox.classList.add('checked');
+                issues.push(issueType);
+            }
+            
+            updateSummary();
+        }
+
+        function updateSummary() {
+            // Average rating
+            const ratingValues = Object.values(ratings);
+            const avgRating = ratingValues.length > 0 
+                ? (ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length).toFixed(1)
+                : '0.0';
+            document.getElementById('avgRating').textContent = avgRating;
+            
+            // Photo count
+            document.getElementById('photoCount').textContent = uploadedPhotos.length;
+            
+            // Issue count
+            document.getElementById('issueCount').textContent = issues.length;
+        }
+
+        // Voice input functionality
+        function toggleVoiceInput() {
+            if (!recognition) {
+                if (!initSpeechRecognition()) {
+                    alert('Speech recognition is not supported in your browser. Please try Chrome or Edge.');
+                    return;
+                }
+            }
+            
+            if (isListening) {
+                stopVoiceInput();
+            } else {
+                startVoiceInput();
+            }
+        }
+
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = function() {
+                    isListening = true;
+                    document.getElementById('voiceBtnText').textContent = 'Stop Recording';
+                    document.getElementById('voiceBtn').classList.add('recording');
+                    document.getElementById('voiceStatus').textContent = 'Listening... speak now';
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    document.getElementById('voiceBtnText').textContent = 'Start Voice Input';
+                    document.getElementById('voiceBtn').classList.remove('recording');
+                    document.getElementById('voiceStatus').textContent = '';
+                };
+                
+                recognition.onresult = function(event) {
+                    let finalTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript + ' ';
+                        }
+                    }
+                    
+                    if (finalTranscript) {
+                        const textarea = document.getElementById('additionalComments');
+                        textarea.value += finalTranscript;
+                    }
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    document.getElementById('voiceStatus').textContent = 'Error: ' + event.error;
+                    stopVoiceInput();
+                };
+                
+                return true;
+            }
+            return false;
+        }
+
+        function startVoiceInput() {
+            if (recognition) {
+                recognition.start();
+            }
+        }
+
+        function stopVoiceInput() {
+            if (recognition && isListening) {
+                recognition.stop();
+            }
+        }
+
+        // Report actions
+        function saveDraft() {
+            const reportData = gatherReportData();
+            localStorage.setItem('mysteryShoppingDraft', JSON.stringify(reportData));
+            alert('Draft saved successfully!');
+        }
+
+        function loadDraftData() {
+            const draft = localStorage.getItem('mysteryShoppingDraft');
+            if (draft) {
+                const data = JSON.parse(draft);
+                populateForm(data);
+            }
+        }
+
+        function populateForm(data) {
+            // Populate form fields
+            Object.keys(data).forEach(key => {
+                const element = document.getElementById(key);
+                if (element && data[key]) {
+                    element.value = data[key];
+                }
+            });
+            
+            // Populate ratings
+            if (data.ratings) {
+                ratings = data.ratings;
+                Object.keys(ratings).forEach(ratingType => {
+                    const container = document.querySelector(`[data-rating="${ratingType}"]`);
+                    if (container) {
+                        updateStars(container, ratings[ratingType]);
+                    }
+                });
+            }
+            
+            // Populate issues
+            if (data.issues) {
+                issues = data.issues;
+                issues.forEach(issue => {
+                    const checkbox = document.getElementById(`checkbox-${issue}`);
+                    if (checkbox) {
+                        checkbox.classList.add('checked');
+                    }
+                });
+            }
+            
+            updateSummary();
+        }
+
+        function gatherReportData() {
+            return {
+                propertyName: document.getElementById('propertyName').value,
+                propertyAddress: document.getElementById('propertyAddress').value,
+                assessmentDate: document.getElementById('assessmentDate').value,
+                assessmentType: document.getElementById('assessmentType').value,
+                positiveObservations: document.getElementById('positiveObservations').value,
+                improvementAreas: document.getElementById('improvementAreas').value,
+                additionalComments: document.getElementById('additionalComments').value,
+                assessorName: document.getElementById('assessorName').value,
+                assessorEmail: document.getElementById('assessorEmail').value,
+                assessorPhone: document.getElementById('assessorPhone').value,
+                assessorCompany: document.getElementById('assessorCompany').value,
+                ratings: ratings,
+                issues: issues,
+                photos: uploadedPhotos,
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        function validateForm() {
+            const required = ['propertyName', 'propertyAddress', 'assessmentDate', 'assessmentType', 'assessorName', 'assessorEmail'];
+            const missing = [];
+            
+            required.forEach(field => {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    missing.push(field);
+                }
+            });
+            
+            if (Object.keys(ratings).length === 0) {
+                missing.push('ratings');
+            }
+            
+            return missing;
+        }
+
+        function previewReport() {
+            const missing = validateForm();
+            if (missing.length > 0) {
+                alert(`Please fill in the following required fields: ${missing.join(', ')}`);
+                return;
+            }
+            
+            const reportData = gatherReportData();
+            generateReportPreview(reportData);
+        }
+
+        function submitReport() {
+            const missing = validateForm();
+            if (missing.length > 0) {
+                alert(`Please fill in the following required fields: ${missing.join(', ')}`);
+                return;
+            }
+            
+            const reportData = gatherReportData();
+            
+            // In a real implementation, this would send data to the server
+            console.log('Submitting report:', reportData);
+            
+            // Clear draft
+            localStorage.removeItem('mysteryShoppingDraft');
+            
+            alert('Report submitted successfully! You will receive a confirmation email shortly.');
+            
+            // Optionally redirect or reset form
+            // window.location.href = '/thank-you';
+        }
+
+        function generateReportPreview(data) {
+            const previewWindow = window.open('', '_blank');
+            const avgRating = Object.values(data.ratings).length > 0 
+                ? (Object.values(data.ratings).reduce((a, b) => a + b, 0) / Object.values(data.ratings).length).toFixed(1)
+                : 'N/A';
+                
+            const previewHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mystery Shopping Report Preview</title>
+    <style>
+        body { font-family: Inter, Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #ff6b35, #ff1654); color: white; padding: 2rem; border-radius: 12px; text-align: center; margin-bottom: 2rem; }
+        .section { margin: 2rem 0; padding: 1.5rem; background: #fef7f0; border-radius: 8px; border-left: 4px solid #ff6b35; }
+        .section h3 { color: #2d1b14; margin-bottom: 1rem; }
+        .rating-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .rating-item { background: white; padding: 1rem; border-radius: 6px; text-align: center; }
+        .photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .photos img { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; }
+        .issues { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .issue-tag { background: #ff427f; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; }
+        @media print { body { margin: 0; } .header { background: #ff6b35 !important; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mystery Shopping Report</h1>
+        <h2>${data.propertyName}</h2>
+        <p>Assessment Date: ${data.assessmentDate} | Average Rating: ${avgRating}/5</p>
+    </div>
+    
+    <div class="section">
+        <h3>Property Information</h3>
+        <p><strong>Address:</strong> ${data.propertyAddress}</p>
+        <p><strong>Assessment Type:</strong> ${data.assessmentType}</p>
+        <p><strong>Assessor:</strong> ${data.assessorName} (${data.assessorEmail})</p>
+    </div>
+    
+    <div class="section">
+        <h3>Service Ratings</h3>
+        <div class="rating-grid">
+            ${Object.entries(data.ratings).map(([key, value]) => `
+                <div class="rating-item">
+                    <div><strong>${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</strong></div>
+                    <div style="color: #ff6b35; font-size: 1.5rem;">${'★'.repeat(value)}${'☆'.repeat(5-value)}</div>
+                    <div>${value}/5</div>
+                </div>
+            `).join('')}
+        </div>
+    </div>
+    
+    ${data.positiveObservations ? `
+    <div class="section">
+        <h3>Positive Observations</h3>
+        <p>${data.positiveObservations}</p>
+    </div>` : ''}
+    
+    ${data.improvementAreas ? `
+    <div class="section">
+        <h3>Areas for Improvement</h3>
+        <p>${data.improvementAreas}</p>
+    </div>` : ''}
+    
+    ${data.issues.length > 0 ? `
+    <div class="section">
+        <h3>Issues Identified</h3>
+        <div class="issues">
+            ${data.issues.map(issue => `<span class="issue-tag">${issue.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</span>`).join('')}
+        </div>
+    </div>` : ''}
+    
+    ${data.additionalComments ? `
+    <div class="section">
+        <h3>Additional Comments</h3>
+        <p>${data.additionalComments}</p>
+    </div>` : ''}
+    
+    ${data.photos.length > 0 ? `
+    <div class="section">
+        <h3>Supporting Photos (${data.photos.length})</h3>
+        <div class="photos">
+            ${data.photos.map(photo => `<img src="${photo.data}" alt="${photo.name}">`).join('')}
+        </div>
+    </div>` : ''}
+    
+    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #ffd3c1; border-radius: 8px;">
+        <button onclick="window.print()" style="background: linear-gradient(135deg, #ff6b35, #ff1654); color: white; border: none; padding: 1rem 2rem; border-radius: 25px; font-size: 1rem; cursor: pointer;">Print Report</button>
+    </div>
+</body>
+</html>`;
+            
+            previewWindow.document.write(previewHTML);
+            previewWindow.document.close();
+        }
+
+        // Set default date to today
+        document.getElementById('assessmentDate').valueAsDate = new Date();
+    </script>
+</body>
+</html>

@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residential Mystery Shopping Assessment | April Sabral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .assessment-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .option-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .option.selected .option-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+        }
+
+        .option-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-button.secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .subscription-plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .plan-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.1);
+        }
+
+        .plan-card.popular {
+            border-color: #f6ad55;
+            background: linear-gradient(135deg, rgba(246, 173, 85, 0.05), rgba(246, 173, 85, 0.1));
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f6ad55, #ed8936);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .plan-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .plan-period {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: #48bb78;
+            font-weight: bold;
+            width: 20px;
+        }
+
+        .select-plan-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select-plan-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .results-container {
+            display: none;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #667eea 0%, #764ba2 var(--score-percentage), #e2e8f0 var(--score-percentage));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .score-circle::after {
+            content: '';
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .score-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            z-index: 1;
+        }
+
+        .insights-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .insight-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .insight-text {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .action-items {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .action-items h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .action-list {
+            list-style: none;
+        }
+
+        .action-list li {
+            padding: 10px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .action-list li:last-child {
+            border-bottom: none;
+        }
+
+        .action-list li::before {
+            content: "→";
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .assessment-card {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subscription-plans {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .email-capture {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .email-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <div class="container">
+        <div class="assessment-card">
+            <div class="header">
+                <div class="logo">MS</div>
+                <h1>Residential Mystery Shopping Assessment</h1>
+                <p class="subtitle">Discover how your home services measure up and unlock insights for better residential experiences</p>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Email Capture -->
+            <div class="email-capture" id="emailCapture">
+                <h3 style="margin-bottom: 15px; color: #2d3748;">Get Your Personalized Assessment Report</h3>
+                <p style="color: #666; margin-bottom: 20px;">Enter your email to receive detailed insights and actionable recommendations for your residential services.</p>
+                <input type="email" id="emailInput" class="email-input" placeholder="Enter your email address" required>
+                <button class="nav-button" onclick="startAssessment()" id="startBtn">Start Assessment</button>
+            </div>
+
+            <!-- Assessment Questions -->
+            <div id="assessmentQuestions" style="display: none;">
+                <!-- Questions will be populated by JavaScript -->
+            </div>
+
+            <!-- Subscription Plans -->
+            <div id="subscriptionSection" style="display: none;">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2d3748;">Choose Your Residential Assessment Plan</h2>
+                <div class="subscription-plans">
+                    <div class="plan-card">
+                        <div class="plan-title">Basic Home</div>
+                        <div class="plan-price">$97</div>
+                        <div class="plan-period">per year</div>
+                        <ul class="plan-features">
+                            <li>Quarterly mystery shopping assessments</li>
+                            <li>Basic service provider evaluations</li>
+                            <li>Email reports and insights</li>
+                            <li>Community access</li>
+                            <li>Mobile assessment tools</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('basic')">Select Basic</button>
+                    </div>
+                    
+                    <div class="plan-card popular">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="plan-title">Premium Home</div>
+                        <div class="plan-price">$197</div>
+                        <div class="plan-period">per year</div>
+                        <ul class="plan-features">
+                            <li>Monthly mystery shopping assessments</li>
+                            <li>Comprehensive service evaluations</li>
+                            <li>Detailed PDF reports</li>
+                            <li>Priority support</li>
+                            <li>Custom assessment criteria</li>
+                            <li>Service provider benchmarking</li>
+                            <li>Improvement tracking dashboard</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('premium')">Select Premium</button>
+                    </div>
+                    
+                    <div class="plan-card">
+                        <div class="plan-title">Elite Estate</div>
+                        <div class="plan-price">$397</div>
+                        <div class="plan-period">per year</div>
+                        <ul class="plan-features">
+                            <li>Weekly mystery shopping assessments</li>
+                            <li>Multi-property evaluations</li>
+                            <li>Real-time alerts and notifications</li>
+                            <li>Personal consultation calls</li>
+                            <li>White-label reporting</li>
+                            <li>Advanced analytics dashboard</li>
+                            <li>Custom service standards setup</li>
+                            <li>Concierge support</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('elite')">Select Elite</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-container" id="resultsSection">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2d3748;">Your Residential Service Assessment Results</h2>
+                
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-text" id="scoreText">0%</div>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h3 id="scoreDescription" style="color: #2d3748; margin-bottom: 10px;"></h3>
+                    <p id="scoreSummary" style="color: #666; line-height: 1.6;"></p>
+                </div>
+
+                <div class="insights-grid" id="insightsGrid">
+                    <!-- Insights will be populated by JavaScript -->
+                </div>
+
+                <div class="action-items">
+                    <h3>Recommended Action Items</h3>
+                    <ul class="action-list" id="actionList">
+                        <!-- Action items will be populated by JavaScript -->
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="nav-button" onclick="showSubscriptionPlans()" style="margin-right: 15px;">Upgrade for Advanced Insights</button>
+                    <button class="nav-button secondary" onclick="restartAssessment()">Retake Assessment</button>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation" id="navigation" style="display: none;">
+                <button class="nav-button secondary" id="prevBtn" onclick="previousQuestion()" disabled>Previous</button>
+                <button class="nav-button" id="nextBtn" onclick="nextQuestion()">Next Question</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "How would you rate your current home service providers overall?",
+                description: "Think about all the services you use regularly - cleaning, maintenance, landscaping, security, etc.",
+                options: [
+                    { text: "Excellent - They consistently exceed my expectations", value: 5 },
+                    { text: "Good - Generally reliable with minor issues", value: 4 },
+                    { text: "Average - Hit or miss quality and reliability", value: 3 },
+                    { text: "Below Average - Frequent problems and disappointments", value: 2 },
+                    { text: "Poor - Major issues, considering changes", value: 1 }
+                ]
+            },
+            {
+                question: "How responsive are your service providers to your needs?",
+                description: "Consider response times for booking, inquiries, and emergency situations.",
+                options: [
+                    { text: "Always available and responds within hours", value: 5 },
+                    { text: "Usually responsive within 24 hours", value: 4 },
+                    { text: "Sometimes takes 2-3 days to respond", value: 3 },
+                    { text: "Often takes a week or more", value: 2 },
+                    { text: "Very difficult to reach or get responses", value: 1 }
+                ]
+            },
+            {
+                question: "How well do your service providers communicate with you?",
+                description: "Think about clarity of communication, updates, and professionalism.",
+                options: [
+                    { text: "Excellent communication - clear, professional, proactive", value: 5 },
+                    { text: "Good communication with occasional clarification needed", value: 4 },
+                    { text: "Average - basic communication, sometimes unclear", value: 3 },
+                    { text: "Poor communication - often confused or left in the dark", value: 2 },
+                    { text: "No communication - have to chase them for updates", value: 1 }
+                ]
+            },
+            {
+                question: "How reliable are your service providers with scheduling?",
+                description: "Consider punctuality, keeping appointments, and advance notice for changes.",
+                options: [
+                    { text: "Always on time and reliable with scheduling", value: 5 },
+                    { text: "Usually on time with rare delays", value: 4 },
+                    { text: "Sometimes late but generally keeps appointments", value: 3 },
+                    { text: "Often late or reschedules last minute", value: 2 },
+                    { text: "Very unreliable - frequently no-shows or major delays", value: 1 }
+                ]
+            },
+            {
+                question: "How would you rate the quality of work performed?",
+                description: "Think about attention to detail, craftsmanship, and meeting your standards.",
+                options: [
+                    { text: "Exceptional quality - attention to every detail", value: 5 },
+                    { text: "High quality with minor areas for improvement", value: 4 },
+                    { text: "Good quality but inconsistent", value: 3 },
+                    { text: "Below expectations - often requires corrections", value: 2 },
+                    { text: "Poor quality - frequently unsatisfied", value: 1 }
+                ]
+            },
+            {
+                question: "How fair and transparent is the pricing from your service providers?",
+                description: "Consider upfront pricing, hidden fees, and value for money.",
+                options: [
+                    { text: "Very transparent with excellent value", value: 5 },
+                    { text: "Generally fair pricing with clear explanations", value: 4 },
+                    { text: "Acceptable pricing but sometimes unclear", value: 3 },
+                    { text: "Often surprised by additional costs", value: 2 },
+                    { text: "Poor transparency with frequent surprise charges", value: 1 }
+                ]
+            },
+            {
+                question: "How do your service providers handle problems or complaints?",
+                description: "Think about their response to issues, willingness to fix problems, and customer service.",
+                options: [
+                    { text: "Excellent problem resolution - proactive and thorough", value: 5 },
+                    { text: "Good at fixing issues when brought to their attention", value: 4 },
+                    { text: "Eventually resolves problems but takes some effort", value: 3 },
+                    { text: "Reluctant to fix issues or takes multiple attempts", value: 2 },
+                    { text: "Poor problem resolution - often left unsatisfied", value: 1 }
+                ]
+            },
+            {
+                question: "How professional and trustworthy are your service providers?",
+                description: "Consider their appearance, behavior, respect for your property, and overall trustworthiness.",
+                options: [
+                    { text: "Highly professional and completely trustworthy", value: 5 },
+                    { text: "Generally professional with good trust level", value: 4 },
+                    { text: "Acceptable professionalism but some concerns", value: 3 },
+                    { text: "Inconsistent professionalism - some trust issues", value: 2 },
+                    { text: "Unprofessional behavior - trust is a major concern", value: 1 }
+                ]
+            },
+            {
+                question: "How well do your service providers understand and meet your specific needs?",
+                description: "Think about whether they listen to your preferences and customize their service accordingly.",
+                options: [
+                    { text: "Perfectly understands and exceeds my specific needs", value: 5 },
+                    { text: "Generally understands and meets my requirements", value: 4 },
+                    { text: "Basic understanding but misses some preferences", value: 3 },
+                    { text: "Often misunderstands or ignores my specific needs", value: 2 },
+                    { text: "Poor understanding - one-size-fits-all approach", value: 1 }
+                ]
+            },
+            {
+                question: "Overall, how likely are you to recommend your current service providers to others?",
+                description: "Think about your overall satisfaction and confidence in recommending them.",
+                options: [
+                    { text: "Extremely likely - I actively recommend them", value: 5 },
+                    { text: "Very likely - I would recommend with confidence", value: 4 },
+                    { text: "Somewhat likely - with some reservations", value: 3 },
+                    { text: "Unlikely - too many concerns to recommend", value: 2 },
+                    { text: "Never - I would advise others to avoid them", value: 1 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let responses = [];
+        let userEmail = '';
+
+        function startAssessment() {
+            const email = document.getElementById('emailInput').value;
+            if (!email || !isValidEmail(email)) {
+                alert('Please enter a valid email address to continue.');
+                return;
+            }
+            
+            userEmail = email;
+            document.getElementById('emailCapture').style.display = 'none';
+            document.getElementById('assessmentQuestions').style.display = 'block';
+            document.getElementById('navigation').style.display = 'flex';
+            
+            renderQuestion();
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function renderQuestion() {
+            const questionsContainer = document.getElementById('assessmentQuestions');
+            const question = questions[currentQuestion];
+            
+            questionsContainer.innerHTML = `
+                <div class="question-container active">
+                    <div class="question">${question.question}</div>
+                    <div class="description">${question.description}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectOption(${option.value}, ${index})">
+                                <div class="option-icon"></div>
+                                <div class="option-text">${option.text}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            updateProgress();
+            updateNavigation();
+            
+            // Pre-select if answer exists
+            if (responses[currentQuestion] !== undefined) {
+                const selectedValue = responses[currentQuestion];
+                const selectedIndex = question.options.findIndex(opt => opt.value === selectedValue);
+                if (selectedIndex !== -1) {
+                    selectOption(selectedValue, selectedIndex);
+                }
+            }
+        }
+
+        function selectOption(value, index) {
+            responses[currentQuestion] = value;
+            
+            // Update UI
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.option')[index].classList.add('selected');
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (responses[currentQuestion] === undefined) {
+                alert('Please select an answer before continuing.');
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = responses[currentQuestion] === undefined;
+            nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Show Results' : 'Next Question';
+        }
+
+        function showResults() {
+            const totalScore = responses.reduce((sum, response) => sum + response, 0);
+            const maxScore = questions.length * 5;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            // Hide questions and navigation
+            document.getElementById('assessmentQuestions').style.display = 'none';
+            document.getElementById('navigation').style.display = 'none';
+            
+            // Show results
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Update score circle
+            const scoreCircle = document.getElementById('scoreCircle');
+            scoreCircle.style.setProperty('--score-percentage', `${(percentage * 3.6)}deg`);
+            document.getElementById('scoreText').textContent = `${percentage}%`;
+            
+            // Update score description
+            const { title, description, insights, actions } = getScoreInterpretation(percentage);
+            document.getElementById('scoreDescription').textContent = title;
+            document.getElementById('scoreSummary').textContent = description;
+            
+            // Populate insights
+            const insightsGrid = document.getElementById('insightsGrid');
+            insightsGrid.innerHTML = insights.map(insight => `
+                <div class="insight-card">
+                    <div class="insight-title">${insight.title}</div>
+                    <div class="insight-text">${insight.text}</div>
+                </div>
+            `).join('');
+            
+            // Populate action items
+            const actionList = document.getElementById('actionList');
+            actionList.innerHTML = actions.map(action => `<li>${action}</li>`).join('');
+            
+            // Save lead data
+            saveLeadData(percentage);
+        }
+
+        function getScoreInterpretation(percentage) {
+            if (percentage >= 90) {
+                return {
+                    title: "Excellent Service Excellence",
+                    description: "Your residential service providers are performing exceptionally well across all areas. You have established strong relationships with high-quality providers.",
+                    insights: [
+                        {
+                            title: "Service Provider Relationship Strength",
+                            text: "You have cultivated excellent relationships with reliable, professional service providers who understand and exceed your expectations."
+                        },
+                        {
+                            title: "Quality Standards Achievement",
+                            text: "Your current providers consistently meet or exceed high-quality standards, demonstrating attention to detail and commitment to excellence."
+                        },
+                        {
+                            title: "Communication Excellence",
+                            text: "Strong communication channels exist with your service providers, ensuring clarity, professionalism, and proactive updates."
+                        }
+                    ],
+                    actions: [
+                        "Document your current service standards to maintain consistency",
+                        "Consider sharing positive reviews to support your excellent providers",
+                        "Explore adding premium services from your trusted providers",
+                        "Create a referral system to help others find quality service providers"
+                    ]
+                };
+            } else if (percentage >= 75) {
+                return {
+                    title: "Strong Service Foundation",
+                    description: "Your residential services are generally performing well with some opportunities for improvement. You have good relationships but could optimize certain areas.",
+                    insights: [
+                        {
+                            title: "Service Consistency Opportunities",
+                            text: "While your providers are generally reliable, there are opportunities to improve consistency in scheduling, communication, or quality delivery."
+                        },
+                        {
+                            title: "Communication Enhancement Potential",
+                            text: "Your service providers communicate adequately but could benefit from more proactive updates and clearer expectations."
+                        },
+                        {
+                            title: "Quality Optimization Areas",
+                            text: "Service quality is good overall but could be enhanced through better understanding of your specific needs and preferences."
+                        }
+                    ],
+                    actions: [
+                        "Establish clear service standards and expectations with providers",
+                        "Request more frequent communication and updates",
+                        "Provide specific feedback to help providers improve",
+                        "Consider trial periods with alternative providers for comparison"
+                    ]
+                };
+            } else if (percentage >= 60) {
+                return {
+                    title: "Moderate Service Performance",
+                    description: "Your residential services are meeting basic needs but have significant room for improvement. Several areas need attention to enhance your experience.",
+                    insights: [
+                        {
+                            title: "Service Reliability Concerns",
+                            text: "Inconsistencies in scheduling, quality, or communication are affecting your overall satisfaction with current providers."
+                        },
+                        {
+                            title: "Quality Control Issues",
+                            text: "Service quality varies significantly, suggesting need for better provider selection or clearer standards communication."
+                        },
+                        {
+                            title: "Provider Relationship Gaps",
+                            text: "The relationship with your service providers lacks depth, trust, or mutual understanding of expectations."
+                        }
+                    ],
+                    actions: [
+                        "Evaluate each provider's performance and consider replacements where needed",
+                        "Establish written service agreements with clear expectations",
+                        "Research and vet alternative service providers",
+                        "Implement regular performance reviews with current providers"
+                    ]
+                };
+            } else {
+                return {
+                    title: "Service Improvement Critical",
+                    description: "Your residential services require immediate attention and significant improvements. Multiple areas are underperforming and affecting your quality of life.",
+                    insights: [
+                        {
+                            title: "Comprehensive Service Overhaul Needed",
+                            text: "Current service providers are consistently failing to meet basic standards across multiple areas including reliability, quality, and communication."
+                        },
+                        {
+                            title: "Trust and Professionalism Deficits",
+                            text: "Significant concerns exist regarding provider trustworthiness, professionalism, and respect for your property and needs."
+                        },
+                        {
+                            title: "Service Provider Selection Strategy Required",
+                            text: "Your current approach to selecting and managing service providers needs fundamental restructuring."
+                        }
+                    ],
+                    actions: [
+                        "Immediately begin searching for replacement service providers",
+                        "Develop a comprehensive provider vetting process",
+                        "Create detailed service contracts with performance metrics",
+                        "Consider using professional service management platforms",
+                        "Establish trial periods and probationary arrangements with new providers"
+                    ]
+                };
+            }
+        }
+
+        function saveLeadData(score) {
+            const leadData = {
+                email: userEmail,
+                score: score,
+                responses: responses,
+                timestamp: new Date().toISOString(),
+                assessmentType: 'residential-mystery-shopping'
+            };
+            
+            // In a real implementation, this would send data to your backend
+            console.log('Lead data saved:', leadData);
+            
+            // For now, store in localStorage as a backup
+            localStorage.setItem('residential_assessment_' + Date.now(), JSON.stringify(leadData));
+        }
+
+        function showSubscriptionPlans() {
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('subscriptionSection').style.display = 'block';
+        }
+
+        function selectPlan(planType) {
+            const plans = {
+                basic: { name: 'Basic Home', price: 9700, features: 'Quarterly assessments + basic reports' },
+                premium: { name: 'Premium Home', price: 19700, features: 'Monthly assessments + comprehensive insights' },
+                elite: { name: 'Elite Estate', price: 39700, features: 'Weekly assessments + concierge support' }
+            };
+            
+            const selectedPlan = plans[planType];
+            alert(`You selected the ${selectedPlan.name} plan for $${(selectedPlan.price/100).toFixed(2)} per year.\n\nFeatures: ${selectedPlan.features}\n\nRedirecting to checkout...`);
+            
+            // In a real implementation, redirect to Stripe/PayPal checkout
+            // window.location.href = `/checkout/${planType}`;
+        }
+
+        function restartAssessment() {
+            currentQuestion = 0;
+            responses = [];
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('subscriptionSection').style.display = 'none';
+            document.getElementById('emailCapture').style.display = 'block';
+            document.getElementById('emailInput').value = userEmail;
+        }
+
+        // Initialize the assessment
+        document.addEventListener('DOMContentLoaded', function() {
+            // Any initialization code here
+        });
+    </script>
+</body>
+</html>
