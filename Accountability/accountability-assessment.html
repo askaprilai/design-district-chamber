@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
+            background: #f8f9fa;
             min-height: 100vh;
             padding: 20px;
             position: relative;
@@ -36,7 +36,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(10, 10, 10, 0.05);
+            background: rgba(248, 249, 250, 0.3);
             backdrop-filter: blur(50px);
             z-index: -1;
             animation: pulse-overlay 10s ease-in-out infinite;
@@ -52,13 +52,13 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             backdrop-filter: blur(10px);
         }
 
         .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
             color: white;
             padding: 40px;
             text-align: center;
@@ -96,7 +96,7 @@
         .quiz-start {
             text-align: center;
             padding: 30px;
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.1) 0%, rgba(22, 33, 62, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(53, 122, 189, 0.1) 100%);
             border-radius: 15px;
             margin-bottom: 30px;
             border-left: 4px solid #ffd700;
@@ -114,7 +114,7 @@
         }
 
         .quiz-start button {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
             color: white;
             border: none;
             padding: 15px 30px;
@@ -169,7 +169,7 @@
 
         .question-number {
             background: #ffd700;
-            color: #1a1a2e;
+            color: #2c3e50;
             width: 35px;
             height: 35px;
             border-radius: 50%;
@@ -182,7 +182,7 @@
         }
 
         .framework-step {
-            background: rgba(26, 26, 46, 0.1);
+            background: rgba(74, 144, 226, 0.1);
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -190,7 +190,7 @@
         }
 
         .framework-step h4 {
-            color: #1a1a2e;
+            color: #2c3e50;
             font-size: 1em;
             margin-bottom: 5px;
             font-weight: 600;
@@ -252,7 +252,7 @@
         }
 
         .nav-button {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -294,7 +294,7 @@
         }
 
         .score-display {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
             color: white;
             padding: 40px;
             border-radius: 20px;
@@ -790,8 +790,13 @@
                             <div style="margin-bottom: 20px;">
                                 <input type="email" id="email" placeholder="Email" required="" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;" onfocus="this.style.borderColor='#ffd700'" onblur="this.style.borderColor='#e2e8f0'">
                             </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <input type="text" id="companyCode" placeholder="Company Code (Optional - for team analytics)" style="width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; outline: none; transition: border-color 0.3s ease;" onfocus="this.style.borderColor='#ffd700'" onblur="this.style.borderColor='#e2e8f0'">
+                                <small style="color: #718096; font-size: 13px; display: block; margin-top: 5px;">If your organization provided a code, enter it here for team-wide insights</small>
+                            </div>
                             
-                            <button type="submit" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: 600; width: 100%; transition: transform 0.2s ease;">
+                            <button type="submit" style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: 600; width: 100%; transition: transform 0.2s ease;">
                                 Get My Leadership Development Plan Now
                             </button>
                         </form>
@@ -806,28 +811,11 @@
     </div>
 
     <!-- Footer -->
-    <footer style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 40px 20px; text-align: center; margin-top: 50px;">
+    <footer style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; padding: 40px 20px; text-align: center; margin-top: 50px;">
         <div style="max-width: 900px; margin: 0 auto;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 30px;">
-                <!-- Company Info -->
-                <div>
-                    <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.2em;">AskApril AI</h3>
-                    <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6; margin-bottom: 15px;">Transform your leadership with AI-powered accountability frameworks and personalized development plans.</p>
-                </div>
-                
-                <!-- Book Section -->
-                <div>
-                    <h4 style="color: #ffd700; margin-bottom: 15px; font-size: 1.1em;">Featured Book</h4>
-                    <div style="display: flex; align-items: center; gap: 15px; justify-content: center;">
-                        <div style="width: 80px; height: 100px; background: #ffd700; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #1a1a2e; font-weight: bold; font-size: 12px; text-align: center;">
-                            Positive<br>Accountability<br>Book
-                        </div>
-                        <div style="text-align: left;">
-                            <h5 style="color: white; margin: 0 0 5px 0; font-size: 1em;">Positive Accountability</h5>
-                            <p style="color: rgba(255, 255, 255, 0.7); margin: 0; font-size: 0.9em;">Master the 9-step framework for leadership accountability</p>
-                        </div>
-                    </div>
-                </div>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h3 style="color: #ffd700; margin-bottom: 15px; font-size: 1.2em;">AskApril AI</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">Transform your leadership with AI-powered accountability frameworks and personalized development plans.</p>
             </div>
             
             <!-- Bottom Bar -->
@@ -1043,9 +1031,10 @@
                     
                     const firstName = document.getElementById('firstName').value;
                     const email = document.getElementById('email').value;
+                    const companyCode = document.getElementById('companyCode').value.trim();
                     
                     if (!firstName || !email) {
-                        alert('Please fill in all fields.');
+                        alert('Please fill in all required fields.');
                         return;
                     }
                     
@@ -1053,6 +1042,7 @@
                     const assessmentData = {
                         firstName: firstName,
                         email: email,
+                        companyCode: companyCode || null,
                         assessmentAnswers: userAnswers,
                         totalScore: Object.values(userAnswers).reduce((sum, value) => sum + value, 0),
                         percentageScore: Math.round((Object.values(userAnswers).reduce((sum, value) => sum + value, 0) / 36) * 100),
@@ -1112,9 +1102,9 @@
                                         <li style="margin: 8px 0;">• Free trial invitation to AskApril AI</li>
                                     </ul>
                                 </div>
-                                <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                                <div style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
                                     <p style="margin-bottom: 15px;"><strong>Ready to accelerate your leadership transformation?</strong></p>
-                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: #ffd700; color: #1a1a2e; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
+                                    <a href="https://askaprilai.newzenler.com/courses/builder-subscription/buy" target="_blank" style="background: #ffd700; color: #2c3e50; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block;">Start 30-Day Free Trial</a>
                                 </div>
                                 <p style="color: #718096; font-size: 0.9em;">Check your email (including spam folder) for your comprehensive leadership development guide.</p>
                             </div>
@@ -1187,7 +1177,7 @@
                     angle: angle,
                     speed: 0.6 + Math.random() * 1.2,
                     opacity: 0.12 + Math.random() * 0.16,
-                    hue: 45 + Math.random() * 15, // Yellow range for our theme
+                    hue: 200 + Math.random() * 40, // Light blue range for our theme
                     pulse: Math.random() * Math.PI * 2,
                     pulseSpeed: 0.02 + Math.random() * 0.03,
                 };
@@ -1201,7 +1191,7 @@
                 beam.x = column * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
                 beam.width = 100 + Math.random() * 100;
                 beam.speed = 0.5 + Math.random() * 0.4;
-                beam.hue = 45 + (index * 15) / totalBeams; // Yellow range
+                beam.hue = 200 + (index * 40) / totalBeams; // Light blue range
                 beam.opacity = 0.2 + Math.random() * 0.1;
                 return beam;
             }
