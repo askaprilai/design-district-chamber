@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="0; url=/directory.html">
+    <script>window.location.href = '/directory.html';</script>
+</head>
+</html>
