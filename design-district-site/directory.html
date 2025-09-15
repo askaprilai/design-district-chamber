@@ -688,7 +688,27 @@
     </script>
 
     <!-- Load Google Maps API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvOkBwgGlbYQIBSOBiS0GJXOtKrREY8dE&callback=initMap"></script>
+    <script>
+        function loadGoogleMaps() {
+            // Simple embedded map as fallback
+            document.getElementById('map').innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="500" 
+                    frameborder="0" 
+                    style="border:0; border-radius: 15px;" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.294957!2d-80.19450!3d25.80650!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b484f58afe8b%3A0x8a7e8b8a8b8a8b8a!2sMiami%20Design%20District%2C%20Miami%2C%20FL!5e0!3m2!1sen!2sus!4v1234567890123"
+                    allowfullscreen>
+                </iframe>
+            `;
+        }
+        
+        // Load the embedded map when page loads
+        window.onload = function() {
+            loadGoogleMaps();
+            displayBusinesses(filteredBusinesses);
+        };
+    </script>
 
 </body>
 </html>
