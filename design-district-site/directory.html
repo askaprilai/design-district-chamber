@@ -506,8 +506,9 @@
             const designDistrictCenter = { lat: 25.8065, lng: -80.1945 };
             
             map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 16,
+                zoom: 15,
                 center: designDistrictCenter,
+                mapTypeId: 'roadmap',
                 styles: [
                     {
                         "featureType": "all",
@@ -520,16 +521,56 @@
                         "stylers": [{"color": "#746855"}]
                     },
                     {
+                        "featureType": "all",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [{"color": "#242f3e"}]
+                    },
+                    {
                         "featureType": "road",
                         "elementType": "geometry",
                         "stylers": [{"color": "#38414e"}]
                     },
                     {
+                        "featureType": "road",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{"color": "#212a37"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{"color": "#9ca5b3"}]
+                    },
+                    {
                         "featureType": "water",
                         "elementType": "geometry",
                         "stylers": [{"color": "#17263c"}]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{"color": "#d4af37"}]
                     }
-                ]
+                ],
+                streetViewControl: true,
+                mapTypeControl: true,
+                fullscreenControl: true,
+                zoomControl: true
+            });
+
+            // Add Design District boundary highlight
+            const designDistrictBounds = new google.maps.Rectangle({
+                bounds: {
+                    north: 25.8120,
+                    south: 25.8010,
+                    east: -80.1900,
+                    west: -80.2000
+                },
+                strokeColor: '#d4af37',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#d4af37',
+                fillOpacity: 0.1,
+                map: map
             });
 
             // Add markers for businesses
@@ -641,15 +682,8 @@
 
         // Initialize everything when page loads
         window.onload = function() {
-            // Load Google Maps if not already loaded
-            if (typeof google === 'undefined') {
-                const script = document.createElement('script');
-                script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap';
-                script.async = true;
-                document.head.appendChild(script);
-            } else {
-                initMap();
-            }
+            // Initialize map when Google Maps is loaded
+            initMap();
         };
     </script>
 
