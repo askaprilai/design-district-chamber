@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Directory - Miami Design District | Find Local Businesses</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Discover businesses in Miami Design District with our interactive directory and map. Find restaurants, shops, galleries, and services in Miami's premier design destination.">
+    <meta name="keywords" content="Miami Design District directory, Design District businesses, Miami shopping, Design District map, Miami galleries, Design District restaurants">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Design District Chamber of Commerce">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://designdistrictchamber.org/directory">
+    <meta property="og:title" content="Miami Design District Business Directory & Map">
+    <meta property="og:description" content="Explore Miami Design District businesses with our interactive directory and map. Find the best shops, restaurants, and galleries.">
+    <meta property="og:image" content="https://designdistrictchamber.org/images/directory-map-meta.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://designdistrictchamber.org/directory">
+    <meta property="twitter:title" content="Miami Design District Business Directory & Map">
+    <meta property="twitter:description" content="Explore Miami Design District businesses with our interactive directory and map.">
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KZLJZ4SP');</script>
+    <!-- End Google Tag Manager -->
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #e8eaed;
+            background: #0a0a0b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-image {
+            height: 60px;
+            width: auto;
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text .district {
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ccc;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            padding: 10rem 0 6rem;
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0f0f0f 100%);
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3.5em;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #f4f1e8 30%, #d4af37 70%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .page-hero p {
+            font-size: 1.3em;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Search & Filter Section */
+        .search-section {
+            padding: 4rem 0;
+            background: #0a0a0b;
+        }
+
+        .search-controls {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        /* Map & Directory Layout */
+        .directory-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        /* Map Section */
+        .map-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .map-container h2 {
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        #map {
+            height: 500px;
+            border-radius: 15px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Directory List */
+        .directory-list {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .directory-list h2 {
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .business-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .business-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .business-name {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .business-category {
+            color: #d4af37;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .business-address {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .business-phone {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .search-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .directory-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            #map {
+                height: 300px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 3rem 0 2rem;
+            text-align: center;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZLJZ4SP"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <img src="logo.png" alt="Design District Chamber Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="logo-fallback" style="width: 80px; height: 60px; background: linear-gradient(135deg, #d4af37 0%, #f4f1e8 100%); display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1em; border-radius: 8px;">DDCC</div>
+                    <div class="logo-text">
+                        Design <span class="district">District</span><br>
+                        <small style="font-size: 0.6em; font-weight: 400; color: #fff; margin-top: -8px; display: block;">Chamber of Commerce</small>
+                    </div>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="/#home">Home</a></li>
+                        <li><a href="/about-us">About Us</a></li>
+                        <li><a href="/directory">Directory</a></li>
+                        <li><a href="/#membership">Membership</a></li>
+                        <li><a href="/#events">Events</a></li>
+                        <li><a href="/#resources">Resources</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="container">
+                <h1>Business Directory</h1>
+                <p>Discover the best businesses in Miami's Design District with our interactive map and directory</p>
+            </div>
+        </section>
+
+        <!-- Search & Directory Section -->
+        <section class="search-section">
+            <div class="container">
+                <!-- Search Controls -->
+                <div class="search-controls">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search businesses...">
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="retail">Retail & Shopping</option>
+                        <option value="dining">Dining & Restaurants</option>
+                        <option value="gallery">Galleries & Art</option>
+                        <option value="beauty">Beauty & Wellness</option>
+                        <option value="services">Professional Services</option>
+                        <option value="hotels">Hotels & Hospitality</option>
+                    </select>
+                    <select id="sortBy">
+                        <option value="name">Sort by Name</option>
+                        <option value="category">Sort by Category</option>
+                        <option value="distance">Sort by Distance</option>
+                    </select>
+                </div>
+
+                <!-- Map & Directory Layout -->
+                <div class="directory-layout">
+                    <!-- Interactive Map -->
+                    <div class="map-container">
+                        <h2>Interactive Map</h2>
+                        <div id="map"></div>
+                    </div>
+
+                    <!-- Business Directory List -->
+                    <div class="directory-list">
+                        <h2>Business Directory</h2>
+                        <div id="businessList">
+                            <!-- Businesses will be populated here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Design District Chamber of Commerce. All rights reserved. | Domestic Non-Profit Organization</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Google Maps API -->
+    <script>
+        // Sample business data for Miami Design District
+        const businesses = [
+            {
+                name: "Louis Vuitton",
+                category: "retail",
+                address: "140 NE 39th St, Miami, FL 33137",
+                phone: "(305) 403-3005",
+                lat: 25.8056,
+                lng: -80.1939,
+                description: "Luxury fashion and leather goods"
+            },
+            {
+                name: "Dior",
+                category: "retail",
+                address: "115 NE 40th St, Miami, FL 33137",
+                phone: "(786) 409-2130",
+                lat: 25.8067,
+                lng: -80.1950,
+                description: "High-end fashion and beauty"
+            },
+            {
+                name: "Swan",
+                category: "dining",
+                address: "90 NE 39th St, Miami, FL 33137",
+                phone: "(305) 704-0994",
+                lat: 25.8052,
+                lng: -80.1956,
+                description: "Contemporary American cuisine"
+            },
+            {
+                name: "L'Atelier de Joël Robuchon",
+                category: "dining",
+                address: "151 NE 41st St, Miami, FL 33137",
+                phone: "(305) 402-9070",
+                lat: 25.8078,
+                lng: -80.1940,
+                description: "French fine dining"
+            },
+            {
+                name: "Institute of Contemporary Art",
+                category: "gallery",
+                address: "61 NE 41st St, Miami, FL 33137",
+                phone: "(305) 901-5272",
+                lat: 25.8076,
+                lng: -80.1965,
+                description: "Contemporary art museum"
+            },
+            {
+                name: "Locust Projects",
+                category: "gallery",
+                address: "3852 N Miami Ave, Miami, FL 33127",
+                phone: "(305) 576-8570",
+                lat: 25.8098,
+                lng: -80.1956,
+                description: "Contemporary art gallery"
+            },
+            {
+                name: "The Spa at Mandarin Oriental",
+                category: "beauty",
+                address: "500 Brickell Key Dr, Miami, FL 33131",
+                phone: "(305) 913-8288",
+                lat: 25.7617,
+                lng: -80.1918,
+                description: "Luxury spa and wellness"
+            },
+            {
+                name: "Design District Offices",
+                category: "services",
+                address: "Multiple Locations, Design District",
+                phone: "Contact for details",
+                lat: 25.8065,
+                lng: -80.1945,
+                description: "Professional office spaces"
+            }
+        ];
+
+        let map;
+        let markers = [];
+        let filteredBusinesses = [...businesses];
+
+        // Initialize Google Map
+        function initMap() {
+            // Design District center coordinates
+            const designDistrictCenter = { lat: 25.8065, lng: -80.1945 };
+            
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 16,
+                center: designDistrictCenter,
+                styles: [
+                    {
+                        "featureType": "all",
+                        "elementType": "geometry.fill",
+                        "stylers": [{"color": "#242f3e"}]
+                    },
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{"color": "#746855"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#38414e"}]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#17263c"}]
+                    }
+                ]
+            });
+
+            // Add markers for businesses
+            addMarkers();
+            
+            // Populate business list
+            displayBusinesses(filteredBusinesses);
+        }
+
+        // Add markers to map
+        function addMarkers() {
+            // Clear existing markers
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+
+            filteredBusinesses.forEach((business, index) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: business.lat, lng: business.lng },
+                    map: map,
+                    title: business.name,
+                    icon: {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="18" fill="#d4af37" stroke="#fff" stroke-width="2"/>
+                                <text x="20" y="26" font-family="Arial" font-size="12" fill="#000" text-anchor="middle">${index + 1}</text>
+                            </svg>
+                        `),
+                        scaledSize: new google.maps.Size(40, 40)
+                    }
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="color: #333; max-width: 250px;">
+                            <h3 style="margin: 0 0 10px 0; color: #d4af37;">${business.name}</h3>
+                            <p style="margin: 5px 0;"><strong>Category:</strong> ${business.category.charAt(0).toUpperCase() + business.category.slice(1)}</p>
+                            <p style="margin: 5px 0;"><strong>Address:</strong> ${business.address}</p>
+                            <p style="margin: 5px 0;"><strong>Phone:</strong> ${business.phone}</p>
+                            <p style="margin: 5px 0;">${business.description}</p>
+                        </div>
+                    `
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+
+                markers.push(marker);
+            });
+        }
+
+        // Display businesses in the list
+        function displayBusinesses(businessesToShow) {
+            const businessList = document.getElementById('businessList');
+            businessList.innerHTML = '';
+
+            businessesToShow.forEach((business, index) => {
+                const businessCard = document.createElement('div');
+                businessCard.className = 'business-card';
+                businessCard.innerHTML = `
+                    <div class="business-name">${index + 1}. ${business.name}</div>
+                    <div class="business-category">${business.category.charAt(0).toUpperCase() + business.category.slice(1)}</div>
+                    <div class="business-address">${business.address}</div>
+                    <div class="business-phone">${business.phone}</div>
+                `;
+
+                businessCard.addEventListener('click', () => {
+                    map.setCenter({ lat: business.lat, lng: business.lng });
+                    map.setZoom(18);
+                    markers[index].setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(() => {
+                        markers[index].setAnimation(null);
+                    }, 2000);
+                });
+
+                businessList.appendChild(businessCard);
+            });
+        }
+
+        // Search and filter functionality
+        function filterBusinesses() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+
+            filteredBusinesses = businesses.filter(business => {
+                const matchesSearch = business.name.toLowerCase().includes(searchTerm) ||
+                                    business.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || business.category === categoryFilter;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            // Sort businesses
+            const sortBy = document.getElementById('sortBy').value;
+            if (sortBy === 'name') {
+                filteredBusinesses.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sortBy === 'category') {
+                filteredBusinesses.sort((a, b) => a.category.localeCompare(b.category));
+            }
+
+            addMarkers();
+            displayBusinesses(filteredBusinesses);
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filterBusinesses);
+        document.getElementById('categoryFilter').addEventListener('change', filterBusinesses);
+        document.getElementById('sortBy').addEventListener('change', filterBusinesses);
+
+        // Initialize everything when page loads
+        window.onload = function() {
+            // Load Google Maps if not already loaded
+            if (typeof google === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap';
+                script.async = true;
+                document.head.appendChild(script);
+            } else {
+                initMap();
+            }
+        };
+    </script>
+
+    <!-- Load Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvOkBwgGlbYQIBSOBiS0GJXOtKrREY8dE&callback=initMap"></script>
+
+</body>
+</html>
