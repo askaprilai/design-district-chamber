@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://miamidesigndistrictchamberofcommerce.org/sitemap.xml
+
+# Important pages
+Allow: /about-us.html
+Allow: /directory.html
+Allow: /index.html
