@@ -1768,7 +1768,7 @@
             let errors = [];
             
             try {
-                // 1. Send notification email using EmailJS
+                // 1. Send notification email to admin using EmailJS
                 const adminTemplateParams = {
                     from_name: name,
                     from_email: email,
@@ -1777,22 +1777,55 @@
                 };
                 
                 try {
-                    console.log('Attempting to send email with params:', adminTemplateParams);
+                    console.log('Attempting to send admin notification email with params:', adminTemplateParams);
                     const response = await emailjs.send(
                         'service_vntq4ai', // Your EmailJS service ID
-                        'template_m5wg27w', // Your template ID
+                        'template_m5wg27w', // Your admin notification template ID
                         adminTemplateParams
                     );
-                    console.log('EmailJS response:', response);
+                    console.log('Admin EmailJS response:', response);
                     if (response.status === 200) {
                         successCount++;
-                        console.log('Email sent successfully');
+                        console.log('Admin notification email sent successfully');
                     }
                 } catch (error) {
-                    errors.push('Email notification failed');
-                    console.error('Email error details:', error);
-                    console.error('Email error text:', error.text);
-                    console.error('Email error status:', error.status);
+                    errors.push('Admin email notification failed');
+                    console.error('Admin email error details:', error);
+                    console.error('Admin email error text:', error.text);
+                    console.error('Admin email error status:', error.status);
+                }
+
+                // 2. Send auto-responder/confirmation email to user
+                const userTemplateParams = {
+                    to_name: name,
+                    to_email: email,
+                    company: company || 'your organization',
+                    reply_to: 'noreply@miamidesigndistrictchamberofcommerce.org'
+                };
+                
+                try {
+                    console.log('Attempting to send user confirmation email with params:', userTemplateParams);
+                    const userResponse = await emailjs.send(
+                        'service_vntq4ai', // Your EmailJS service ID
+                        'template_m5wg27w', // Using existing template temporarily - need to create auto-responder template
+                        {
+                            from_name: 'Design District Chamber of Commerce',
+                            from_email: 'noreply@miamidesigndistrictchamberofcommerce.org',
+                            to_name: name,
+                            to_email: email,
+                            message: `Dear ${name},\n\nThank you for joining the Miami Design District Chamber of Commerce waitlist!\n\nWe're excited to have ${company || 'your organization'} as part of our growing community.\n\nWhat's next:\n✅ You're officially on our exclusive waitlist\n✅ You'll receive priority access when we launch\n✅ We'll keep you updated on our progress\n\nWe're building something special - Miami's premier design community where creativity meets commerce.\n\nStay tuned!\n\nBest regards,\nThe Design District Chamber Team\n\n---\nMiami Design District Chamber of Commerce\nComing Soon • miamidesigndistrictchamberofcommerce.org`
+                        }
+                    );
+                    console.log('User confirmation EmailJS response:', userResponse);
+                    if (userResponse.status === 200) {
+                        successCount++;
+                        console.log('User confirmation email sent successfully');
+                    }
+                } catch (error) {
+                    errors.push('Confirmation email failed');
+                    console.error('User confirmation email error details:', error);
+                    console.error('User confirmation email error text:', error.text);
+                    console.error('User confirmation email error status:', error.status);
                 }
                 
                 // 3. Save to Google Sheets
@@ -1832,9 +1865,16 @@
                 }
                 
                 // Show success message based on what worked
-                if (successCount >= 2) {
+                if (successCount >= 3) {
                     let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
-                    successMsg += '✅ Email notification sent<br>';
+                    successMsg += '✅ Confirmation email sent to your inbox<br>';
+                    successMsg += '✅ Admin notification sent<br>';
+                    successMsg += '✅ Added to our database<br>';
+                    successMsg += '<br>Thank you for joining! Check your email for confirmation and we\'ll keep you updated on our launch.';
+                    showMessage(successMsg, 'success');
+                } else if (successCount >= 2) {
+                    let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
+                    successMsg += '✅ Email notifications sent<br>';
                     successMsg += '✅ Added to our database<br>';
                     successMsg += '<br>Thank you for joining! We\'ll keep you updated on our launch.';
                     showMessage(successMsg, 'success');
