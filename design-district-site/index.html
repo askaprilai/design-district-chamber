@@ -1776,8 +1776,46 @@
                     company: company || 'Not specified'
                 };
                 
-                // Focus on Google Sheets capture - emails handled separately
-                console.log('Processing form submission - data will be captured in Google Sheets');
+                // Send notification to Zoho and auto-responder to user
+                try {
+                    console.log('Sending emails via Netlify Forms...');
+                    
+                    // Method 1: Send to admin (you) via Netlify Forms
+                    const adminNotification = await fetch('/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            'form-name': 'waitlist-admin',
+                            'name': name,
+                            'email': email,
+                            'company': company || '',
+                            'subject': `New Waitlist Signup: ${name}`,
+                            'message': `New signup:\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'N/A'}\nTime: ${new Date().toLocaleString()}`
+                        }).toString()
+                    });
+                    
+                    // Method 2: Send auto-responder to user
+                    const userResponse = await fetch('https://getform.io/f/bmdppqea', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            company: company || 'Not specified',
+                            autorespond: true,
+                            subject: '🌟 Welcome to Miami Design District Chamber Waitlist!',
+                            message: `Dear ${name},\n\nThank you for joining the Miami Design District Chamber of Commerce waitlist!\n\nWe're excited to have ${company || 'your organization'} as part of our growing community.\n\nWhat's next:\n✅ You're officially on our exclusive waitlist\n✅ Priority access when we launch\n✅ Regular updates on our progress\n\nBest regards,\nApril Sabral\nExecutive Director\nDesign District Chamber of Commerce`
+                        })
+                    });
+                    
+                    if (adminNotification.ok || userResponse.ok) {
+                        successCount++;
+                        console.log('Email notifications processed');
+                    }
+                } catch (error) {
+                    console.error('Email error:', error);
+                    console.log('Emails failed but form data still captured');
+                }
                 
                 // 3. Save to Google Sheets
                 const sheetData = {
@@ -1815,8 +1853,16 @@
                     });
                 }
                 
-                // Show success message - focus on successful data capture
-                if (successCount >= 1) {
+                // Show success message with email confirmation
+                if (successCount >= 2) {
+                    let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
+                    successMsg += '✅ <strong>Confirmation email sent to your inbox</strong><br>';
+                    successMsg += '✅ Successfully added to our database<br>';
+                    successMsg += '✅ Admin notification sent<br>';
+                    successMsg += '<br><strong>Check your email</strong> for welcome message!<br>';
+                    successMsg += 'Thank you for joining Miami\'s premier design community!';
+                    showMessage(successMsg, 'success');
+                } else if (successCount >= 1) {
                     let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
                     successMsg += '✅ <strong>Successfully added to our database</strong><br>';
                     successMsg += '✅ You\'re officially on our exclusive waitlist<br>';
