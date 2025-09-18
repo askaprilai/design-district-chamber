@@ -1776,9 +1776,24 @@
                     company: company || 'Not specified'
                 };
                 
-                // Temporarily disable EmailJS until we fix account issue
-                console.log('EmailJS temporarily disabled - using Google Sheets only');
-                successCount++; // Count as success for now
+                // Send email using EmailJS with correct default service
+                try {
+                    console.log('Attempting to send email with params:', templateParams);
+                    const response = await emailjs.send(
+                        'service_vntq4ai', // Your DEFAULT service ID from dashboard
+                        'template_v0bxoxk', // Your template ID
+                        templateParams
+                    );
+                    console.log('EmailJS response:', response);
+                    if (response.status === 200) {
+                        successCount++;
+                        console.log('Email sent successfully');
+                    }
+                } catch (error) {
+                    console.error('EmailJS error:', error);
+                    // Continue anyway - Google Sheets will still work
+                    console.log('EmailJS failed but continuing with form submission');
+                }
                 
                 // 3. Save to Google Sheets
                 const sheetData = {
