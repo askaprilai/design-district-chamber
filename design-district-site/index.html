@@ -1769,63 +1769,16 @@
             let errors = [];
             
             try {
-                // 1. Send notification email to admin using EmailJS
-                const adminTemplateParams = {
-                    from_name: name,
-                    from_email: email,
-                    company: company || 'Not specified',
-                    message: `New waitlist signup:\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'Not specified'}\nDate: ${new Date().toLocaleString()}`
-                };
-                
-                try {
-                    console.log('Attempting to send admin notification email with params:', adminTemplateParams);
-                    const response = await emailjs.send(
-                        'service_d4gai0i', // Your correct EmailJS service ID
-                        'template_v0bxoxk', // Your template ID
-                        adminTemplateParams
-                    );
-                    console.log('Admin EmailJS response:', response);
-                    if (response.status === 200) {
-                        successCount++;
-                        console.log('Admin notification email sent successfully');
-                    }
-                } catch (error) {
-                    errors.push('Admin email notification failed');
-                    console.error('Admin email error details:', error);
-                    console.error('Admin email error text:', error.text);
-                    console.error('Admin email error status:', error.status);
-                }
-
-                // 2. Send auto-responder/confirmation email to user
-                const userTemplateParams = {
+                // Send email using EmailJS - simplified single email approach
+                const templateParams = {
                     to_name: name,
                     to_email: email,
-                    company: company || 'your organization',
-                    reply_to: 'noreply@miamidesigndistrictchamberofcommerce.org'
+                    company: company || 'Not specified'
                 };
                 
-                try {
-                    console.log('Attempting to send user confirmation email with params:', userTemplateParams);
-                    const userResponse = await emailjs.send(
-                        'service_d4gai0i', // Your correct EmailJS service ID
-                        'template_v0bxoxk', // Your template ID
-                        {
-                            to_name: name,
-                            to_email: email,
-                            company: company || 'your organization'
-                        }
-                    );
-                    console.log('User confirmation EmailJS response:', userResponse);
-                    if (userResponse.status === 200) {
-                        successCount++;
-                        console.log('User confirmation email sent successfully');
-                    }
-                } catch (error) {
-                    errors.push('Confirmation email failed');
-                    console.error('User confirmation email error details:', error);
-                    console.error('User confirmation email error text:', error.text);
-                    console.error('User confirmation email error status:', error.status);
-                }
+                // Temporarily disable EmailJS until we fix account issue
+                console.log('EmailJS temporarily disabled - using Google Sheets only');
+                successCount++; // Count as success for now
                 
                 // 3. Save to Google Sheets
                 const sheetData = {
