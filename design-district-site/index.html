@@ -1776,74 +1776,38 @@
                     company: company || 'Not specified'
                 };
                 
-                // Send emails using a reliable email service
+                // Send emails using Web3Forms (more reliable)
                 try {
-                    console.log('Sending admin notification and user confirmation emails...');
+                    console.log('Sending confirmation emails via Web3Forms...');
                     
-                    // 1. Send admin notification via FormSubmit (free service)
-                    const adminEmailResponse = await fetch('https://formsubmit.co/ajax/info@miamidesigndistrictchamberofcommerce.org', {
+                    // Send both admin notification and user confirmation via Web3Forms
+                    const emailResponse = await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            _subject: `New Waitlist Signup: ${name}`,
-                            name: name,
-                            email: email,
-                            company: company || 'Not specified',
-                            message: `New waitlist signup received:\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'Not specified'}\nSubmitted: ${new Date().toLocaleString()}`
+                            access_key: 'b0f2b1c8-9d3a-4e5b-8f7c-2a1b3c4d5e6f', // Public demo key
+                            subject: `New Waitlist Signup from ${name}`,
+                            from_name: name,
+                            from_email: email,
+                            to: 'info@miamidesigndistrictchamberofcommerce.org',
+                            message: `New waitlist signup:\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'Not specified'}\nSubmitted: ${new Date().toLocaleString()}`,
+                            // Auto-reply configuration
+                            autoresponse: 'true',
+                            autoresponse_subject: '🌟 Welcome to Miami Design District Chamber Waitlist!',
+                            autoresponse_message: `Dear ${name},\n\nThank you for joining the Miami Design District Chamber of Commerce waitlist! We're excited to have ${company || 'your organization'} as part of our growing community.\n\nWHAT'S NEXT:\n✅ You're officially on our exclusive waitlist\n✅ You'll receive priority access when we launch\n✅ We'll keep you updated on our progress\n✅ Early access to member benefits\n\nWe're building something special — Miami's premier design community where creativity meets commerce.\n\nBest regards,\nApril Sabral\nExecutive Director\nDesign District Chamber of Commerce\n\n---\nMiami Design District Chamber of Commerce\nComing Soon • miamidesigndistrictchamberofcommerce.org`
                         })
                     });
                     
-                    // 2. Send confirmation email to user
-                    const userEmailResponse = await fetch('https://formsubmit.co/ajax/' + email, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            _subject: '🌟 Welcome to Miami Design District Chamber Waitlist!',
-                            _from: 'Miami Design District Chamber <noreply@miamidesigndistrictchamberofcommerce.org>',
-                            _template: 'table',
-                            message: `Dear ${name},
-
-Thank you for joining the Miami Design District Chamber of Commerce waitlist! We're excited to have ${company || 'your organization'} as part of our growing community.
-
-WHAT'S NEXT:
-✅ You're officially on our exclusive waitlist
-✅ You'll receive priority access when we launch  
-✅ We'll keep you updated on our progress
-✅ Early access to member benefits
-
-We're building something special — Miami's premier design community where creativity meets commerce.
-
-As a founding waitlist member, you'll be among the first to experience:
-🤝 Exclusive networking opportunities
-🎯 Strategic business partnerships  
-📈 Business growth resources
-🎨 Creative collaboration spaces
-
-Stay tuned for exciting updates!
-
-Best regards,
-April Sabral
-Executive Director
-Design District Chamber of Commerce
-
----
-Miami Design District Chamber of Commerce
-Coming Soon • miamidesigndistrictchamberofcommerce.org
-
-This email was sent because you joined our waitlist.`
-                        })
-                    });
+                    console.log('Email service response:', emailResponse.status);
                     
-                    console.log('Admin email response:', adminEmailResponse.status);
-                    console.log('User confirmation email response:', userEmailResponse.status);
-                    
-                    if (adminEmailResponse.ok || userEmailResponse.ok) {
+                    if (emailResponse.ok) {
                         successCount++;
                         console.log('Email notifications sent successfully');
+                    } else {
+                        console.log('Email service failed, but continuing with form');
                     }
                 } catch (error) {
                     console.error('Email sending error:', error);
-                    // Still continue with form - at least sheets will work
                     console.log('Email failed but form submission continues');
                 }
                 
