@@ -1250,7 +1250,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function(){
-            emailjs.init("SAU17WFhPmeQLrng7"); // Your EmailJS public key
+            emailjs.init("rBC3HD5jisiajBW18"); // Your updated EmailJS public key
         })();
     </script>
 </head>
@@ -1807,13 +1807,11 @@
                     console.log('Attempting to send user confirmation email with params:', userTemplateParams);
                     const userResponse = await emailjs.send(
                         'service_vntq4ai', // Your EmailJS service ID
-                        'template_m5wg27w', // Using existing template temporarily - need to create auto-responder template
+                        'template_v0bxoxk', // Your new auto-responder template ID
                         {
-                            from_name: 'Design District Chamber of Commerce',
-                            from_email: 'noreply@miamidesigndistrictchamberofcommerce.org',
                             to_name: name,
                             to_email: email,
-                            message: `Dear ${name},\n\nThank you for joining the Miami Design District Chamber of Commerce waitlist!\n\nWe're excited to have ${company || 'your organization'} as part of our growing community.\n\nWhat's next:\n✅ You're officially on our exclusive waitlist\n✅ You'll receive priority access when we launch\n✅ We'll keep you updated on our progress\n\nWe're building something special - Miami's premier design community where creativity meets commerce.\n\nStay tuned!\n\nBest regards,\nThe Design District Chamber Team\n\n---\nMiami Design District Chamber of Commerce\nComing Soon • miamidesigndistrictchamberofcommerce.org`
+                            company: company || 'your organization'
                         }
                     );
                     console.log('User confirmation EmailJS response:', userResponse);
