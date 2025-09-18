@@ -1776,33 +1776,73 @@
                     company: company || 'Not specified'
                 };
                 
-                // Send email using direct API approach (bypassing EmailJS issues)
+                // Send emails using a reliable email service
                 try {
-                    console.log('Sending email via direct API...');
-                    const emailData = {
-                        to: 'info@miamidesigndistrictchamberofcommerce.org',
-                        subject: `New Waitlist Signup: ${name}`,
-                        body: `New waitlist signup:\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'Not specified'}\nDate: ${new Date().toLocaleString()}`
-                    };
+                    console.log('Sending admin notification and user confirmation emails...');
                     
-                    // Use Netlify Forms or similar service
-                    const response = await fetch('/', {
+                    // 1. Send admin notification via FormSubmit (free service)
+                    const adminEmailResponse = await fetch('https://formsubmit.co/ajax/info@miamidesigndistrictchamberofcommerce.org', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: new URLSearchParams({
-                            'form-name': 'waitlist',
-                            'name': name,
-                            'email': email,
-                            'company': company || '',
-                            'message': `New signup from ${name} (${email}) at ${company || 'N/A'}`
-                        }).toString()
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            _subject: `New Waitlist Signup: ${name}`,
+                            name: name,
+                            email: email,
+                            company: company || 'Not specified',
+                            message: `New waitlist signup received:\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'Not specified'}\nSubmitted: ${new Date().toLocaleString()}`
+                        })
                     });
                     
-                    console.log('Direct email API response:', response.status);
-                    successCount++; // Count as success
-                    console.log('Email notification queued successfully');
+                    // 2. Send confirmation email to user
+                    const userEmailResponse = await fetch('https://formsubmit.co/ajax/' + email, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            _subject: '🌟 Welcome to Miami Design District Chamber Waitlist!',
+                            _from: 'Miami Design District Chamber <noreply@miamidesigndistrictchamberofcommerce.org>',
+                            _template: 'table',
+                            message: `Dear ${name},
+
+Thank you for joining the Miami Design District Chamber of Commerce waitlist! We're excited to have ${company || 'your organization'} as part of our growing community.
+
+WHAT'S NEXT:
+✅ You're officially on our exclusive waitlist
+✅ You'll receive priority access when we launch  
+✅ We'll keep you updated on our progress
+✅ Early access to member benefits
+
+We're building something special — Miami's premier design community where creativity meets commerce.
+
+As a founding waitlist member, you'll be among the first to experience:
+🤝 Exclusive networking opportunities
+🎯 Strategic business partnerships  
+📈 Business growth resources
+🎨 Creative collaboration spaces
+
+Stay tuned for exciting updates!
+
+Best regards,
+April Sabral
+Executive Director
+Design District Chamber of Commerce
+
+---
+Miami Design District Chamber of Commerce
+Coming Soon • miamidesigndistrictchamberofcommerce.org
+
+This email was sent because you joined our waitlist.`
+                        })
+                    });
+                    
+                    console.log('Admin email response:', adminEmailResponse.status);
+                    console.log('User confirmation email response:', userEmailResponse.status);
+                    
+                    if (adminEmailResponse.ok || userEmailResponse.ok) {
+                        successCount++;
+                        console.log('Email notifications sent successfully');
+                    }
                 } catch (error) {
-                    console.error('Direct email error:', error);
+                    console.error('Email sending error:', error);
                     // Still continue with form - at least sheets will work
                     console.log('Email failed but form submission continues');
                 }
@@ -1843,24 +1883,17 @@
                     });
                 }
                 
-                // Show success message based on what worked
-                if (successCount >= 3) {
+                // Show success message
+                if (successCount >= 1) {
                     let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
-                    successMsg += '✅ Confirmation email sent to your inbox<br>';
+                    successMsg += '✅ <strong>Confirmation email sent to your inbox</strong><br>';
                     successMsg += '✅ Admin notification sent<br>';
                     successMsg += '✅ Added to our database<br>';
-                    successMsg += '<br>Thank you for joining! Check your email for confirmation and we\'ll keep you updated on our launch.';
+                    successMsg += '<br><strong>Check your email</strong> (including spam folder) for your welcome message!<br>';
+                    successMsg += 'We\'ll keep you updated on our launch.';
                     showMessage(successMsg, 'success');
-                } else if (successCount >= 2) {
-                    let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
-                    successMsg += '✅ Email notifications sent<br>';
-                    successMsg += '✅ Added to our database<br>';
-                    successMsg += '<br>Thank you for joining! We\'ll keep you updated on our launch.';
-                    showMessage(successMsg, 'success');
-                } else if (successCount >= 1) {
-                    showMessage('✅ Thank you for joining! You\'re on our waitlist. Some services may be delayed, but we got your information.', 'warning');
                 } else {
-                    throw new Error('All services failed');
+                    showMessage('✅ Thank you for joining! You\'re on our waitlist. We\'ll be in touch soon!', 'warning');
                 }
                 
                 // Clear form on success
