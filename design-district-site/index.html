@@ -1780,8 +1780,8 @@
                 try {
                     console.log('Attempting to send admin notification email with params:', adminTemplateParams);
                     const response = await emailjs.send(
-                        'default_service', // Try default service first
-                        'template_m5wg27w', // Your admin notification template ID
+                        'service_d4gai0i', // Your correct EmailJS service ID
+                        'template_v0bxoxk', // Your template ID
                         adminTemplateParams
                     );
                     console.log('Admin EmailJS response:', response);
@@ -1807,8 +1807,8 @@
                 try {
                     console.log('Attempting to send user confirmation email with params:', userTemplateParams);
                     const userResponse = await emailjs.send(
-                        'default_service', // Try default service first
-                        'template_v0bxoxk', // Your new auto-responder template ID
+                        'service_d4gai0i', // Your correct EmailJS service ID
+                        'template_v0bxoxk', // Your template ID
                         {
                             to_name: name,
                             to_email: email,
