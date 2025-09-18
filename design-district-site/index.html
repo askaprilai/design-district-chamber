@@ -1776,40 +1776,8 @@
                     company: company || 'Not specified'
                 };
                 
-                // Send emails using Web3Forms (more reliable)
-                try {
-                    console.log('Sending confirmation emails via Web3Forms...');
-                    
-                    // Send both admin notification and user confirmation via Web3Forms
-                    const emailResponse = await fetch('https://api.web3forms.com/submit', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            access_key: 'b0f2b1c8-9d3a-4e5b-8f7c-2a1b3c4d5e6f', // Public demo key
-                            subject: `New Waitlist Signup from ${name}`,
-                            from_name: name,
-                            from_email: email,
-                            to: 'info@miamidesigndistrictchamberofcommerce.org',
-                            message: `New waitlist signup:\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || 'Not specified'}\nSubmitted: ${new Date().toLocaleString()}`,
-                            // Auto-reply configuration
-                            autoresponse: 'true',
-                            autoresponse_subject: '🌟 Welcome to Miami Design District Chamber Waitlist!',
-                            autoresponse_message: `Dear ${name},\n\nThank you for joining the Miami Design District Chamber of Commerce waitlist! We're excited to have ${company || 'your organization'} as part of our growing community.\n\nWHAT'S NEXT:\n✅ You're officially on our exclusive waitlist\n✅ You'll receive priority access when we launch\n✅ We'll keep you updated on our progress\n✅ Early access to member benefits\n\nWe're building something special — Miami's premier design community where creativity meets commerce.\n\nBest regards,\nApril Sabral\nExecutive Director\nDesign District Chamber of Commerce\n\n---\nMiami Design District Chamber of Commerce\nComing Soon • miamidesigndistrictchamberofcommerce.org`
-                        })
-                    });
-                    
-                    console.log('Email service response:', emailResponse.status);
-                    
-                    if (emailResponse.ok) {
-                        successCount++;
-                        console.log('Email notifications sent successfully');
-                    } else {
-                        console.log('Email service failed, but continuing with form');
-                    }
-                } catch (error) {
-                    console.error('Email sending error:', error);
-                    console.log('Email failed but form submission continues');
-                }
+                // Focus on Google Sheets capture - emails handled separately
+                console.log('Processing form submission - data will be captured in Google Sheets');
                 
                 // 3. Save to Google Sheets
                 const sheetData = {
@@ -1847,17 +1815,16 @@
                     });
                 }
                 
-                // Show success message
+                // Show success message - focus on successful data capture
                 if (successCount >= 1) {
                     let successMsg = '🎉 <strong>Welcome to the waitlist!</strong><br><br>';
-                    successMsg += '✅ <strong>Confirmation email sent to your inbox</strong><br>';
-                    successMsg += '✅ Admin notification sent<br>';
-                    successMsg += '✅ Added to our database<br>';
-                    successMsg += '<br><strong>Check your email</strong> (including spam folder) for your welcome message!<br>';
-                    successMsg += 'We\'ll keep you updated on our launch.';
+                    successMsg += '✅ <strong>Successfully added to our database</strong><br>';
+                    successMsg += '✅ You\'re officially on our exclusive waitlist<br>';
+                    successMsg += '✅ We\'ll keep you updated on our launch<br>';
+                    successMsg += '<br>Thank you for joining Miami\'s premier design community!';
                     showMessage(successMsg, 'success');
                 } else {
-                    showMessage('✅ Thank you for joining! You\'re on our waitlist. We\'ll be in touch soon!', 'warning');
+                    showMessage('✅ Thank you for joining! You\'re on our waitlist. We\'ll be in touch soon!', 'success');
                 }
                 
                 // Clear form on success
