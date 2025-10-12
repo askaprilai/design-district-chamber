@@ -31,6 +31,14 @@
       "dest": "/design-district-site/directory.html"
     },
     {
+      "src": "/blog-holiday-shopping-2025",
+      "dest": "/design-district-site/blog-holiday-shopping-2025.html"
+    },
+    {
+      "src": "/blog-holiday-shopping-2025.html",
+      "dest": "/design-district-site/blog-holiday-shopping-2025.html"
+    },
+    {
       "src": "/Images/(.*)",
       "dest": "/design-district-site/Images/$1"
     },
