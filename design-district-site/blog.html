@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Industry Insights & Trends | Miami Design Chamber</title>
+    <meta name="description" content="Discover the latest industry insights, design trends, and business strategies from Miami Design Chamber. Expert analysis on retail, commercial design, and business growth.">
+    <meta name="keywords" content="Miami design chamber blog, industry insights, retail trends, commercial design, business strategies, design trends Miami">
+    <meta name="author" content="Miami Design Chamber">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miamidesignchamber.org/blog">
+    <meta property="og:title" content="Blog - Industry Insights & Trends | Miami Design Chamber">
+    <meta property="og:description" content="Expert insights on design trends, retail strategies, and business growth from Miami's leading design community.">
+    <meta property="og:image" content="https://miamidesignchamber.org/Images/hero.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://miamidesignchamber.org/blog">
+    <meta property="twitter:title" content="Blog - Industry Insights & Trends | Miami Design Chamber">
+    <meta property="twitter:description" content="Expert insights on design trends, retail strategies, and business growth from Miami's leading design community.">
+    <meta property="twitter:image" content="https://miamidesignchamber.org/Images/hero.jpg">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 60px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: #ffd700;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('Images/hero.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .blog-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 20px;
+        }
+        
+        .blog-intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .blog-intro h2 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        
+        .blog-intro p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .blog-card-image {
+            height: 200px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #1a1a1a;
+            position: relative;
+        }
+        
+        .blog-card-content {
+            padding: 2rem;
+        }
+        
+        .blog-card h3 {
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .blog-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .read-more {
+            display: inline-block;
+            background: #1a1a1a;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .read-more:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+        
+        .category-tag {
+            display: inline-block;
+            background: #ffd700;
+            color: #1a1a1a;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 15px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #ffd700;
+            color: #1a1a1a;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .cta-button:hover {
+            background: #ffed4a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .newsletter-signup {
+            background: #f8f9fa;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .newsletter-input:focus {
+            border-color: #ffd700;
+        }
+        
+        .newsletter-button {
+            padding: 1rem 2rem;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .newsletter-button:hover {
+            background: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .blog-container {
+                padding: 2rem 20px;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="Images/Miami Design District Chamber of Commerce.png" alt="Miami Design Chamber">
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about-us.html">About</a></li>
+                        <li><a href="directory.html">Directory</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Industry Insights & Trends</h1>
+            <p>Expert analysis and strategic guidance for Miami's business community</p>
+        </div>
+    </section>
+
+    <section class="blog-container">
+        <div class="blog-intro">
+            <h2>Latest Insights</h2>
+            <p>Stay ahead of industry trends with expert analysis, market insights, and strategic guidance from Miami's leading design and business community.</p>
+        </div>
+
+        <div class="blog-grid">
+            <!-- Design Trends 2024 Blog Post -->
+            <article class="blog-card">
+                <div class="blog-card-image">
+                    🏢
+                </div>
+                <div class="blog-card-content">
+                    <div class="category-tag">Design Trends</div>
+                    <h3>2024 Commercial Design Trends Shaping Miami's Future</h3>
+                    <div class="blog-meta">
+                        <img src="Images/April.jpg" alt="April Sabral" class="author-avatar">
+                        <span>By April Sabral • October 12, 2024</span>
+                    </div>
+                    <p>Discover the latest commercial design trends transforming Miami's business landscape. From biophilic design to smart building technology, explore how innovative spaces are reshaping the workplace experience.</p>
+                    <a href="2024-commercial-design-trends-miami.html" class="read-more">Read More</a>
+                </div>
+            </article>
+
+            <!-- Retail Trends 2025 Blog Post -->
+            <article class="blog-card">
+                <div class="blog-card-image">
+                    🛍️
+                </div>
+                <div class="blog-card-content">
+                    <div class="category-tag">Retail Strategy</div>
+                    <h3>2025 Retail Trends Every Business Owner Must Know</h3>
+                    <div class="blog-meta">
+                        <img src="Images/April.jpg" alt="April Sabral" class="author-avatar">
+                        <span>By April Sabral • October 12, 2024</span>
+                    </div>
+                    <p>Essential insights for retail business owners navigating 2025's evolving landscape. Explore AI integration, social commerce, sustainability trends, and consumer behavior shifts driving industry transformation.</p>
+                    <a href="2025-retail-trends-business-owners.html" class="read-more">Read More</a>
+                </div>
+            </article>
+
+            <!-- Holiday Shopping Guide (existing post) -->
+            <article class="blog-card">
+                <div class="blog-card-image">
+                    🎁
+                </div>
+                <div class="blog-card-content">
+                    <div class="category-tag">Seasonal</div>
+                    <h3>Holiday Shopping Guide 2025</h3>
+                    <div class="blog-meta">
+                        <img src="Images/April.jpg" alt="April Sabral" class="author-avatar">
+                        <span>By April Sabral • October 12, 2024</span>
+                    </div>
+                    <p>Your complete guide to holiday shopping in Miami's Design District. Discover the best deals, exclusive events, and insider tips for the perfect holiday shopping experience.</p>
+                    <a href="blog-holiday-shopping-2025.html" class="read-more">Read More</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="newsletter-signup">
+        <div class="container">
+            <h2>Stay Informed</h2>
+            <p>Get the latest industry insights, trends, and business strategies delivered to your inbox.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Join Miami's Leading Business Community</h2>
+            <p>Connect with innovative business leaders, access exclusive insights, and grow your business with Miami Design Chamber.</p>
+            <a href="index.html" class="cta-button">Join Our Community</a>
+        </div>
+    </section>
+
+    <footer style="background: #1a1a1a; color: white; text-align: center; padding: 2rem 0;">
+        <div class="container">
+            <p>&copy; 2024 Miami Design Chamber. All rights reserved.</p>
+            <p>Empowering Miami's business community through collaboration, innovation, and excellence.</p>
+        </div>
+    </footer>
+
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
