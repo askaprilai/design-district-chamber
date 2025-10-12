@@ -1,10 +1,14 @@
 {
-  "cleanUrls": true,
-  "redirects": [
+  "builds": [
     {
-      "source": "/about-us",
-      "destination": "/board-members",
-      "permanent": false
+      "src": "design-district-site/index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/design-district-site/index.html"
     }
   ]
 }
