@@ -7,11 +7,35 @@
   ],
   "routes": [
     {
+      "src": "/about-us",
+      "dest": "/design-district-site/about-us.html"
+    },
+    {
+      "src": "/about-us.html",
+      "dest": "/design-district-site/about-us.html"
+    },
+    {
+      "src": "/board-members",
+      "dest": "/design-district-site/board-members.html"
+    },
+    {
+      "src": "/board-members.html",
+      "dest": "/design-district-site/board-members.html"
+    },
+    {
+      "src": "/directory",
+      "dest": "/design-district-site/directory.html"
+    },
+    {
+      "src": "/directory.html",
+      "dest": "/design-district-site/directory.html"
+    },
+    {
       "src": "/Images/(.*)",
       "dest": "/design-district-site/Images/$1"
     },
     {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|pdf))",
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|pdf|txt|xml))",
       "dest": "/design-district-site/$1"
     },
     {
