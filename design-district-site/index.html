@@ -758,6 +758,42 @@
             }
         }
 
+        /* Hero Logo + Text Responsive */
+        .hero-logo-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-logo-text img {
+            height: 120px;
+            width: auto;
+            filter: brightness(1.1);
+        }
+
+        .hero-logo-text h1 {
+            margin: 0;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .hero-logo-text {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .hero-logo-text img {
+                height: 80px;
+            }
+
+            .hero-logo-text h1 {
+                text-align: center;
+            }
+        }
+
         /* Samsung Galaxy and similar devices */
         @media (max-width: 414px) {
             .hero {
@@ -788,6 +824,10 @@
 
             .email-capture h3 {
                 font-size: 1.2em;
+            }
+
+            .hero-logo-text img {
+                height: 60px;
             }
         }
 
@@ -1297,10 +1337,13 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>
-                <span class="design-district">Miami Design</span>
-                <span class="chamber">Chamber of Commerce</span>
-            </h1>
+            <div class="hero-logo-text">
+                <img src="Images/MDCC-logo.png" alt="MDCC Logo">
+                <h1>
+                    <span class="design-district">Miami Design</span>
+                    <span class="chamber">Chamber of Commerce</span>
+                </h1>
+            </div>
             <p>Connecting creative businesses, fostering innovation, and building a stronger design community.</p>
             
             <div class="email-capture" id="email-signup">
