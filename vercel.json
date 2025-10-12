@@ -1,11 +1,19 @@
 {
   "builds": [
     {
-      "src": "design-district-site/index.html",
+      "src": "design-district-site/**",
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/Images/(.*)",
+      "dest": "/design-district-site/Images/$1"
+    },
+    {
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|pdf))",
+      "dest": "/design-district-site/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/design-district-site/index.html"
