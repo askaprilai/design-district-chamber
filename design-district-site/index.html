@@ -27,6 +27,25 @@
             color: #e8eaed;
             background: #0a0a0b;
         }
+        
+        /* Hide Vercel Toolbar Completely */
+        [data-vercel-toolbar],
+        .vercel-toolbar,
+        #vercel-toolbar,
+        [id*="vercel-toolbar"],
+        [class*="vercel-toolbar"],
+        [id*="vercel"],
+        [class*="vercel"],
+        iframe[src*="vercel"],
+        div[style*="position: fixed"][style*="z-index: 999"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            left: -9999px !important;
+            top: -9999px !important;
+        }
 
         .container {
             max-width: 1200px;
@@ -1725,6 +1744,28 @@
         </div>
     </footer>
 
+    <!-- Block Vercel Toolbar -->
+    <script>
+        // Block Vercel toolbar from loading
+        window.__vercel_toolbar_disabled = true;
+        window.__vercel_toolbar = null;
+        
+        // Remove toolbar if it gets injected
+        const removeVercelToolbar = () => {
+            const toolbar = document.querySelector('[data-vercel-toolbar]') || 
+                           document.querySelector('.vercel-toolbar') ||
+                           document.querySelector('#vercel-toolbar') ||
+                           document.querySelector('[id*="vercel"]');
+            if (toolbar) {
+                toolbar.remove();
+            }
+        };
+        
+        // Run removal on load and periodically
+        document.addEventListener('DOMContentLoaded', removeVercelToolbar);
+        setInterval(removeVercelToolbar, 1000);
+    </script>
+    
     <!-- Vercel Analytics -->
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
