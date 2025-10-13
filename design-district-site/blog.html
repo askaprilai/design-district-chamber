@@ -36,6 +36,25 @@
             background: #0a0a0b;
         }
         
+        /* Hide Vercel Toolbar Completely */
+        [data-vercel-toolbar],
+        .vercel-toolbar,
+        #vercel-toolbar,
+        [id*="vercel-toolbar"],
+        [class*="vercel-toolbar"],
+        [id*="vercel"],
+        [class*="vercel"],
+        iframe[src*="vercel"],
+        div[style*="position: fixed"][style*="z-index: 999"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            left: -9999px !important;
+            top: -9999px !important;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
