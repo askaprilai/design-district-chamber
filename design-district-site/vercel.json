@@ -2,6 +2,10 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/about-us", "destination": "/about-us.html" },
-    { "source": "/directory", "destination": "/directory.html" }
+    { "source": "/directory", "destination": "/directory.html" },
+    { "source": "/blog", "destination": "/blog.html" },
+    { "source": "/2024-commercial-design-trends-miami", "destination": "/2024-commercial-design-trends-miami.html" },
+    { "source": "/2025-retail-trends-business-owners", "destination": "/2025-retail-trends-business-owners.html" },
+    { "source": "/blog-holiday-shopping-2025", "destination": "/blog-holiday-shopping-2025.html" }
   ]
 }
