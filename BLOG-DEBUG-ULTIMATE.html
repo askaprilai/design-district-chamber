@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🔧 ULTIMATE BLOG DEBUG</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f0f0f0; 
+            margin: 0;
+            padding: 20px;
+        }
+        .debug-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .info { background: #cce7ff; border: 1px solid #b3d7ff; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; }
+        .test-link {
+            display: block;
+            margin: 10px 0;
+            padding: 15px;
+            background: #007cba;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .test-link:hover { background: #005a87; }
+        .debug-info { 
+            font-family: monospace; 
+            background: #f8f9fa; 
+            padding: 10px; 
+            border-radius: 4px; 
+            margin: 10px 0; 
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <h1>🔧 ULTIMATE BLOG DEBUG TOOL</h1>
+        
+        <div class="test-section info">
+            <h2>📊 Current Site Information</h2>
+            <div class="debug-info">
+                <strong>Current URL:</strong> <span id="current-url"></span><br>
+                <strong>Domain:</strong> <span id="domain"></span><br>
+                <strong>Protocol:</strong> <span id="protocol"></span><br>
+                <strong>Path:</strong> <span id="path"></span>
+            </div>
+        </div>
+
+        <div class="test-section warning">
+            <h2>⚠️ CRITICAL CHECKS</h2>
+            <div id="critical-tests"></div>
+        </div>
+
+        <div class="test-section info">
+            <h2>🔗 BLOG FILE TESTS</h2>
+            <div id="file-status-tests"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>📖 DIRECT BLOG LINKS</h2>
+            <p><strong>These links should work if files exist:</strong></p>
+            <a href="blog.html" class="test-link" target="_blank">BLOG LANDING PAGE</a>
+            <a href="2024-commercial-design-trends-miami.html" class="test-link" target="_blank">2024 DESIGN TRENDS</a>
+            <a href="2025-retail-trends-business-owners.html" class="test-link" target="_blank">2025 RETAIL TRENDS</a>
+            <a href="blog-holiday-shopping-2025.html" class="test-link" target="_blank">HOLIDAY SHOPPING GUIDE</a>
+        </div>
+
+        <div class="test-section info">
+            <h2>🔍 FOOTER LINK SIMULATION</h2>
+            <p>This simulates clicking from your main site footer:</p>
+            <div id="footer-test"></div>
+        </div>
+
+        <div class="test-section error">
+            <h2>🚨 KNOWN ISSUES TO CHECK</h2>
+            <ul>
+                <li><strong>Vercel Authentication:</strong> Site might be set to private/protected</li>
+                <li><strong>File Location:</strong> Files might be in wrong directory</li>
+                <li><strong>Deployment:</strong> Latest changes might not have deployed</li>
+                <li><strong>DNS/Cache:</strong> Browser cache or DNS issues</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Set basic info
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('domain').textContent = window.location.hostname;
+        document.getElementById('protocol').textContent = window.location.protocol;
+        document.getElementById('path').textContent = window.location.pathname;
+
+        // Critical checks
+        const criticalDiv = document.getElementById('critical-tests');
+        
+        // Check if we're on Vercel
+        const isVercel = window.location.hostname.includes('vercel.app');
+        criticalDiv.innerHTML += `<div class="${isVercel ? 'success' : 'warning'}">
+            ${isVercel ? '✅' : '⚠️'} Vercel Site: ${isVercel ? 'YES' : 'NO'} (${window.location.hostname})
+        </div>`;
+
+        // Check if this debug page loads
+        criticalDiv.innerHTML += `<div class="success">✅ Debug Page Loading: SUCCESS</div>`;
+
+        // Test blog files
+        const filesToTest = [
+            'blog.html',
+            '2024-commercial-design-trends-miami.html', 
+            '2025-retail-trends-business-owners.html',
+            'blog-holiday-shopping-2025.html'
+        ];
+
+        const fileStatusDiv = document.getElementById('file-status-tests');
+        
+        filesToTest.forEach((file, index) => {
+            const testDiv = document.createElement('div');
+            testDiv.innerHTML = `<div class="info">Testing ${file}...</div>`;
+            fileStatusDiv.appendChild(testDiv);
+
+            // Test with fetch
+            fetch(file, { method: 'HEAD' })
+                .then(response => {
+                    const status = response.status;
+                    const statusClass = response.ok ? 'success' : 'error';
+                    const icon = response.ok ? '✅' : '❌';
+                    
+                    testDiv.innerHTML = `<div class="${statusClass}">
+                        ${icon} ${file}<br>
+                        Status: ${status} ${response.statusText}<br>
+                        Content-Type: ${response.headers.get('content-type') || 'Not specified'}
+                    </div>`;
+
+                    if (!response.ok) {
+                        testDiv.innerHTML += `<div class="error">
+                            <strong>Error Details:</strong><br>
+                            - Status ${status} usually means: ${getStatusMeaning(status)}<br>
+                            - URL tested: <code>${window.location.origin}/${file}</code>
+                        </div>`;
+                    }
+                })
+                .catch(error => {
+                    testDiv.innerHTML = `<div class="error">
+                        ❌ ${file}<br>
+                        <strong>Network Error:</strong> ${error.message}
+                    </div>`;
+                });
+        });
+
+        // Footer link simulation
+        const footerDiv = document.getElementById('footer-test');
+        footerDiv.innerHTML = `
+            <p>These are the links that should be in your footer:</p>
+            <div class="debug-info">
+                &lt;a href="blog.html"&gt;Blog&lt;/a&gt;<br>
+                &lt;a href="2024-commercial-design-trends-miami.html"&gt;Design Trends 2024&lt;/a&gt;<br>
+                &lt;a href="2025-retail-trends-business-owners.html"&gt;Retail Trends 2025&lt;/a&gt;
+            </div>
+        `;
+
+        // Helper function
+        function getStatusMeaning(status) {
+            const meanings = {
+                401: 'Unauthorized - Site requires authentication',
+                403: 'Forbidden - Access denied',
+                404: 'Not Found - File does not exist',
+                500: 'Server Error - Vercel deployment issue',
+                502: 'Bad Gateway - Deployment/routing issue'
+            };
+            return meanings[status] || 'Unknown error';
+        }
+
+        // Add click tracking
+        document.querySelectorAll('.test-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                console.log('Testing link:', this.href);
+                // Add visual feedback
+                this.style.background = '#28a745';
+                this.textContent = 'TESTING... ' + this.textContent;
+                
+                setTimeout(() => {
+                    this.style.background = '#007cba';
+                    this.textContent = this.textContent.replace('TESTING... ', '');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
